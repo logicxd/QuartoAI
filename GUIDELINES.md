@@ -10,7 +10,7 @@
 * Winner is determined by having 4 of the same attributes in a row.
 
 ### Game Development
-* Will start off with iOS for prototype and then convert code to Java to put it on website.
+* Will start off with **iOS** for prototype and then convert code to **Java** to put it on website.
 * Start learning Java and it's library Swing. 
 
 ### Contributions
