@@ -10,8 +10,9 @@
 * Winner is determined by having 4 of the same attributes in a row.
 
 ### Game Development
-* Will start off with **iOS** for prototype and then convert code to **Java** to put it on website.
-* Start learning Java and it's library Swing. 
+* We'll start off with **iOS** for prototype and then convert code to **Java** to put it on website.
+* Start learning Java and it's library Swing, we'll be using Java and Swing library to build the Quarto.
+* Practice building a paint program with Java Swing.
 
 ### Contributions
 * Janelle: Web Development, Graphic Design, java integration.
