@@ -13,10 +13,24 @@
 * We'll start off with **iOS** for prototype and then convert code to **Java** to put it on website.
 * Start learning Java and its library Swing, we'll be using that to build the Quarto.
 
+
+### Using GitHub
+  1. Copy the project: `git clone https://github.com/logicxd/QuartoAI.git`
+  2. Make your own branch: `git checkout -b <MY_BRANCH_NAME>`
+  3. Make any changes to your branch: `git add .`, `git commit -m "Put why you are committing here"`, `git pull`, `git push`. (Make sure you're not changing the master branch, check with `git branch`)
+  4. Make a [pull request](https://github.com/logicxd/QuartoAI/pulls) if you want to merge into master.
+
+Typical
+
+1) pull from master. git pull
+2) make a separate branch of master: git checkout -b <myBranch>
+3) make w.e changes in <myBranch>, then add, commit, push
+4) make a pull request to merge your branch and master
+
 ### Contributions
 * Janelle: Web Development, Graphic Design, java integration.
-* Justin: Java front-end and back-end. 
+* Justin: Java front-end and back-end.
 * Monique: Java front-end and back-end.
 * Alaric: iOS, java.
-* Aung: iOS, java. 
-* Vivian: iOS, java. 
+* Aung: iOS, java.
+* Vivian: iOS, java.
