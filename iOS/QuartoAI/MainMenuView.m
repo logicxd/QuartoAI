@@ -12,7 +12,7 @@
 
 @interface MainMenuView()
 @property (nonatomic, strong) FBShimmeringView *shimmeringTitle;
-@property (nonatomic, strong) UIView *buttonHolder;
+@property (nonatomic, strong) UIView *buttonContainer;
 @property (nonatomic, strong) UIButton *playerVsPlayerButton;
 @property (nonatomic, strong) UIButton *playerVsBotButton;
 @property (nonatomic, strong) UIButton *howToButton;
@@ -37,12 +37,14 @@
         self.shimmeringTitle.shimmering = YES;
         
         self.playerVsPlayerButton = [[UIButton alloc] init];
+        [self.playerVsPlayerButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         self.playerVsPlayerButton.layer.cornerRadius = 10.f;
         [self.playerVsPlayerButton setTitle:@"Player vs Player" forState:UIControlStateNormal];
         [self.playerVsPlayerButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
         self.playerVsPlayerButton.backgroundColor = [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1];
         
         self.playerVsBotButton = [[UIButton alloc] init];
+        [self.playerVsBotButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         [self.playerVsBotButton setTitle:@"Player vs Bot" forState:UIControlStateNormal];
         self.playerVsBotButton.layer.cornerRadius = 10.f;
         [self.playerVsBotButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
@@ -50,25 +52,27 @@
         
         self.howToButton = [[UIButton alloc] init];
         [self.howToButton setTitle:@"How to Play" forState:UIControlStateNormal];
+        [self.howToButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         self.howToButton.layer.cornerRadius = 10.f;
         [self.howToButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
         self.howToButton.backgroundColor = [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1];
         
-        self.buttonHolder = [[UIView alloc] init];
-        [self.buttonHolder addSubview:self.playerVsPlayerButton];
-        [self.buttonHolder addSubview:self.playerVsBotButton];
-        [self.buttonHolder addSubview:self.howToButton];
+        self.buttonContainer = [[UIView alloc] init];
+//        self.buttonContainer.backgroundColor = [UIColor yellowColor];
+        [self.buttonContainer addSubview:self.playerVsPlayerButton];
+        [self.buttonContainer addSubview:self.playerVsBotButton];
+        [self.buttonContainer addSubview:self.howToButton];
         
         self.creditLabel = [[UILabel alloc] init];
         self.creditLabel.font = [UIFont systemFontOfSize:10];
-        self.creditLabel.text = @"LogicXD Entertainment Co.";
+        self.creditLabel.text = @"Naahh";
         self.creditLabel.textAlignment = NSTextAlignmentCenter;
         self.creditLabel.textColor = [UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1];
         self.creditLabel.backgroundColor =  [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:.4];
         
         self.backgroundColor = [UIColor colorWithRed:194/255.f green:91/255.f blue:86/255.f alpha:1];
         [self addSubview:self.shimmeringTitle];
-        [self addSubview:self.buttonHolder];
+        [self addSubview:self.buttonContainer];
         [self addSubview:self.creditLabel];
     }
     return self;
@@ -80,38 +84,39 @@
 
 - (void)updateConstraints {
     NSNumber *buttonHeight = @45;
+    CGFloat widthDimension = (self.bounds.size.width)*0.7;
+    CGFloat heightDimension = (self.bounds.size.height)*0.4;
+    CGFloat buttonHeightDimension = (heightDimension)/4;
+
     
     [self.shimmeringTitle mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.buttonHolder.mas_top).offset(-25.f);
+        make.bottom.equalTo(self.buttonContainer.mas_top).offset(-25.f);
         make.centerX.equalTo(self);
-        make.width.equalTo(self.buttonHolder);
+        make.width.equalTo(self.buttonContainer);
         make.height.equalTo(buttonHeight);
     }];
     
-    [self.buttonHolder mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.center.equalTo(self);
-        make.width.equalTo(@160);
-        make.height.equalTo(@200);
+    [self.buttonContainer mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.centerY.equalTo(self);
+        make.width.equalTo(@(widthDimension));
+        make.height.equalTo(@(heightDimension));
         
         [self.playerVsPlayerButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.buttonHolder);
-            make.left.equalTo(self.buttonHolder);
-            make.right.equalTo(self.buttonHolder);
-            make.height.equalTo(buttonHeight);
+            make.left.right.top.equalTo(self.buttonContainer);
+            make.height.equalTo(@(buttonHeightDimension));
         }];
         
         [self.playerVsBotButton mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.playerVsPlayerButton.mas_bottom).offset(10.f);
-            make.left.equalTo(self.buttonHolder);
-            make.right.equalTo(self.buttonHolder);
-            make.height.equalTo(buttonHeight);
+            make.left.right.equalTo(self.buttonContainer);
+            make.height.equalTo(@(buttonHeightDimension));
+
         }];
         
         [self.howToButton mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.playerVsBotButton.mas_bottom).offset(10.f);
-            make.left.equalTo(self.buttonHolder);
-            make.right.equalTo(self.buttonHolder);
-            make.height.equalTo(buttonHeight);
+            make.left.right.equalTo(self.buttonContainer);
+            make.height.equalTo(@(buttonHeightDimension));
         }];
     }];
 
