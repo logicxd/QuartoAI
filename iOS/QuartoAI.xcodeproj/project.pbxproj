@@ -16,6 +16,8 @@
 		68B4DFB51D6C1C340024822D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68B4DFB41D6C1C340024822D /* Assets.xcassets */; };
 		68B4DFB81D6C1C340024822D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 68B4DFB61D6C1C340024822D /* LaunchScreen.storyboard */; };
 		68F008751D6EEAD100455E79 /* QuartoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008741D6EEAD100455E79 /* QuartoViewController.m */; };
+		68F008791D6EF4B500455E79 /* QuartoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008781D6EF4B500455E79 /* QuartoView.m */; };
+		68F0087B1D6EFE3900455E79 /* Airplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 68F0087A1D6EFE3900455E79 /* Airplane.png */; };
 		F7EED326A1F36FDDF11809F9 /* libPods-QuartoAI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +39,9 @@
 		68B4DFB91D6C1C340024822D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = QuartoAI/Info.plist; sourceTree = "<group>"; };
 		68F008731D6EEAD100455E79 /* QuartoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoViewController.h; sourceTree = "<group>"; };
 		68F008741D6EEAD100455E79 /* QuartoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoViewController.m; sourceTree = "<group>"; };
+		68F008771D6EF4B500455E79 /* QuartoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoView.h; sourceTree = "<group>"; };
+		68F008781D6EF4B500455E79 /* QuartoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoView.m; sourceTree = "<group>"; };
+		68F0087A1D6EFE3900455E79 /* Airplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Airplane.png; sourceTree = SOURCE_ROOT; };
 		6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QuartoAI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EDA07A6AA8E0100C5231D6C /* Pods-QuartoAI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuartoAI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuartoAI/Pods-QuartoAI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -101,10 +106,9 @@
 			isa = PBXGroup;
 			children = (
 				680135B01D6E64AF00609348 /* MainMenu */,
+				68F008761D6EEB7F00455E79 /* QuartoGame */,
 				68B4DFAB1D6C1C340024822D /* AppDelegate.h */,
 				68B4DFAC1D6C1C340024822D /* AppDelegate.m */,
-				68F008731D6EEAD100455E79 /* QuartoViewController.h */,
-				68F008741D6EEAD100455E79 /* QuartoViewController.m */,
 			);
 			path = QuartoAI;
 			sourceTree = "<group>";
@@ -116,6 +120,18 @@
 			);
 			name = "Supporting Files";
 			path = QuartoAI;
+			sourceTree = "<group>";
+		};
+		68F008761D6EEB7F00455E79 /* QuartoGame */ = {
+			isa = PBXGroup;
+			children = (
+				68F008731D6EEAD100455E79 /* QuartoViewController.h */,
+				68F008741D6EEAD100455E79 /* QuartoViewController.m */,
+				68F008771D6EF4B500455E79 /* QuartoView.h */,
+				68F008781D6EF4B500455E79 /* QuartoView.m */,
+				68F0087A1D6EFE3900455E79 /* Airplane.png */,
+			);
+			name = QuartoGame;
 			sourceTree = "<group>";
 		};
 		C8617246178C1A57706D7722 /* Frameworks */ = {
@@ -196,6 +212,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				68B4DFB81D6C1C340024822D /* LaunchScreen.storyboard in Resources */,
+				68F0087B1D6EFE3900455E79 /* Airplane.png in Resources */,
 				68B4DFB51D6C1C340024822D /* Assets.xcassets in Resources */,
 				68B4DFB31D6C1C340024822D /* Main.storyboard in Resources */,
 			);
@@ -256,6 +273,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				68F008791D6EF4B500455E79 /* QuartoView.m in Sources */,
 				680135B61D6E66FF00609348 /* MainMenuView.m in Sources */,
 				680135AF1D6E64AA00609348 /* MainMenuViewController.m in Sources */,
 				68B4DFB01D6C1C340024822D /* ViewController.m in Sources */,

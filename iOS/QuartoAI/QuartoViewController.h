@@ -10,4 +10,6 @@
 
 @interface QuartoViewController : UIViewController
 
+- (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer;
+
 @end

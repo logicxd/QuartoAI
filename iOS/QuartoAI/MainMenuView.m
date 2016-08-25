@@ -21,8 +21,8 @@
 
 @implementation MainMenuView
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+- (instancetype)init {
+    if (self = [super init]) {
         
         UILabel *title = [[UILabel alloc] init];
         title.text = @"QuartoAI";
