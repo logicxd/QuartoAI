@@ -8,6 +8,13 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MainMenuView : UIView
+typedef NS_ENUM(NSInteger, MainMenuButtonType){
+    MainMenuButtonTypePlayerVsPlayer,
+    MainMenuButtonTypePlayerVsBot,
+    MainMenuButtonTypeHowTo
+};
 
+@interface MainMenuView : UIView
+@property NSString *hello;
+@property (nonatomic, copy) void (^buttonHit)(MainMenuButtonType button);
 @end

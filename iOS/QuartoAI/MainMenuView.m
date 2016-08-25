@@ -37,35 +37,37 @@
         self.shimmeringTitle.shimmering = YES;
         
         self.playerVsPlayerButton = [[UIButton alloc] init];
-        [self.playerVsPlayerButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         self.playerVsPlayerButton.layer.cornerRadius = 10.f;
         [self.playerVsPlayerButton setTitle:@"Player vs Player" forState:UIControlStateNormal];
         [self.playerVsPlayerButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
-        self.playerVsPlayerButton.backgroundColor = [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1];
+        [self.playerVsPlayerButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [self.playerVsPlayerButton setBackgroundColor:[UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1]];
+        [self.playerVsPlayerButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.playerVsBotButton = [[UIButton alloc] init];
-        [self.playerVsBotButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [self.playerVsBotButton setTitle:@"Player vs Bot" forState:UIControlStateNormal];
         self.playerVsBotButton.layer.cornerRadius = 10.f;
+        [self.playerVsBotButton setTitle:@"Player vs Bot" forState:UIControlStateNormal];
         [self.playerVsBotButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
-        self.playerVsBotButton.backgroundColor = [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1];
+        [self.playerVsBotButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
+        [self.playerVsBotButton setBackgroundColor:[UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1]];
+        [self.playerVsBotButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.howToButton = [[UIButton alloc] init];
+        self.howToButton.layer.cornerRadius = 10.f;
         [self.howToButton setTitle:@"How to Play" forState:UIControlStateNormal];
         [self.howToButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        self.howToButton.layer.cornerRadius = 10.f;
         [self.howToButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
-        self.howToButton.backgroundColor = [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1];
+        [self.howToButton setBackgroundColor:[UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1]];
+        [self.howToButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.buttonContainer = [[UIView alloc] init];
-//        self.buttonContainer.backgroundColor = [UIColor yellowColor];
         [self.buttonContainer addSubview:self.playerVsPlayerButton];
         [self.buttonContainer addSubview:self.playerVsBotButton];
         [self.buttonContainer addSubview:self.howToButton];
         
         self.creditLabel = [[UILabel alloc] init];
         self.creditLabel.font = [UIFont systemFontOfSize:10];
-        self.creditLabel.text = @"Naahh";
+        self.creditLabel.text = @"Naahh Inc. All Rights Reserved";
         self.creditLabel.textAlignment = NSTextAlignmentCenter;
         self.creditLabel.textColor = [UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1];
         self.creditLabel.backgroundColor =  [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:.4];
@@ -76,6 +78,18 @@
         [self addSubview:self.creditLabel];
     }
     return self;
+}
+
+- (void)buttonHit:(UIButton *)button {
+    NSLog(@"\"%@\" is pressed", button.titleLabel.text);
+    
+    if (button == self.playerVsPlayerButton) {
+        self.buttonHit(MainMenuButtonTypePlayerVsPlayer);
+    } else if (button == self.playerVsBotButton) {
+        self.buttonHit(MainMenuButtonTypePlayerVsBot);
+    } else if (button == self.howToButton) {
+        self.buttonHit(MainMenuButtonTypeHowTo);
+    }
 }
 
 + (BOOL)requiresConstraintBasedLayout {
