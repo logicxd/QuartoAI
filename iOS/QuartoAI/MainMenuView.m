@@ -7,6 +7,7 @@
 //
 
 #import "MainMenuView.h"
+#import "NSObject+QuartoColorTemplate.h"
 #import "Masonry.h"
 #import "FBShimmeringView.h"
 
@@ -28,7 +29,7 @@
         title.text = @"QuartoAI";
         title.textAlignment = NSTextAlignmentCenter;
         title.font = [UIFont systemFontOfSize:40.f];
-        title.textColor = [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1];
+        title.textColor = [self quartoWhite];
        
         self.shimmeringTitle = [[FBShimmeringView alloc] initWithFrame:CGRectZero];
         self.shimmeringTitle.contentView = title;
@@ -39,25 +40,25 @@
         self.playerVsPlayerButton = [[UIButton alloc] init];
         self.playerVsPlayerButton.layer.cornerRadius = 10.f;
         [self.playerVsPlayerButton setTitle:@"Player vs Player" forState:UIControlStateNormal];
-        [self.playerVsPlayerButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
+        [self.playerVsPlayerButton setTitleColor:[self quartoBlack] forState:UIControlStateNormal];
         [self.playerVsPlayerButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [self.playerVsPlayerButton setBackgroundColor:[UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1]];
+        [self.playerVsPlayerButton setBackgroundColor:[self quartoWhite]];
         [self.playerVsPlayerButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.playerVsBotButton = [[UIButton alloc] init];
         self.playerVsBotButton.layer.cornerRadius = 10.f;
         [self.playerVsBotButton setTitle:@"Player vs Bot" forState:UIControlStateNormal];
-        [self.playerVsBotButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
+        [self.playerVsBotButton setTitleColor:[self quartoBlack] forState:UIControlStateNormal];
         [self.playerVsBotButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [self.playerVsBotButton setBackgroundColor:[UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1]];
+        [self.playerVsBotButton setBackgroundColor:[self quartoWhite]];
         [self.playerVsBotButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.howToButton = [[UIButton alloc] init];
         self.howToButton.layer.cornerRadius = 10.f;
         [self.howToButton setTitle:@"How to Play" forState:UIControlStateNormal];
         [self.howToButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
-        [self.howToButton setTitleColor:[UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1] forState:UIControlStateNormal];
-        [self.howToButton setBackgroundColor:[UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:1]];
+        [self.howToButton setTitleColor:[self quartoBlack] forState:UIControlStateNormal];
+        [self.howToButton setBackgroundColor:[self quartoWhite]];
         [self.howToButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.buttonContainer = [[UIView alloc] init];
@@ -69,10 +70,10 @@
         self.creditLabel.font = [UIFont systemFontOfSize:10];
         self.creditLabel.text = @"Naahh Inc. All Rights Reserved";
         self.creditLabel.textAlignment = NSTextAlignmentCenter;
-        self.creditLabel.textColor = [UIColor colorWithRed:82/255.f green:85/255.f blue:100/255.f alpha:1];
+        self.creditLabel.textColor = [self quartoBlack];
         self.creditLabel.backgroundColor =  [UIColor colorWithRed:254/255.f green:246/255.f blue:235/255.f alpha:.4];
         
-        self.backgroundColor = [UIColor colorWithRed:194/255.f green:91/255.f blue:86/255.f alpha:1];
+        self.backgroundColor = [self quartoRed];
         [self addSubview:self.shimmeringTitle];
         [self addSubview:self.buttonContainer];
         [self addSubview:self.creditLabel];

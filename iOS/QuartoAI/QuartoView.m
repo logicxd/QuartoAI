@@ -7,20 +7,26 @@
 //
 
 #import "QuartoView.h"
+#import "QuartoBoardView.h"
 #import "Masonry.h"
+#import "NSObject+QuartoColorTemplate.h"
 
 @interface QuartoView ()
-
+@property (nonatomic, strong) QuartoBoardView *board;
 @end
 
 @implementation QuartoView
 
 - (instancetype)init {
     if (self = [super init]) {
+        
         self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Airplane.png"]];
         [self.imgView setUserInteractionEnabled:YES];
         
-        self.backgroundColor = [UIColor whiteColor];
+        self.board = [[QuartoBoardView alloc] init];
+        
+        self.backgroundColor = [self quartoWhite];
+        [self addSubview:self.board];
         [self addSubview:self.imgView];
     }
     return self;
@@ -31,9 +37,16 @@
 }
 
 - (void)updateConstraints {
+    
+    [self.board mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(@200);
+        make.center.equalTo(self);
+    }];
+    
     [self.imgView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(@35);
-        make.center.equalTo(self);
+        make.top.equalTo(self.board);
+        make.left.equalTo(self);
     }];
     
     [super updateConstraints];

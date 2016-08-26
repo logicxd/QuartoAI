@@ -18,6 +18,9 @@
 		68F008751D6EEAD100455E79 /* QuartoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008741D6EEAD100455E79 /* QuartoViewController.m */; };
 		68F008791D6EF4B500455E79 /* QuartoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008781D6EF4B500455E79 /* QuartoView.m */; };
 		68F0087B1D6EFE3900455E79 /* Airplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 68F0087A1D6EFE3900455E79 /* Airplane.png */; };
+		68F008811D6F9F1A00455E79 /* QuartoBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008801D6F9F1A00455E79 /* QuartoBoardView.m */; };
+		68F008841D6F9F2A00455E79 /* QuartoBoardViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008831D6F9F2A00455E79 /* QuartoBoardViewCell.m */; };
+		68F008871D6FC67500455E79 /* NSObject+QuartoColorTemplate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008861D6FC67500455E79 /* NSObject+QuartoColorTemplate.m */; };
 		F7EED326A1F36FDDF11809F9 /* libPods-QuartoAI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */; };
 /* End PBXBuildFile section */
 
@@ -42,6 +45,12 @@
 		68F008771D6EF4B500455E79 /* QuartoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoView.h; sourceTree = "<group>"; };
 		68F008781D6EF4B500455E79 /* QuartoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoView.m; sourceTree = "<group>"; };
 		68F0087A1D6EFE3900455E79 /* Airplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Airplane.png; sourceTree = SOURCE_ROOT; };
+		68F0087F1D6F9F1A00455E79 /* QuartoBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoBoardView.h; sourceTree = "<group>"; };
+		68F008801D6F9F1A00455E79 /* QuartoBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoBoardView.m; sourceTree = "<group>"; };
+		68F008821D6F9F2A00455E79 /* QuartoBoardViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoBoardViewCell.h; sourceTree = "<group>"; };
+		68F008831D6F9F2A00455E79 /* QuartoBoardViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoBoardViewCell.m; sourceTree = "<group>"; };
+		68F008851D6FC67500455E79 /* NSObject+QuartoColorTemplate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSObject+QuartoColorTemplate.h"; sourceTree = "<group>"; };
+		68F008861D6FC67500455E79 /* NSObject+QuartoColorTemplate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSObject+QuartoColorTemplate.m"; sourceTree = "<group>"; };
 		6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QuartoAI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EDA07A6AA8E0100C5231D6C /* Pods-QuartoAI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuartoAI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuartoAI/Pods-QuartoAI.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -109,6 +118,8 @@
 				68F008761D6EEB7F00455E79 /* QuartoGame */,
 				68B4DFAB1D6C1C340024822D /* AppDelegate.h */,
 				68B4DFAC1D6C1C340024822D /* AppDelegate.m */,
+				68F008851D6FC67500455E79 /* NSObject+QuartoColorTemplate.h */,
+				68F008861D6FC67500455E79 /* NSObject+QuartoColorTemplate.m */,
 			);
 			path = QuartoAI;
 			sourceTree = "<group>";
@@ -125,6 +136,7 @@
 		68F008761D6EEB7F00455E79 /* QuartoGame */ = {
 			isa = PBXGroup;
 			children = (
+				68F008881D6FE7A100455E79 /* Board */,
 				68F008731D6EEAD100455E79 /* QuartoViewController.h */,
 				68F008741D6EEAD100455E79 /* QuartoViewController.m */,
 				68F008771D6EF4B500455E79 /* QuartoView.h */,
@@ -132,6 +144,17 @@
 				68F0087A1D6EFE3900455E79 /* Airplane.png */,
 			);
 			name = QuartoGame;
+			sourceTree = "<group>";
+		};
+		68F008881D6FE7A100455E79 /* Board */ = {
+			isa = PBXGroup;
+			children = (
+				68F0087F1D6F9F1A00455E79 /* QuartoBoardView.h */,
+				68F008801D6F9F1A00455E79 /* QuartoBoardView.m */,
+				68F008821D6F9F2A00455E79 /* QuartoBoardViewCell.h */,
+				68F008831D6F9F2A00455E79 /* QuartoBoardViewCell.m */,
+			);
+			name = Board;
 			sourceTree = "<group>";
 		};
 		C8617246178C1A57706D7722 /* Frameworks */ = {
@@ -276,10 +299,13 @@
 				68F008791D6EF4B500455E79 /* QuartoView.m in Sources */,
 				680135B61D6E66FF00609348 /* MainMenuView.m in Sources */,
 				680135AF1D6E64AA00609348 /* MainMenuViewController.m in Sources */,
+				68F008811D6F9F1A00455E79 /* QuartoBoardView.m in Sources */,
 				68B4DFB01D6C1C340024822D /* ViewController.m in Sources */,
+				68F008871D6FC67500455E79 /* NSObject+QuartoColorTemplate.m in Sources */,
 				68B4DFAD1D6C1C340024822D /* AppDelegate.m in Sources */,
 				68F008751D6EEAD100455E79 /* QuartoViewController.m in Sources */,
 				68B4DFAA1D6C1C340024822D /* main.m in Sources */,
+				68F008841D6F9F2A00455E79 /* QuartoBoardViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,7 +17,7 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     MainMenuViewController *mainMenu = [[MainMenuViewController alloc] init];
-    
+    NSLog(@"Width:%f Height:%f", [[UIScreen mainScreen] bounds].size.width, [[UIScreen mainScreen] bounds].size.height);
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     [self.window setRootViewController:mainMenu];
     [self.window makeKeyAndVisible];

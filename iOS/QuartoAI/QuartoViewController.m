@@ -9,19 +9,21 @@
 #import "QuartoViewController.h"
 #import "QuartoView.h"
 
+// Class variables for drag and drop.
 CGPoint firstTouchPoint;    // Saves the location of the first touch.
 float xDistanceTouchPoint;  // X distance between img center and firstTouchPointer.center.
 float yDistanceTouchPoint;  // Y distance between img center and firstTouchPointer.center.
 
 @interface QuartoViewController ()
 @property (nonatomic, strong) QuartoView *quartoView;
+@property (nonatomic, assign) BOOL isPlayerVsPlayer;
 @end
 
 @implementation QuartoViewController
 
 - (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer {
     if (self = [super init]) {
-        
+        self.isPlayerVsPlayer = isPlayerVsPlayer;
     }
     return self;
 }

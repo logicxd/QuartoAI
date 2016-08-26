@@ -45,13 +45,16 @@
     __weak typeof(self) weakSelf = self;
     self.mainMenuView.buttonHit = ^(MainMenuButtonType type) {
         if (type == MainMenuButtonTypePlayerVsPlayer) {
+            weakSelf.playerVsPlayerViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            weakSelf.playerVsPlayerViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [weakSelf presentViewController:weakSelf.playerVsPlayerViewController animated:YES completion:nil];
         } else if (type == MainMenuButtonTypePlayerVsBot) {
+            weakSelf.playerVsBotViewController.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+            weakSelf.playerVsBotViewController.modalPresentationStyle = UIModalPresentationFullScreen;
             [weakSelf presentViewController:weakSelf.playerVsBotViewController animated:YES completion:nil];
         } else if (type == MainMenuButtonTypeHowTo) {
             [weakSelf presentViewController:alert animated:YES completion:nil];
         }
-        
     };
 }
 
