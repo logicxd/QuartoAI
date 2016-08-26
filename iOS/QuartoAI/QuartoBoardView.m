@@ -16,12 +16,12 @@ static const NSInteger kTotalCells = 16;
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.board = [NSMutableArray arrayWithCapacity:kTotalCells];
+        self.boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
         for (NSInteger index = 0; index < kTotalCells; index++) {
-            [self.board addObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectZero]];
+            [self.boardCells addObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectZero]];
         }
         
-        self.backgroundColor = [self quartoRed];
+        self.backgroundColor = [self quartoBlack];
         self.layer.borderColor = [self quartoBlack].CGColor;
         self.layer.borderWidth = 2.f;
         self.layer.cornerRadius = 10;
@@ -31,28 +31,34 @@ static const NSInteger kTotalCells = 16;
     return self;
 }
 
+- (void)resetBoard {
+    self.boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
+    for (NSInteger index = 0; index < kTotalCells; index++) {
+        [self.boardCells addObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectZero]];
+    }
+    
+//    [self setNeedsLayout];
+}
+
 - (void)layoutSubviews {
+    [super layoutSubviews];
     NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
     const CGFloat kBoardSize = self.frame.size.width;
-    const CGFloat kCellSize = kBoardSize * (2.f/9.f);
-    const CGFloat kOffSet = kBoardSize * (1.f/45.f);
+    const CGFloat kCellSize = kBoardSize * (1.f/5.f);
+    const CGFloat kOffSet = kBoardSize * (1.f/25.f);
     
     // Position for each slot.
     CGFloat posX = kOffSet;
-    CGFloat posY = kOffSet; 
+    CGFloat posY = kOffSet;
     
     for (NSInteger index = 0; index < kTotalCells; index++) {
-        
-//        if ([self.board objectAtIndex:index]) {
-//        }
-        
         // Create a cell.
-        self.board[index] = [[QuartoBoardViewCell alloc] initWithFrame:CGRectMake(posX, posY, kCellSize, kCellSize)];
+        [self.boardCells[index] setFrame:CGRectMake(posX, posY, kCellSize, kCellSize)];
         
         // Add the cell to the view.
-        [self addSubview:self.board[index]];
+        [self addSubview:self.boardCells[index]];
         
         // Prepare for the next cell.
         if (index % 4 == 3) {

@@ -12,7 +12,6 @@
 #import "NSObject+QuartoColorTemplate.h"
 
 @interface QuartoView ()
-@property (nonatomic, strong) QuartoBoardView *board;
 @end
 
 @implementation QuartoView
@@ -23,10 +22,10 @@
         self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Airplane.png"]];
         [self.imgView setUserInteractionEnabled:YES];
         
-        self.board = [[QuartoBoardView alloc] init];
+        self.boardView = [[QuartoBoardView alloc] init];
         
-        self.backgroundColor = [self quartoWhite];
-        [self addSubview:self.board];
+        self.backgroundColor = [self quartoBlack];
+        [self addSubview:self.boardView];
         [self addSubview:self.imgView];
     }
     return self;
@@ -37,15 +36,18 @@
 }
 
 - (void)updateConstraints {
+//    const NSNumber *kBoardSize = @(self.frame.size.width * (45.f/64.f));
+    const NSNumber *kBoardSize = @225;
+    const NSNumber *kBoardPieceSize = @35;
     
-    [self.board mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@200);
+    [self.boardView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(kBoardSize);
         make.center.equalTo(self);
     }];
     
     [self.imgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(@35);
-        make.top.equalTo(self.board);
+        make.width.height.equalTo(kBoardPieceSize);
+        make.top.equalTo(self.boardView);
         make.left.equalTo(self);
     }];
     

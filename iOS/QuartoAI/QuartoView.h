@@ -8,6 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
+@class QuartoBoardView;
+
 @interface QuartoView : UIView
+@property (nonatomic, strong) QuartoBoardView *boardView;
 @property (nonatomic, strong) UIImageView *imgView;
 @end

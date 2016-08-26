@@ -8,6 +8,8 @@
 
 #import "QuartoViewController.h"
 #import "QuartoView.h"
+#import "QuartoBoardView.h"
+#import "QuartoBoardViewCell.h"
 
 // Class variables for drag and drop.
 CGPoint firstTouchPoint;    // Saves the location of the first touch.
@@ -17,6 +19,8 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
 @interface QuartoViewController ()
 @property (nonatomic, strong) QuartoView *quartoView;
 @property (nonatomic, assign) BOOL isPlayerVsPlayer;
+
+
 @end
 
 @implementation QuartoViewController
@@ -63,4 +67,34 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
     }
 }
 
+
+- (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    UITouch *touch = [touches anyObject];
+    CGPoint endPoint = [touch locationInView:self.quartoView];
+    NSLog(@"%@", touch.view);
+    
+    NSLog(@"%f, %f", endPoint.x, endPoint.y);
+    
+    if ([touch.view isEqual:self.quartoView.boardView.boardCells.firstObject]) {
+        NSLog(@"Is a QuartoBoardViewCell");
+    }
+//    NSLog(@"%@", mTouch.view);
+//    
+//    if ([mTouch.view isEqual:self.quartoView.boardView.boardCells.firstObject]) {
+//        NSLog(@"Is a QuartoBoardViewCell");
+//    }
+}
+
 @end
+
+
+
+
+
+
+
+
+
+
+
+

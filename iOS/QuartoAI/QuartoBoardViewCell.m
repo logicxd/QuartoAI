@@ -13,12 +13,24 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor clearColor];
+        self.backgroundColor = [self quartoGray];
         self.layer.borderWidth = 2.0f;
         self.layer.borderColor = [self quartoBlack].CGColor;
-        self.layer.cornerRadius = self.frame.size.width / 2.f;
     }
     return self;
+}
+
+- (BOOL)canPutBoardPiece:(UIView *)boardPiece {
+    if (self.subviews.count > 0) {
+        return NO;
+    }
+    [self addSubview:boardPiece];
+    [self.subviews.firstObject setClipsToBounds:YES];
+    return YES;
+}
+
+- (void)layoutSubviews {
+    self.layer.cornerRadius = self.frame.size.width / 2.f;
 }
 
 @end
