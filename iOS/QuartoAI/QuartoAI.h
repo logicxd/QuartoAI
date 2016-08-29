@@ -10,9 +10,7 @@
 
 @interface QuartoAI : NSObject
 
-#pragma mark - Inits
-
-- (instancetype)init; // Default is bot will start the game.
-- (instancetype)initWithBotStartsTheGame:(BOOL)botStartsTheGame NS_DESIGNATED_INITIALIZER;
+@property (nonatomic, strong, readonly) NSSet<NSNumber *> *kBoardPieces;    // All board pieces.
+@property (nonatomic, strong, readonly) NSMutableDictionary *playingBoard;  // Holds current TTT board
 
 @end

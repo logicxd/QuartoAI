@@ -12,11 +12,16 @@
 
 static const NSInteger kTotalCells = 16;
 
+@interface QuartoBoardView ()
+@property (nonatomic, strong, readwrite) NSMutableArray<QuartoBoardViewCell *> *boardCells;
+@end
+
 @implementation QuartoBoardView
 
 - (instancetype)init {
     if (self = [super init]) {
-        self.boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
+        
+        _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
         for (NSInteger index = 0; index < kTotalCells; index++) {
             [self.boardCells addObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectZero]];
         }
@@ -29,6 +34,10 @@ static const NSInteger kTotalCells = 16;
         self.layer.shadowRadius = 10;
     }
     return self;
+}
+
+- (BOOL)canPutBoardPiece:(UIView *)boardPiece atIndex:(NSNumber *)index {
+    return [self.boardCells[index.integerValue] canPutBoardPiece:boardPiece];
 }
 
 - (void)resetBoard {
