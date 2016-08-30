@@ -8,6 +8,7 @@
 
 #import "QuartoView.h"
 #import "QuartoBoardView.h"
+#import "QuartoPiecesView.h"
 #import "Masonry.h"
 #import "NSObject+QuartoColorTemplate.h"
 
@@ -19,14 +20,16 @@
 - (instancetype)init {
     if (self = [super init]) {
         
-        self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Airplane.png"]];
-        [self.imgView setUserInteractionEnabled:YES];
+//        self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Airplane.png"]];
+//        [self.imgView setUserInteractionEnabled:YES];
+//         [self addSubview:self.imgView];
         
-        self.boardView = [[QuartoBoardView alloc] init];
+        _boardView = [[QuartoBoardView alloc] init];
+        _piecesView = [[QuartoPiecesView alloc] init];
         
         self.backgroundColor = [self quartoBlack];
         [self addSubview:self.boardView];
-        [self addSubview:self.imgView];
+        [self addSubview:self.piecesView];
     }
     return self;
 }
@@ -38,7 +41,8 @@
 - (void)updateConstraints {
     // iPhone 4s Width: 320. Height: 480.
     const NSNumber *kBoardSize = @225;
-    const NSNumber *kBoardPieceSize = @35;
+    const NSNumber *kPieceViewWidth = @308;
+    const NSNumber *kPieceViewHeight = @80;
     
     [self.boardView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(kBoardSize);
@@ -46,10 +50,11 @@
         make.centerY.equalTo(self);
     }];
     
-    [self.imgView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(kBoardPieceSize);
-        make.top.equalTo(self.boardView);
-        make.left.equalTo(self);
+    [self.piecesView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.equalTo(kPieceViewWidth);
+        make.height.equalTo(kPieceViewHeight);
+        make.top.equalTo(self.boardView.mas_bottom).offset(10.f);
+        make.centerX.equalTo(self);
     }];
     
     [super updateConstraints];

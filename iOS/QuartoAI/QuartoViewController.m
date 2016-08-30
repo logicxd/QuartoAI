@@ -10,6 +10,8 @@
 #import "QuartoView.h"
 #import "QuartoBoardView.h"
 #import "QuartoBoardViewCell.h"
+#import "QuartoPiecesView.h"
+#import "QuartoPiece.h"
 #import "QuartoAI.h"
 
 // Class variables for drag and drop.
@@ -18,7 +20,11 @@ float xDistanceTouchPoint;  // X distance between img center and firstTouchPoint
 float yDistanceTouchPoint;  // Y distance between img center and firstTouchPointer.center.
 
 @interface QuartoViewController ()
+// Handling Views
 @property (nonatomic, strong) QuartoView *quartoView;
+@property (nonatomic, strong) UIView *firstTouchView;
+
+// Bot Interactions
 @property (nonatomic, assign) BOOL isPlayerVsPlayer;
 @property (nonatomic, strong) QuartoAI *bot;
 
@@ -48,7 +54,8 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
-    if ([touch.view isEqual:self.quartoView.imgView]) {
+    _firstTouchView = touch.view;
+    if ([touch.view isKindOfClass:[QuartoPiece class]]) {
         NSLog(@"Touch Began");
         // The location of where the object was touched.
         firstTouchPoint = [touch locationInView:self.view];
@@ -63,22 +70,25 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
 
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
-    if ([touch.view isEqual:self.quartoView.imgView]) {
+    if ([touch.view isKindOfClass:[QuartoPiece class]]) {
+//        touch.view.layer.zPosition = 1;
+//        [self.quartoView.piecesView bringSubviewToFront:touch.view];
         // The location where the object was moved.
         CGPoint cp = [touch locationInView:self.view];
         
         // Makes the center of the object that was touched to the moved place with the same displacement as where it was calculated earlier.
         touch.view.center = CGPointMake(cp.x-xDistanceTouchPoint, cp.y-yDistanceTouchPoint);
+//        touch.view.center = CGPointMake(cp.x, cp.y);
     }
 }
 
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
-    CGPoint endPoint = [touch locationInView:self.quartoView];
-    NSLog(@"%@", touch.view);
+    CGPoint endPoint = [touch locationInView:self.view];
     
-    NSLog(@"%f, %f", endPoint.x, endPoint.y);
+    UIView *touchedView = [self.quartoView hitTest:endPoint withEvent:nil];
+    NSLog(@"Final Touch: %@", touchedView);
     
     if ([touch.view isEqual:self.quartoView.boardView.boardCells.firstObject]) {
         NSLog(@"Is a QuartoBoardViewCell");

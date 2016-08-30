@@ -19,6 +19,7 @@ static NSUInteger count = 0;
 
 @interface QuartoAI ()
 @property (nonatomic, strong, readwrite) NSSet<NSNumber *> *kBoardPieces; // Indicies 0 - 15
+
 @property (nonatomic, strong, readwrite) NSMutableDictionary *playingBoard; // Indicies 0 - 15
 @end
 

@@ -17,9 +17,10 @@
 // 4  5  6  7
 // 8  9  10 11
 // 12 13 14 15
+//
 @property (nonatomic, strong, readonly) NSMutableArray<QuartoBoardViewCell *> *boardCells;
 
-// Must use masonry to set constraints.
+// Must use Masonry to set constraints.
 - (instancetype)init;
 - (BOOL)canPutBoardPiece:(UIView *)boardPiece atIndex:(NSNumber *)index;
 - (void)resetBoard;

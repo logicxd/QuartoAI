@@ -18,6 +18,8 @@ static const NSInteger kTotalCells = 16;
 
 @implementation QuartoBoardView
 
+#pragma mark - Init
+
 - (instancetype)init {
     if (self = [super init]) {
         
@@ -36,6 +38,8 @@ static const NSInteger kTotalCells = 16;
     return self;
 }
 
+#pragma mark - Visible Methods
+
 - (BOOL)canPutBoardPiece:(UIView *)boardPiece atIndex:(NSNumber *)index {
     return [self.boardCells[index.integerValue] canPutBoardPiece:boardPiece];
 }
@@ -49,21 +53,22 @@ static const NSInteger kTotalCells = 16;
 //    [self setNeedsLayout];
 }
 
+#pragma mark - Set Frames
+
 - (void)layoutSubviews {
-    [super layoutSubviews];
-    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
+//    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
     const CGFloat kBoardSize = self.frame.size.width;
-    const CGFloat kCellSize = kBoardSize * (1.f/5.f);
-    const CGFloat kOffSet = kBoardSize * (1.f/25.f);
+    const CGFloat kCellSize = kBoardSize * (1.f/5.f);   // 45.f
+    const CGFloat kOffSet = kBoardSize * (1.f/25.f);    // 9.f
     
     // Position for each slot.
     CGFloat posX = kOffSet;
     CGFloat posY = kOffSet;
     
     for (NSInteger index = 0; index < kTotalCells; index++) {
-        // Create a cell.
+        // Set cell size.
         [self.boardCells[index] setFrame:CGRectMake(posX, posY, kCellSize, kCellSize)];
         
         // Add the cell to the view.
