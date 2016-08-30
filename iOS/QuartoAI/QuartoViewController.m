@@ -30,9 +30,9 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
     if (self = [super init]) {
         _isPlayerVsPlayer = isPlayerVsPlayer;
         _bot = [[QuartoAI alloc] init];
-        if (isPlayerVsPlayer) {
-            [self.bot botMovedAtIndex];
-        }
+//        if (isPlayerVsPlayer) {
+//            [self.bot botMovedAtIndex];
+//        }
     }
     return self;
 }

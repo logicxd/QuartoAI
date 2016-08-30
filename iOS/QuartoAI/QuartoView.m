@@ -36,13 +36,14 @@
 }
 
 - (void)updateConstraints {
-//    const NSNumber *kBoardSize = @(self.frame.size.width * (45.f/64.f));
+    // iPhone 4s Width: 320. Height: 480.
     const NSNumber *kBoardSize = @225;
     const NSNumber *kBoardPieceSize = @35;
     
     [self.boardView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.height.equalTo(kBoardSize);
-        make.center.equalTo(self);
+        make.centerX.equalTo(self);
+        make.centerY.equalTo(self);
     }];
     
     [self.imgView mas_remakeConstraints:^(MASConstraintMaker *make) {

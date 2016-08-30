@@ -15,6 +15,4 @@
 
 #pragma mark - Bot Interactions
 
-- (NSNumber *)botMovedAtIndex;
-
 @end

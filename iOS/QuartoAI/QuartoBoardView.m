@@ -23,7 +23,7 @@ static const NSInteger kTotalCells = 16;
         
         _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
         for (NSInteger index = 0; index < kTotalCells; index++) {
-            [self.boardCells addObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectZero]];
+            [self.boardCells addObject:[[QuartoBoardViewCell alloc] init]];
         }
         
         self.backgroundColor = [self quartoBlack];
@@ -43,7 +43,7 @@ static const NSInteger kTotalCells = 16;
 - (void)resetBoard {
     self.boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
     for (NSInteger index = 0; index < kTotalCells; index++) {
-        [self.boardCells addObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectZero]];
+        [self.boardCells addObject:[[QuartoBoardViewCell alloc] init]];
     }
     
 //    [self setNeedsLayout];

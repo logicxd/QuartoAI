@@ -11,8 +11,8 @@
 
 @implementation QuartoBoardViewCell
 
-- (instancetype)initWithFrame:(CGRect)frame {
-    if (self = [super initWithFrame:frame]) {
+- (instancetype)init {
+    if (self = [super init]) {
         self.backgroundColor = [self quartoGray];
         self.layer.borderWidth = 2.0f;
         self.layer.borderColor = [self quartoBlack].CGColor;

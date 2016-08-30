@@ -10,8 +10,8 @@
 
 @interface QuartoBoardViewCell : UIView
 
-// Initialize using this. Frame determines the size.
-- (instancetype)initWithFrame:(CGRect)frame;
+// Initialize using this. Size is determined by the super.
+- (instancetype)init;
 
 // Returns YES if a board piece is put. NO if there's already a board piece.
 - (BOOL)canPutBoardPiece:(UIView *)boardPiece;

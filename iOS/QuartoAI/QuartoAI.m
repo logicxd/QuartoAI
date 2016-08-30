@@ -19,7 +19,7 @@ static NSUInteger count = 0;
 
 @interface QuartoAI ()
 @property (nonatomic, strong, readwrite) NSSet<NSNumber *> *kBoardPieces; // Indicies 0 - 15
-@property (nonatomic, strong, readwrite) NSMutableDictionary *playingBoard; // Indicicies 0 -15
+@property (nonatomic, strong, readwrite) NSMutableDictionary *playingBoard; // Indicies 0 - 15
 @end
 
 @implementation QuartoAI
@@ -42,27 +42,19 @@ static NSUInteger count = 0;
     return self;
 }
 
-- (NSNumber *)botMovedAtIndex {
-//    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard alpha:NSIntegerMin beta:NSIntegerMax depthLevel:@(0) searchDepthLevel:@(0) color:1];
+- (NSNumber *)botMovedAtIndexWithPiece:(NSNumber *)boardPiece {
+//    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard alpha:NSIntegerMin beta:NSIntegerMax depthLevel:@(0) searchDepthLevel:@(1) color:1];
 
     NSDictionary *root = [self placePieceWithBoard:self.playingBoard
                                              alpha:NSIntegerMin
                                               beta:NSIntegerMax
                                         depthLevel:@(0)
-                                  searchDepthLevel:@(4)
+                                  searchDepthLevel:@(2)
                                              color:1
                                         boardPiece:@(0)];
     
     NSLog(@"Count: %i", count);
     count = 0;
-    return nil;
-}
-
-- (NSNumber *)botMovedAtIndexWithPlayerMove:(NSNumber *)index {
-    return nil;
-}
-
-- (NSNumber *)playerMovedAtIndex:(NSNumber *)index {
     return nil;
 }
 
@@ -205,8 +197,8 @@ static NSUInteger count = 0;
     NSMutableDictionary *pickPiece = [NSMutableDictionary dictionary];
 
     if ( (depthLevel.integerValue == depthLevel.integerValue + searchDepthLevel.integerValue) ||
-        ((depthLevel.integerValue >= 4 && (winningIndicies = [self winningIndiciesWithBoard:board])) ||
-         depthLevel.integerValue == kMaxNumOfMoves)) {
+         (depthLevel.integerValue >= 4 && (winningIndicies = [self winningIndiciesWithBoard:board]) ) ||
+         (depthLevel.integerValue == kMaxNumOfMoves) ) {
             
             return @{
                      kScoreKey : winningIndicies ? @(1 * color) : @(0),
