@@ -10,6 +10,7 @@
 #import "QuartoView.h"
 #import "QuartoBoardView.h"
 #import "QuartoBoardViewCell.h"
+#import "QuartoAI.h"
 
 // Class variables for drag and drop.
 CGPoint firstTouchPoint;    // Saves the location of the first touch.
@@ -19,7 +20,7 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
 @interface QuartoViewController ()
 @property (nonatomic, strong) QuartoView *quartoView;
 @property (nonatomic, assign) BOOL isPlayerVsPlayer;
-
+@property (nonatomic, strong) QuartoAI *bot;
 
 @end
 
@@ -27,7 +28,11 @@ float yDistanceTouchPoint;  // Y distance between img center and firstTouchPoint
 
 - (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer {
     if (self = [super init]) {
-        self.isPlayerVsPlayer = isPlayerVsPlayer;
+        _isPlayerVsPlayer = isPlayerVsPlayer;
+        _bot = [[QuartoAI alloc] init];
+        if (isPlayerVsPlayer) {
+            [self.bot botMovedAtIndex];
+        }
     }
     return self;
 }
