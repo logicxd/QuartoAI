@@ -63,9 +63,6 @@
         NSLog(@"Touch Began");
         // The location of where the object was touched.
         self.firstTouchPoint = [touch locationInView:self.view];
-        self.firstTouchView = touch.view;
-        NSLog(@"firstTouchPoint.x = %f firstTouchPoint.y = %f", self.firstTouchPoint.x, self.firstTouchPoint.y);
-        NSLog(@"touch.view.center.x = %f touch.view.center.y = %f", touch.view.center.x, touch.view.center.y);
         
         // The X-axis difference between where the object was touched from the object's center.
         self.xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
@@ -90,21 +87,24 @@
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint endPoint = [touch locationInView:self.view];
-    UIView *endView = [self.quartoView hitTest:endPoint withEvent:nil];
+    UIView *checkEndView = [self.quartoView hitTest:endPoint withEvent:nil];
     
-    if ([self.firstTouchView isKindOfClass:[QuartoPiece class]] && [endView isKindOfClass:[QuartoBoardViewCell class]]) {
-        NSLog(@"Touch left on QuartoBoardViewCell");
-        QuartoBoardViewCell *cell = (QuartoBoardViewCell *) endView;
-        [cell canPutBoardPiece:self.firstTouchView];
+    if ([self.firstTouchView isKindOfClass:[QuartoPiece class]] && [checkEndView isKindOfClass:[QuartoBoardViewCell class]]) {
+        QuartoBoardViewCell *endView = (QuartoBoardViewCell *) checkEndView;
+        
+        NSLog(@"Index of board: %i", endView.index);
+        BOOL canPutBoardPiece = [endView canPutBoardPiece:(QuartoPiece *) touch.view];
+        if (canPutBoardPiece) {
+            touch.view.center = CGPointMake(endView.frame.size.width/2.f, endView.frame.size.width/2.f);
+        } else {
+            touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+        }
     } else if ([touch.view isKindOfClass:[QuartoPiece class]] && self.firstTouchView) {
         touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
-        self.firstTouchView = nil;
     }
 }
 
 @end
-
-
 
 
 

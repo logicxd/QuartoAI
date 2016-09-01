@@ -9,6 +9,12 @@
 #import "QuartoBoardViewCell.h"
 #import "NSObject+QuartoColorTemplate.h"
 
+static NSInteger indexCounter = 0;
+
+@interface QuartoBoardViewCell ()
+
+@end
+
 @implementation QuartoBoardViewCell
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -17,6 +23,8 @@
         self.layer.borderWidth = 2.0f;
         self.layer.borderColor = [self quartoBlack].CGColor;
         self.layer.cornerRadius = self.frame.size.width / 2.f;
+        self.index = indexCounter;
+        indexCounter++;
     }
     return self;
 }
@@ -26,7 +34,7 @@
         return NO;
     }
     [self addSubview:boardPiece];
-//    [self.subviews.firstObject setClipsToBounds:YES];
+    [self needsUpdateConstraints];
     return YES;
 }
 

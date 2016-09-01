@@ -54,7 +54,7 @@ static const NSInteger kTotalPieces = 16;
         [eachView removeFromSuperview];
     }
     
-    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
+//    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
     const CGFloat kViewWidth = self.frame.size.width;
