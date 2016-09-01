@@ -11,18 +11,19 @@
 
 @implementation QuartoPiece
 
-- (instancetype)initWithImage:(UIImage *)image {
-    if (self = [super initWithImage:image]) {
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
         self.userInteractionEnabled = YES;
         self.backgroundColor = [self quartoGray];
         self.layer.borderWidth = 2.0f;
         self.layer.borderColor = [self quartoBlack].CGColor;
+        self.layer.cornerRadius = self.frame.size.width / 6.f;
     }
     return self;
 }
 
-- (void)layoutSubviews {
-    self.layer.cornerRadius = self.frame.size.width / 6.f;
+- (void)setImage:(UIImage *)image {
+    [super setImage:image];
 }
 
 @end

@@ -10,7 +10,8 @@
 
 @interface QuartoPiece : UIImageView
 
-// Initialize using this. Size is determined by the super.
-- (instancetype)initWithImage:(UIImage *)image;
+
+- (instancetype)initWithFrame:(CGRect)frame;    // Initialize with this.
+- (void)setImage:(UIImage *)image;              // Set image after initializing. (Easier than initializing with image)
 
 @end

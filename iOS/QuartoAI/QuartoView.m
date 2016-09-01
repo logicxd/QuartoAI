@@ -13,19 +13,23 @@
 #import "NSObject+QuartoColorTemplate.h"
 
 @interface QuartoView ()
+@property (nonatomic, strong) NSNumber *kBoardSize;
+@property (nonatomic, strong) NSNumber *kPieceViewWidth;
+@property (nonatomic, strong) NSNumber *kPieceViewHeight;
 @end
 
 @implementation QuartoView
 
 - (instancetype)init {
     if (self = [super init]) {
+        // Constants. Set this to dyanmic later.
+        _kBoardSize = @225;
+        _kPieceViewWidth = @308;
+        _kPieceViewHeight = @80;
         
-//        self.imgView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Airplane.png"]];
-//        [self.imgView setUserInteractionEnabled:YES];
-//         [self addSubview:self.imgView];
-        
-        _boardView = [[QuartoBoardView alloc] init];
-        _piecesView = [[QuartoPiecesView alloc] init];
+        // Initialize Board and pieces.
+        _boardView = [[QuartoBoardView alloc] initWithWidth:self.kBoardSize.floatValue height:self.kBoardSize.floatValue];
+        _piecesView = [[QuartoPiecesView alloc] initWithWidth:self.kPieceViewWidth.floatValue height:self.kPieceViewHeight.floatValue];
         
         self.backgroundColor = [self quartoBlack];
         [self addSubview:self.boardView];
@@ -40,19 +44,15 @@
 
 - (void)updateConstraints {
     // iPhone 4s Width: 320. Height: 480.
-    const NSNumber *kBoardSize = @225;
-    const NSNumber *kPieceViewWidth = @308;
-    const NSNumber *kPieceViewHeight = @80;
-    
     [self.boardView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.height.equalTo(kBoardSize);
+        make.width.height.equalTo(self.kBoardSize);
         make.centerX.equalTo(self);
         make.centerY.equalTo(self);
     }];
     
     [self.piecesView mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.width.equalTo(kPieceViewWidth);
-        make.height.equalTo(kPieceViewHeight);
+        make.width.equalTo(self.kPieceViewWidth);
+        make.height.equalTo(self.kPieceViewHeight);
         make.top.equalTo(self.boardView.mas_bottom).offset(10.f);
         make.centerX.equalTo(self);
     }];

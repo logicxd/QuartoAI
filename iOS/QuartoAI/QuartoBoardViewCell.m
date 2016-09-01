@@ -11,27 +11,23 @@
 
 @implementation QuartoBoardViewCell
 
-- (instancetype)init {
-    if (self = [super init]) {
+- (instancetype)initWithFrame:(CGRect)frame {
+    if (self = [super initWithFrame:frame]) {
         self.backgroundColor = [self quartoGray];
         self.layer.borderWidth = 2.0f;
         self.layer.borderColor = [self quartoBlack].CGColor;
+        self.layer.cornerRadius = self.frame.size.width / 2.f;
     }
     return self;
 }
 
-- (BOOL)canPutBoardPiece:(UIView *)boardPiece {
+- (BOOL)canPutBoardPiece:(UIImageView *)boardPiece {
     if (self.subviews.count > 0) {
         return NO;
     }
     [self addSubview:boardPiece];
-    [self.subviews.firstObject setClipsToBounds:YES];
+//    [self.subviews.firstObject setClipsToBounds:YES];
     return YES;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
-    self.layer.cornerRadius = self.frame.size.width / 2.f;
 }
 
 @end

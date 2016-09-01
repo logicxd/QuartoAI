@@ -18,17 +18,13 @@ static const NSInteger kTotalPieces = 16;
 
 @implementation QuartoPiecesView
 
-#pragma mark - Init
+#pragma mark - Visible Methods
 
-- (instancetype)init {
-    if (self = [super init]) {
+- (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height {
+    if (self = [super initWithFrame:CGRectMake(0, 0, width, height)]) {
         _pieces = [NSMutableArray arrayWithCapacity:kTotalPieces];
-        // Add manually all the pieces that will match with the bot.
-        for (NSInteger index = 0; index < kTotalPieces; index++) {
-            [self.pieces addObject:[[QuartoPiece alloc] initWithImage:[UIImage imageNamed:@"Airplane.png"]]];
-        }
+        [self loadInitialPiecesView];
         
-        // Settings for the QuartoPiecesView
         self.backgroundColor = [self quartoBlack];
         self.layer.borderColor = [self quartoBlack].CGColor;
         self.layer.borderWidth = 2.f;
@@ -44,9 +40,20 @@ static const NSInteger kTotalPieces = 16;
     [self.pieces[index] setImage:nil];
 }
 
-#pragma mark - Set Frames
+- (void)resetBoard {
+    [self loadInitialPiecesView];
+}
 
-- (void)layoutSubviews {
+#pragma mark - Private Methods
+
+- (void)loadInitialPiecesView {
+    // Precondition: self.pieces must be initialized.
+    
+    // Remove all the subviews first.
+    for (UIView *eachView in self.subviews) {
+        [eachView removeFromSuperview];
+    }
+    
     NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
@@ -59,10 +66,14 @@ static const NSInteger kTotalPieces = 16;
     CGFloat posY = kOffSet;
     
     for (NSInteger index = 0; index < kTotalPieces; index++) {
-        // Set cell size.
-        [self.pieces[index] setFrame:CGRectMake(posX, posY, kCellSize, kCellSize)];
+        // Make cell.
+        [self.pieces setObject:[[QuartoPiece alloc] initWithFrame:CGRectMake(posX, posY, kCellSize, kCellSize)]
+            atIndexedSubscript:index];
         
-        // Add the cell to the view.
+        // Add manually all the pieces that will match with the bot.
+        [self.pieces[index] setImage:[UIImage imageNamed:@"Airplane.png"]];
+        
+        // Add cell as a subview.
         [self addSubview:self.pieces[index]];
         
         // Prepare for the next cell.

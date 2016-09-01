@@ -18,15 +18,13 @@ static const NSInteger kTotalCells = 16;
 
 @implementation QuartoBoardView
 
-#pragma mark - Init
 
-- (instancetype)init {
-    if (self = [super init]) {
-        
+#pragma mark - Visible Methods
+
+- (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height {
+    if (self = [super initWithFrame:CGRectMake(0, 0, width, height)]) {
         _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
-        for (NSInteger index = 0; index < kTotalCells; index++) {
-            [self.boardCells addObject:[[QuartoBoardViewCell alloc] init]];
-        }
+        [self loadInitialBoardView];
         
         self.backgroundColor = [self quartoBlack];
         self.layer.borderColor = [self quartoBlack].CGColor;
@@ -38,25 +36,25 @@ static const NSInteger kTotalCells = 16;
     return self;
 }
 
-#pragma mark - Visible Methods
-
-- (BOOL)canPutBoardPiece:(UIView *)boardPiece atIndex:(NSNumber *)index {
+- (BOOL)canPutBoardPiece:(UIImageView *)boardPiece atIndex:(NSNumber *)index {
     return [self.boardCells[index.integerValue] canPutBoardPiece:boardPiece];
 }
 
 - (void)resetBoard {
-    self.boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
-    for (NSInteger index = 0; index < kTotalCells; index++) {
-        [self.boardCells addObject:[[QuartoBoardViewCell alloc] init]];
-    }
-    
-//    [self setNeedsLayout];
+    [self loadInitialBoardView];
 }
 
-#pragma mark - Set Frames
+#pragma mark - Private Methods
 
-- (void)layoutSubviews {
-//    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
+- (void)loadInitialBoardView {
+    // Precondition: self.boardCells must be initialized.
+    
+    // Remove all the subviews first.
+    for (UIView *eachView in self.subviews) {
+        [eachView removeFromSuperview];
+    }
+    
+    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
     const CGFloat kBoardSize = self.frame.size.width;
@@ -68,10 +66,11 @@ static const NSInteger kTotalCells = 16;
     CGFloat posY = kOffSet;
     
     for (NSInteger index = 0; index < kTotalCells; index++) {
-        // Set cell size.
-        [self.boardCells[index] setFrame:CGRectMake(posX, posY, kCellSize, kCellSize)];
+        // Make cell.
+        [self.boardCells setObject:[[QuartoBoardViewCell alloc] initWithFrame:CGRectMake(posX, posY, kCellSize, kCellSize)]
+                atIndexedSubscript:index];
         
-        // Add the cell to the view.
+        // Add cell as a subview.
         [self addSubview:self.boardCells[index]];
         
         // Prepare for the next cell.
@@ -83,5 +82,6 @@ static const NSInteger kTotalCells = 16;
         }
     }
 }
+
 
 @end

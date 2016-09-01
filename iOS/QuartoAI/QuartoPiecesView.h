@@ -18,7 +18,6 @@
 //
 @property (nonatomic, strong, readonly) NSMutableArray<QuartoPiece *> *pieces;
 
-// Must use Masonry to set constraints.
-- (instancetype)init;
+- (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height; // Use this to init.
 
 @end
