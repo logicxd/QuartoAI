@@ -36,10 +36,6 @@ static const NSInteger kTotalPieces = 16;
     return self;
 }
 
-- (void)removePieceWithIndex:(NSInteger)index {
-    [self.pieces[index] setImage:nil];
-}
-
 - (void)resetBoard {
     [self loadInitialPiecesView];
 }

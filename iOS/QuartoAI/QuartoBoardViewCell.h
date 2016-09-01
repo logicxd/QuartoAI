@@ -10,8 +10,6 @@
 
 @interface QuartoBoardViewCell : UIView
 
-@property (nonatomic, assign) NSInteger index;
-
 // Initialize using this.
 - (instancetype)initWithFrame:(CGRect)frame;
 
