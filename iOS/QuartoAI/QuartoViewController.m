@@ -15,8 +15,6 @@
 #import "QuartoAI.h"
 
 
-
-
 @interface QuartoViewController ()
 
 // Class variables for drag and drop.
@@ -74,6 +72,7 @@
         // The Y-axis difference between where the object was touched from the object's center.
         self.yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
         
+        touch.view.layer.zPosition = 1;
     }
 }
 
@@ -90,7 +89,9 @@
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
-    UIView *checkEndView = [self.quartoView hitTest:[touch locationInView:self.view]
+    CGPoint touchReleasePoint = [touch locationInView:self.view];
+    touchReleasePoint = CGPointMake(touchReleasePoint.x, touchReleasePoint.y - touch.view.frame.size.height / 3.f);
+    UIView *checkEndView = [self.quartoView hitTest:touchReleasePoint
                                           withEvent:nil];
     
     if ([touch.view isKindOfClass:[QuartoPiece class]] && [checkEndView isKindOfClass:[QuartoBoardViewCell class]]) {
@@ -107,6 +108,7 @@
         
     } else if ([touch.view isKindOfClass:[QuartoPiece class]]) {
         touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+        touch.view.layer.zPosition = 0;
     }
 }
 

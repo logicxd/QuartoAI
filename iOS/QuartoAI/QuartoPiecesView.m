@@ -8,7 +8,7 @@
 
 #import "QuartoPiecesView.h"
 #import "QuartoPiece.h"
-#import "NSObject+QuartoColorTemplate.h"
+#import "UIColor+QuartoColor.h"
 
 static const NSInteger kTotalPieces = 16;
 
@@ -25,8 +25,8 @@ static const NSInteger kTotalPieces = 16;
         _pieces = [NSMutableArray arrayWithCapacity:kTotalPieces];
         [self loadInitialPiecesView];
         
-        self.backgroundColor = [self quartoBlack];
-        self.layer.borderColor = [self quartoBlack].CGColor;
+        self.backgroundColor = [UIColor quartoBlack];
+        self.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.layer.borderWidth = 2.f;
         self.layer.cornerRadius = 10;
         self.layer.shadowOpacity = 1.f;

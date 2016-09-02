@@ -7,16 +7,16 @@
 //
 
 #import "QuartoPiece.h"
-#import "NSObject+QuartoColorTemplate.h"
+#import "UIColor+QuartoColor.h"
 
 @implementation QuartoPiece
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.userInteractionEnabled = YES;
-        self.backgroundColor = [self quartoGray];
+        self.backgroundColor = [UIColor quartoGray];
         self.layer.borderWidth = 2.0f;
-        self.layer.borderColor = [self quartoBlack].CGColor;
+        self.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.layer.cornerRadius = self.frame.size.width / 6.f;
     }
     return self;

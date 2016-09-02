@@ -7,7 +7,8 @@
 //
 
 #import "QuartoBoardViewCell.h"
-#import "NSObject+QuartoColorTemplate.h"
+#import "UIColor+QuartoColor.h"
+
 
 @interface QuartoBoardViewCell ()
 
@@ -17,9 +18,9 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [self quartoGray];
+        self.backgroundColor = [UIColor quartoGray];
         self.layer.borderWidth = 2.0f;
-        self.layer.borderColor = [self quartoBlack].CGColor;
+        self.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.layer.cornerRadius = self.frame.size.width / 2.f;
     }
     return self;

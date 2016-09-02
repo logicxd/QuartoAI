@@ -8,7 +8,8 @@
 
 #import "QuartoBoardView.h"
 #import "QuartoBoardViewCell.h"
-#import "NSObject+QuartoColorTemplate.h"
+#import "UIColor+QuartoColor.h"
+
 
 static const NSInteger kTotalCells = 16;
 
@@ -26,8 +27,8 @@ static const NSInteger kTotalCells = 16;
         _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
         [self loadInitialBoardView];
         
-        self.backgroundColor = [self quartoBlack];
-        self.layer.borderColor = [self quartoBlack].CGColor;
+        self.backgroundColor = [UIColor quartoBlack];
+        self.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.layer.borderWidth = 2.f;
         self.layer.cornerRadius = 10;
         self.layer.shadowOpacity = 1.f;
