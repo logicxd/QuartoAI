@@ -17,6 +17,8 @@
 // 8  9  10 11 12 13 14 15
 //
 @property (nonatomic, strong, readonly) NSMutableArray<QuartoPiece *> *pieces;
+@property (nonatomic, assign, readonly) CGFloat kPieceSize;
+
 
 - (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height; // Use this to init.
 - (void)resetBoard;

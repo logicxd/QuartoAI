@@ -7,6 +7,7 @@
 //
 
 #import "QuartoBoardViewCell.h"
+#import "QuartoPiece.h"
 #import "UIColor+QuartoColor.h"
 
 
@@ -26,12 +27,13 @@
     return self;
 }
 
-- (BOOL)canPutBoardPiece:(UIImageView *)boardPiece {
+- (BOOL)putBoardPiece:(QuartoPiece *)boardPiece {
     if (self.subviews.count > 0) {
         return NO;
     }
-    [self addSubview:boardPiece];
-    boardPiece.userInteractionEnabled = NO;
+    UIImageView *boardImage = [[UIImageView alloc] initWithImage:boardPiece.image];
+    boardImage.frame = CGRectMake(0, 0,self.frame.size.width, self.frame.size.height);
+    [self addSubview:boardImage];
     return YES;
 }
 

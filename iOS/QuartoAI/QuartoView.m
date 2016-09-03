@@ -9,6 +9,7 @@
 #import "QuartoView.h"
 #import "QuartoBoardView.h"
 #import "QuartoPiecesView.h"
+#import "QuartoPiece.h"
 #import "Masonry.h"
 #import "UIColor+QuartoColor.h"
 
@@ -24,7 +25,6 @@
 
 @property (nonatomic, strong) UILabel *nameLabel1;
 @property (nonatomic, strong) UILabel *nameLabel2;
-@property (nonatomic, strong) UIImageView *pickedPieceView;
 @end
 
 @implementation QuartoView
@@ -64,14 +64,13 @@
         _piecesView = [[QuartoPiecesView alloc] initWithWidth:self.kPieceViewWidth.floatValue height:self.kPieceViewHeight.floatValue];
         
         // Initialize pickedPieceView.
-        _pickedPieceView = [[UIImageView alloc] init];
+        _pickedPieceView = [[UIView alloc] init];
         self.pickedPieceView.backgroundColor = [UIColor quartoGray];
         self.pickedPieceView.layer.borderWidth = 2.0f;
         self.pickedPieceView.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.pickedPieceView.layer.cornerRadius = 10.f;
         self.pickedPieceView.layer.shadowOpacity = 0.5f;
         self.pickedPieceView.layer.shadowRadius = 20;
-//        self.pickedPieceView.layer.shadowColor = [self quartoBlack].CGColor;
         self.pickedPieceView.translatesAutoresizingMaskIntoConstraints = YES;
         self.backgroundColor = [UIColor quartoBlack];
         
@@ -84,6 +83,33 @@
     }
     return self;
 }
+
+#pragma mark - PickedPieceView Methods
+
+- (BOOL)putBoardPieceIntoPickedPieceView:(QuartoPiece *)imageView {
+    if ([self thereIsAPieceInPickedPieceView]) {
+        return NO;
+    }
+    [self.pickedPieceView addSubview:imageView];
+    self.pickedPieceView.layer.borderColor = [UIColor quartoWhite].CGColor;
+    return YES;
+}
+
+- (void)removePieceFromPickedPieceView {
+    for (UIView *eachView in self.pickedPieceView.subviews) {
+        [eachView removeFromSuperview];
+    }
+    self.pickedPieceView.layer.borderColor = [UIColor quartoRed].CGColor;
+}
+
+- (BOOL)thereIsAPieceInPickedPieceView {
+    if (self.pickedPieceView.subviews.count > 0) {
+        return YES;
+    }
+    return NO;
+}
+
+#pragma mark - Constraints
 
 + (BOOL)requiresConstraintBasedLayout {
     return YES;
@@ -127,10 +153,6 @@
     }];
     
     [super updateConstraints];
-}
-
-- (void)layoutSubviews {
-//    self.pickedPieceView.layer.cornerRadius = self.pickedPieceView.layer.frame.size.width / 2.f;
 }
 
 @end

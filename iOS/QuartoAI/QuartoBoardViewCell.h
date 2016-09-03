@@ -14,6 +14,6 @@
 - (instancetype)initWithFrame:(CGRect)frame;
 
 // Returns YES if a board piece is put. NO if there's already a board piece.
-- (BOOL)canPutBoardPiece:(UIImageView *)boardPiece;
+- (BOOL)putBoardPiece:(UIImageView *)boardPiece;
 
 @end

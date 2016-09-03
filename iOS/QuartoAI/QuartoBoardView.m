@@ -38,7 +38,7 @@ static const NSInteger kTotalCells = 16;
 }
 
 - (BOOL)canPutBoardPiece:(UIImageView *)boardPiece atIndex:(NSNumber *)index {
-    return [self.boardCells[index.integerValue] canPutBoardPiece:boardPiece];
+    return [self.boardCells[index.integerValue] putBoardPiece:boardPiece];
 }
 
 - (void)resetBoard {

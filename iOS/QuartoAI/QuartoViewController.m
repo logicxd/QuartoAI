@@ -64,14 +64,13 @@
         // The location of where the object was touched.
         self.firstTouchPoint = [touch locationInView:self.view];
         
-        NSLog(@"touch.view.center x = %f, y = %f", touch.view.center.x, touch.view.center.y);
-        
         // The X-axis difference between where the object was touched from the object's center.
         self.xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
         
         // The Y-axis difference between where the object was touched from the object's center.
         self.yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
         
+        // Make the object on top of other views.
         touch.view.layer.zPosition = 1;
     }
 }
@@ -79,37 +78,73 @@
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
-        // The location where the object was moved.
-        CGPoint cp = [touch locationInView:self.quartoView.piecesView];
-                                     
+        CGPoint cp;
+        if ([self.quartoView thereIsAPieceInPickedPieceView]) {
+            cp = [touch locationInView:self.quartoView.pickedPieceView];
+            [self.quartoView bringSubviewToFront:self.quartoView.pickedPieceView];
+        } else {
+            // The location where the object was moved.
+            cp = [touch locationInView:self.quartoView.piecesView];
+            [self.quartoView bringSubviewToFront:self.quartoView.piecesView];
+        }
         // Makes the center of the object that was touched to the moved place with the same displacement as where it was calculated earlier.
-        touch.view.center = CGPointMake(cp.x, cp.y-touch.view.frame.size.height / 3.f);
+        touch.view.center = CGPointMake(cp.x, cp.y-touch.view.frame.size.height / 2.f);
     }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     CGPoint touchReleasePoint = [touch locationInView:self.view];
-    touchReleasePoint = CGPointMake(touchReleasePoint.x, touchReleasePoint.y - touch.view.frame.size.height / 3.f);
+    touchReleasePoint = CGPointMake(touchReleasePoint.x, touchReleasePoint.y - touch.view.frame.size.height / 2.f);
     UIView *checkEndView = [self.quartoView hitTest:touchReleasePoint
                                           withEvent:nil];
-    
-    if ([touch.view isKindOfClass:[QuartoPiece class]] && [checkEndView isKindOfClass:[QuartoBoardViewCell class]]) {
-        QuartoBoardViewCell *endView = (QuartoBoardViewCell *) checkEndView;
+    if ([touch.view isKindOfClass:[QuartoPiece class]])
+    {
+        // The released touch is on pickedPieceView
+        if ([checkEndView isEqual:self.quartoView.pickedPieceView])
+        {
+            BOOL canPutBoardPiece = [self.quartoView putBoardPieceIntoPickedPieceView:(QuartoPiece *) touch.view];
+            if (canPutBoardPiece) {
+                touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f, self.quartoView.pickedPieceView.frame.size.width/2.f);
+                
+                // Cancel all user interactions.
+                for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
+                    eachPiece.userInteractionEnabled = NO;
+                }
+                
+                // Except for the piece that is in pickedPieceView
+                touch.view.userInteractionEnabled = YES;
+            } else {
+                touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+            }
+        }
         
-        NSLog(@"touch.view.center x = %f, y = %f", touch.view.center.x, touch.view.center.y);
+        // The release touch is on a QuartoBoardViewCell.
+        else if ([checkEndView isKindOfClass:[QuartoBoardViewCell class]] && [self.quartoView thereIsAPieceInPickedPieceView])
+        {
+            QuartoBoardViewCell *endView = (QuartoBoardViewCell *) checkEndView;
+            BOOL canPutBoardPiece = [endView putBoardPiece:(QuartoPiece *) touch.view];
+            if (canPutBoardPiece) {
+                touch.view.center = CGPointMake(endView.frame.size.width/2.f, endView.frame.size.width/2.f);
+                [self.quartoView removePieceFromPickedPieceView];
+                for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
+                    eachPiece.userInteractionEnabled = YES;
+                }
+                
+                
+            } else {
+                touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+            }
+        }
         
-        BOOL canPutBoardPiece = [endView canPutBoardPiece:(QuartoPiece *) touch.view];
-        if (canPutBoardPiece) {
-            touch.view.center = CGPointMake(endView.frame.size.width/2.f, endView.frame.size.width/2.f);
-        } else {
+        // The release touch is invalid.
+        else {
             touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
         }
         
-    } else if ([touch.view isKindOfClass:[QuartoPiece class]]) {
-        touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
         touch.view.layer.zPosition = 0;
-    }
+    } // End if QuartoPiece
+    
 }
 
 @end

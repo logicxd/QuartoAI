@@ -14,6 +14,8 @@ static const NSInteger kTotalPieces = 16;
 
 @interface QuartoPiecesView ()
 @property (nonatomic, strong, readwrite) NSMutableArray<QuartoPiece *> *pieces;
+@property (nonatomic, assign, readwrite) CGFloat kPieceSize;
+@property (nonatomic, assign, readwrite) CGFloat kOffSet;
 @end
 
 @implementation QuartoPiecesView
@@ -53,17 +55,16 @@ static const NSInteger kTotalPieces = 16;
 //    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
-    const CGFloat kViewWidth = self.frame.size.width;
-    const CGFloat kCellSize = kViewWidth * (17.f/154.f);    //34.f
-    const CGFloat kOffSet = kViewWidth * (1.f/77.f);        //4.f
+    _kPieceSize = self.frame.size.width * (17.f/154.f);    //34.f
+    _kOffSet = self.frame.size.width * (1.f/77.f);        //4.f
     
     // Position for each slot.
-    CGFloat posX = kOffSet;
-    CGFloat posY = kOffSet;
+    CGFloat posX = self.kOffSet;
+    CGFloat posY = self.kOffSet;
     
     for (NSInteger index = 0; index < kTotalPieces; index++) {
         // Make cell.
-        [self.pieces setObject:[[QuartoPiece alloc] initWithFrame:CGRectMake(posX, posY, kCellSize, kCellSize)]
+        [self.pieces setObject:[[QuartoPiece alloc] initWithFrame:CGRectMake(posX, posY, self.kPieceSize, self.kPieceSize)]
             atIndexedSubscript:index];
         
         // Add manually all the pieces that will match with the bot.
@@ -74,10 +75,10 @@ static const NSInteger kTotalPieces = 16;
         
         // Prepare for the next cell.
         if (index % 8 == 7) {
-            posX = kOffSet;
-            posY += kCellSize + kOffSet;
+            posX = self.kOffSet;
+            posY += self.kPieceSize + self.kOffSet;
         } else {
-            posX += kCellSize + kOffSet;
+            posX += self.kPieceSize + self.kOffSet;
         }
     }
 }
