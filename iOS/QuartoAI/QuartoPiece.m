@@ -9,6 +9,10 @@
 #import "QuartoPiece.h"
 #import "UIColor+QuartoColor.h"
 
+@interface QuartoPiece ()
+@property (nonatomic, strong, readwrite) NSNumber *pieceIndex;
+@end
+
 @implementation QuartoPiece
 
 - (instancetype)initWithFrame:(CGRect)frame {
@@ -22,8 +26,9 @@
     return self;
 }
 
-- (void)setImage:(UIImage *)image {
+- (void)setImage:(UIImage *)image pieceIndex:(NSNumber *)pieceIndex{
     [super setImage:image];
+    _pieceIndex = pieceIndex;
 }
 
 @end

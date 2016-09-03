@@ -22,6 +22,7 @@
 
 - (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height;
 - (BOOL)canPutBoardPiece:(UIImageView *)boardPiece atIndex:(NSNumber *)index;
+- (NSDictionary *)getBoard; // This is used for AI bot.
 - (void)resetBoard;
 
 @end

@@ -17,6 +17,6 @@
 
 - (BOOL)putBoardPieceIntoPickedPieceView:(QuartoPiece *)imageView;
 - (void)removePieceFromPickedPieceView;
-- (BOOL)thereIsAPieceInPickedPieceView;
+- (BOOL)hasAPieceInPickedPieceView;
 
 @end

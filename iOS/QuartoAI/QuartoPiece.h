@@ -10,8 +10,9 @@
 
 @interface QuartoPiece : UIImageView
 
+@property (nonatomic, strong, readonly) NSNumber *pieceIndex;
 
-- (instancetype)initWithFrame:(CGRect)frame;    // Initialize with this.
-- (void)setImage:(UIImage *)image;              // Set image after initializing. (Easier than initializing with image)
+- (instancetype)initWithFrame:(CGRect)frame;                        // Initialize with this.
+- (void)setImage:(UIImage *)image pieceIndex:(NSNumber *)pieceIndex;// Set image after initializing along with the piece index.
 
 @end

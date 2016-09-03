@@ -19,8 +19,6 @@ static NSUInteger count = 0;
 
 @interface QuartoAI ()
 @property (nonatomic, strong, readwrite) NSSet<NSNumber *> *kBoardPieces; // Indicies 0 - 15
-
-@property (nonatomic, strong, readwrite) NSMutableDictionary *playingBoard; // Indicies 0 - 15
 @end
 
 @implementation QuartoAI
@@ -43,10 +41,10 @@ static NSUInteger count = 0;
     return self;
 }
 
-- (NSNumber *)botMovedAtIndexWithPiece:(NSNumber *)boardPiece {
+- (NSNumber *)botMovedAtIndexWithBoard:(NSDictionary *)board pickedPiece:(NSNumber *)pickedPiece {
 //    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard alpha:NSIntegerMin beta:NSIntegerMax depthLevel:@(0) searchDepthLevel:@(1) color:1];
 
-    NSDictionary *root = [self placePieceWithBoard:self.playingBoard
+    NSDictionary *root = [self placePieceWithBoard:board
                                              alpha:NSIntegerMin
                                               beta:NSIntegerMax
                                         depthLevel:@(0)

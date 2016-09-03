@@ -418,7 +418,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 7EDA07A6AA8E0100C5231D6C /* Pods-QuartoAI.debug.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = QuartoAI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -431,7 +430,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 165F1C8185913B3F4D070A28 /* Pods-QuartoAI.release.xcconfig */;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = QuartoAI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";

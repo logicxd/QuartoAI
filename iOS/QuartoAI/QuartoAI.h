@@ -9,10 +9,12 @@
 #import <Foundation/Foundation.h>
 
 @interface QuartoAI : NSObject
-@property (nonatomic, strong, readonly) NSSet<NSNumber *> *kBoardPieces;    // All board pieces.
 
+@property (nonatomic, strong, readonly) NSSet<NSNumber *> *kBoardPieces;    // All board pieces.
 @property (nonatomic, strong, readonly) NSMutableDictionary *playingBoard;  // Holds current TTT board
 
 #pragma mark - Bot Interactions
+
+- (NSNumber *)botMovedAtIndexWithBoard:(NSDictionary *)board pickedPiece:(NSNumber *)pickedPiece;
 
 @end

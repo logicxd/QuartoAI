@@ -69,8 +69,9 @@
         self.pickedPieceView.layer.borderWidth = 2.0f;
         self.pickedPieceView.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.pickedPieceView.layer.cornerRadius = 10.f;
-        self.pickedPieceView.layer.shadowOpacity = 0.5f;
-        self.pickedPieceView.layer.shadowRadius = 20;
+        self.pickedPieceView.layer.shadowOpacity = 1.f;
+        self.pickedPieceView.layer.shadowRadius = 5;
+        self.pickedPieceView.layer.shadowOffset = CGSizeMake(0, 1);
         self.pickedPieceView.translatesAutoresizingMaskIntoConstraints = YES;
         self.backgroundColor = [UIColor quartoBlack];
         
@@ -87,11 +88,10 @@
 #pragma mark - PickedPieceView Methods
 
 - (BOOL)putBoardPieceIntoPickedPieceView:(QuartoPiece *)imageView {
-    if ([self thereIsAPieceInPickedPieceView]) {
+    if ([self hasAPieceInPickedPieceView]) {
         return NO;
     }
     [self.pickedPieceView addSubview:imageView];
-    self.pickedPieceView.layer.borderColor = [UIColor quartoWhite].CGColor;
     return YES;
 }
 
@@ -99,10 +99,9 @@
     for (UIView *eachView in self.pickedPieceView.subviews) {
         [eachView removeFromSuperview];
     }
-    self.pickedPieceView.layer.borderColor = [UIColor quartoRed].CGColor;
 }
 
-- (BOOL)thereIsAPieceInPickedPieceView {
+- (BOOL)hasAPieceInPickedPieceView {
     if (self.pickedPieceView.subviews.count > 0) {
         return YES;
     }

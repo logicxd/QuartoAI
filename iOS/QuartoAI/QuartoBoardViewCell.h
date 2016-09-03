@@ -10,10 +10,10 @@
 
 @interface QuartoBoardViewCell : UIView
 
-// Initialize using this.
-- (instancetype)initWithFrame:(CGRect)frame;
+@property (nonatomic, strong, readonly) NSNumber *pieceIndex;
 
-// Returns YES if a board piece is put. NO if there's already a board piece.
-- (BOOL)putBoardPiece:(UIImageView *)boardPiece;
+- (instancetype)initWithFrame:(CGRect)frame;    // Initialize using this.
+- (BOOL)putBoardPiece:(UIImageView *)boardPiece;// Returns YES if a board piece is put. NO if there's already a board piece.
+- (BOOL)hasBoardPiece;                          // Returns YES if there's a board piece. NO otherwise.
 
 @end

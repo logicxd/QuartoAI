@@ -12,7 +12,7 @@
 
 
 @interface QuartoBoardViewCell ()
-
+@property (nonatomic, strong, readwrite) NSNumber *pieceIndex;
 @end
 
 @implementation QuartoBoardViewCell
@@ -28,13 +28,21 @@
 }
 
 - (BOOL)putBoardPiece:(QuartoPiece *)boardPiece {
-    if (self.subviews.count > 0) {
+    if ([self hasBoardPiece]) {
         return NO;
     }
+    _pieceIndex = boardPiece.pieceIndex;
     UIImageView *boardImage = [[UIImageView alloc] initWithImage:boardPiece.image];
     boardImage.frame = CGRectMake(0, 0,self.frame.size.width, self.frame.size.height);
     [self addSubview:boardImage];
     return YES;
+}
+
+- (BOOL)hasBoardPiece {
+    if (self.subviews.count > 0) {
+        return YES;
+    }
+    return NO;
 }
 
 @end

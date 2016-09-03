@@ -32,7 +32,7 @@ static const NSInteger kTotalPieces = 16;
         self.layer.borderWidth = 2.f;
         self.layer.cornerRadius = 10;
         self.layer.shadowOpacity = 1.f;
-        self.layer.shadowRadius = 3;
+        self.layer.shadowRadius = 5;
         self.layer.shadowOffset = CGSizeMake(0, 1);
     }
     return self;
@@ -68,7 +68,7 @@ static const NSInteger kTotalPieces = 16;
             atIndexedSubscript:index];
         
         // Add manually all the pieces that will match with the bot.
-        [self.pieces[index] setImage:[UIImage imageNamed:@"Airplane.png"]];
+        [self.pieces[index] setImage:[UIImage imageNamed:@"Airplane.png"] pieceIndex:@0];
         
         // Add cell as a subview.
         [self addSubview:self.pieces[index]];

@@ -13,7 +13,7 @@
 #import "QuartoPiecesView.h"
 #import "QuartoPiece.h"
 #import "QuartoAI.h"
-
+#import "UIColor+QuartoColor.h"
 
 @interface QuartoViewController ()
 
@@ -24,6 +24,8 @@
 
 // Handling Views
 @property (nonatomic, strong) QuartoView *quartoView;
+@property (nonatomic, assign) BOOL showGameGuides;
+@property (nonatomic, assign) NSInteger shownGameGuidesCount;
 
 // Bot Interactions
 @property (nonatomic, assign) BOOL isPlayerVsPlayer;
@@ -35,22 +37,22 @@
 
 - (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer {
     if (self = [super init]) {
-        _quartoView = [[QuartoView alloc] init];
         _isPlayerVsPlayer = isPlayerVsPlayer;
-        _bot = [[QuartoAI alloc] init];
-        
-//        if (isPlayerVsPlayer) {
-//            [self.bot botMovedAtIndex];
-//        }
     }
     return self;
 }
 
 - (void)loadView {
+    _quartoView = [[QuartoView alloc] init];
+    _showGameGuides = YES;
+    _shownGameGuidesCount = 0;
     self.view = self.quartoView;
 }
 
 - (void)viewDidLoad {
+    _bot = [[QuartoAI alloc] init];
+    
+    self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
 }
 
 - (void)resetGame {
@@ -63,15 +65,19 @@
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
         // The location of where the object was touched.
         self.firstTouchPoint = [touch locationInView:self.view];
-        
-        // The X-axis difference between where the object was touched from the object's center.
         self.xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
-        
-        // The Y-axis difference between where the object was touched from the object's center.
         self.yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
         
         // Make the object on top of other views.
         touch.view.layer.zPosition = 1;
+        
+        if (self.showGameGuides && [self.quartoView hasAPieceInPickedPieceView]) {
+            self.quartoView.pickedPieceView.layer.shadowColor = [UIColor blackColor].CGColor;
+            self.quartoView.boardView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+        } else if (self.showGameGuides) {
+            self.quartoView.piecesView.layer.shadowColor = [UIColor blackColor].CGColor;
+            self.quartoView.pickedPieceView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+        }
     }
 }
 
@@ -79,9 +85,10 @@
     UITouch *touch = [touches anyObject];
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
         CGPoint cp;
-        if ([self.quartoView thereIsAPieceInPickedPieceView]) {
+        if ([self.quartoView hasAPieceInPickedPieceView]) {
             cp = [touch locationInView:self.quartoView.pickedPieceView];
             [self.quartoView bringSubviewToFront:self.quartoView.pickedPieceView];
+            
         } else {
             // The location where the object was moved.
             cp = [touch locationInView:self.quartoView.piecesView];
@@ -120,7 +127,7 @@
         }
         
         // The release touch is on a QuartoBoardViewCell.
-        else if ([checkEndView isKindOfClass:[QuartoBoardViewCell class]] && [self.quartoView thereIsAPieceInPickedPieceView])
+        else if ([checkEndView isKindOfClass:[QuartoBoardViewCell class]] && [self.quartoView hasAPieceInPickedPieceView])
         {
             QuartoBoardViewCell *endView = (QuartoBoardViewCell *) checkEndView;
             BOOL canPutBoardPiece = [endView putBoardPiece:(QuartoPiece *) touch.view];
@@ -131,20 +138,28 @@
                     eachPiece.userInteractionEnabled = YES;
                 }
                 
-                
+                if (self.showGameGuides) {
+                    self.quartoView.boardView.layer.shadowColor = [UIColor blackColor].CGColor;
+                    self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+                    self.shownGameGuidesCount++;
+                    if (self.shownGameGuidesCount == 2) {
+                        self.showGameGuides = NO;
+                        self.quartoView.piecesView.layer.shadowColor = [UIColor blackColor].CGColor;
+                    }
+                }
             } else {
                 touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
             }
         }
         
         // The release touch is invalid.
-        else {
+        else
+        {
             touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
         }
         
         touch.view.layer.zPosition = 0;
-    } // End if QuartoPiece
-    
+    }
 }
 
 @end

@@ -37,8 +37,15 @@ static const NSInteger kTotalCells = 16;
     return self;
 }
 
-- (BOOL)canPutBoardPiece:(UIImageView *)boardPiece atIndex:(NSNumber *)index {
-    return [self.boardCells[index.integerValue] putBoardPiece:boardPiece];
+- (NSDictionary *)getBoard {
+    NSMutableDictionary *mutableBoard = [NSMutableDictionary dictionaryWithCapacity:kTotalCells];
+    for (NSInteger index = 0; index < kTotalCells; index++) {
+        QuartoBoardViewCell *eachCell = self.boardCells[index];
+        if ([eachCell hasBoardPiece]) {
+            mutableBoard[@(index)] = eachCell.pieceIndex;
+        }
+    }
+    return mutableBoard;
 }
 
 - (void)resetBoard {
