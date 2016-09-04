@@ -27,7 +27,7 @@
 }
 
 + (UIColor *)quartoGray {
-    return [UIColor colorWithRed:116/255.f green:130/255.f blue:143/255.f alpha:1];
+    return [UIColor colorWithHue:209/359.f saturation:19/100.f brightness:56/100.f alpha:1];
 }
 
 @end
