@@ -52,8 +52,6 @@ static const NSInteger kTotalPieces = 16;
         [eachView removeFromSuperview];
     }
     
-//    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
-    
     // Constants
     _kPieceSize = self.frame.size.width * (17.f/154.f);    //34.f
     _kOffSet = self.frame.size.width * (1.f/77.f);        //4.f
@@ -68,7 +66,7 @@ static const NSInteger kTotalPieces = 16;
             atIndexedSubscript:index];
         
         // Add manually all the pieces that will match with the bot.
-        [self.pieces[index] setImage:[UIImage imageNamed:@"Airplane.png"] pieceIndex:@0];
+        [self.pieces[index] setImage:[UIImage imageNamed:@"Airplane.png"] pieceIndex:@(index)];
         
         // Add cell as a subview.
         [self addSubview:self.pieces[index]];
@@ -81,6 +79,8 @@ static const NSInteger kTotalPieces = 16;
             posX += self.kPieceSize + self.kOffSet;
         }
     }
+    
+    
 }
 
 @end

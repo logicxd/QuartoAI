@@ -43,18 +43,22 @@ static NSUInteger count = 0;
 
 - (NSNumber *)botMovedAtIndexWithBoard:(NSDictionary *)board pickedPiece:(NSNumber *)pickedPiece {
 //    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard alpha:NSIntegerMin beta:NSIntegerMax depthLevel:@(0) searchDepthLevel:@(1) color:1];
-
+    
     NSDictionary *root = [self placePieceWithBoard:board
                                              alpha:NSIntegerMin
                                               beta:NSIntegerMax
-                                        depthLevel:@(0)
-                                  searchDepthLevel:@(2)
                                              color:1
-                                        boardPiece:@(0)];
+                                        depthLevel:@(board.count)
+                                  searchDepthLevel:@(3)
+                                        pickedPiece:pickedPiece
+                          ];
+    NSNumber *botPickPlace = root[kPlaceIndexKey];
+    NSNumber *botPickPiece = root[kPieceIndexKey];
     
     NSLog(@"Count: %i", count);
+    NSLog(@"Bot places index: %i   Picks piece index: %i", botPickPlace.integerValue, botPickPiece.integerValue);
     count = 0;
-    return nil;
+    return botPickPlace;
 }
 
 #pragma mark - Private Methods Below This Line
@@ -135,8 +139,8 @@ static NSUInteger count = 0;
 
 #pragma mark - Negamax Alpha Beta Score
 
-// Return score and place.
-- (NSDictionary *)placePieceWithBoard:(NSDictionary *)board alpha:(NSInteger)alpha beta:(NSInteger)beta depthLevel:(NSNumber *)depthLevel searchDepthLevel:(NSNumber *)searchDepthLevel color:(NSInteger)color boardPiece:(NSNumber *)boardPiece{
+// Return kScoreKey, kPieceKey, and kPlaceKey.
+- (NSDictionary *)placePieceWithBoard:(NSDictionary *)board alpha:(NSInteger)alpha beta:(NSInteger)beta color:(NSInteger)color depthLevel:(NSNumber *)depthLevel searchDepthLevel:(NSNumber *)searchDepthLevel pickedPiece:(NSNumber *)pickedPiece{
     
     // Will place.
     NSSet<NSNumber *> *availableMoves = [self availableMovesWithBoard:board];
@@ -149,17 +153,19 @@ static NSUInteger count = 0;
     for (NSNumber *eachMove in availableMoves) {
 
         // Place at each spot.
-        NSDictionary *newBoard = [self markBoard:board boardPiece:boardPiece positionIndex:eachMove];
+        NSDictionary *newBoard = [self markBoard:board boardPiece:pickedPiece positionIndex:eachMove];
         
         // Pick a board piece.
         NSDictionary *pickPiece = [self pickPieceWithBoard:newBoard
-                                             alpha:alpha
-                                              beta:beta
-                                        depthLevel:depthLevel
-                                  searchDepthLevel:searchDepthLevel
-                                             color:color];
+                                                     alpha:alpha
+                                                      beta:beta
+                                                     color:color
+                                                depthLevel:depthLevel
+                                          searchDepthLevel:searchDepthLevel
+                                               placedIndex:eachMove
+                                   ];
         
-        // Get score from picking the piece.
+        // Get score after placing the piece and picking a new piece.
         NSInteger score = [pickPiece[kScoreKey] integerValue];
         count++;
         if (color == 1) {
@@ -167,14 +173,16 @@ static NSUInteger count = 0;
             if (score > alpha) {
                 alpha = score;
                 placePiece[kScoreKey] = @(score);
-                placePiece[kPieceIndexKey] = eachMove;
+                placePiece[kPlaceIndexKey] = eachMove;
+                placePiece[kPieceIndexKey] = pickPiece[kPieceIndexKey];
             }
         } else if (color == -1) {
             // Player's move
             if (score < beta) {
                 beta = score;
                 placePiece[kScoreKey] = @(score);
-                placePiece[kPieceIndexKey] = eachMove;
+                placePiece[kPlaceIndexKey] = eachMove;
+                placePiece[kPieceIndexKey] = pickPiece[kPieceIndexKey];
             }
             
         }
@@ -188,8 +196,8 @@ static NSUInteger count = 0;
     return placePiece;
 }
 
-// Returns score and piece.
-- (NSDictionary *)pickPieceWithBoard:(NSDictionary *)board alpha:(NSInteger)alpha beta:(NSInteger)beta depthLevel:(NSNumber *)depthLevel searchDepthLevel:(NSNumber *)searchDepthLevel color:(NSInteger)color {
+// Returns kScoreKey, kPlaceKey, and kPieceKey if game is not complete. Returns only kScoreKey if the game is complete.
+- (NSDictionary *)pickPieceWithBoard:(NSDictionary *)board alpha:(NSInteger)alpha beta:(NSInteger)beta color:(NSInteger)color depthLevel:(NSNumber *)depthLevel searchDepthLevel:(NSNumber *)searchDepthLevel placedIndex:(NSNumber *)placedIndex{
     
     NSArray<NSNumber *> *winningIndicies;
     NSSet<NSNumber *> *availablePieces = [self availablePiecesWithBoard:board];
@@ -201,8 +209,12 @@ static NSUInteger count = 0;
             
             return @{
                      kScoreKey : winningIndicies ? @(1 * color) : @(0),
-                     kPieceIndexKey : [availablePieces anyObject]
+                     kPlaceIndexKey : placedIndex
                      };
+    }
+    
+    if (!availablePieces) {
+        NSLog(@"There are no more available pieces. Check terminating point.");
     }
     
     // Will pick a piece.
@@ -210,12 +222,13 @@ static NSUInteger count = 0;
         
         // Pick a piece.
         NSDictionary *placePiece = [self placePieceWithBoard:board
-                                              alpha:alpha
-                                               beta:beta
-                                         depthLevel:@(depthLevel.integerValue + 1)
-                                   searchDepthLevel:@(searchDepthLevel.integerValue - 1)
-                                              color:-color
-                                         boardPiece:eachPiece];
+                                                       alpha:alpha
+                                                        beta:beta
+                                                       color:-color
+                                                  depthLevel:@(depthLevel.integerValue + 1)
+                                            searchDepthLevel:@(searchDepthLevel.integerValue - 1)
+                                                 pickedPiece:eachPiece
+                                    ];
         
         // Get score from picking the piece.
         NSInteger score = [placePiece[kScoreKey] integerValue];
@@ -225,6 +238,7 @@ static NSUInteger count = 0;
             if (score > alpha) {
                 alpha = score;
                 pickPiece[kScoreKey] = @(score);
+                pickPiece[kPlaceIndexKey] = placePiece[kPlaceIndexKey];
                 pickPiece[kPieceIndexKey] = eachPiece;
             }
         } else if (color == -1) {
@@ -232,9 +246,9 @@ static NSUInteger count = 0;
             if (score < beta) {
                 beta = score;
                 pickPiece[kScoreKey] = @(score);
+                pickPiece[kPlaceIndexKey] = placePiece[kPlaceIndexKey];
                 pickPiece[kPieceIndexKey] = eachPiece;
             }
-            
         }
         
         // Cutoff
@@ -264,6 +278,7 @@ static NSUInteger count = 0;
     return availableMoves;
 }
 
+// Some of the characters are wonky. They become pointers????
 - (NSSet<NSNumber *> *)availablePiecesWithBoard:(NSDictionary *)board {
     NSMutableSet<NSNumber *> *availablePieces = [self.kBoardPieces mutableCopy];
     for (NSNumber *eachPiece in [board allValues]) {

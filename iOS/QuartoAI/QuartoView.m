@@ -22,9 +22,6 @@
 @property (nonatomic, strong) NSNumber *kPieceViewWidth;
 @property (nonatomic, strong) NSNumber *kPieceViewHeight;
 @property (nonatomic, strong) NSNumber *kPickedPieceSize;
-
-@property (nonatomic, strong) UILabel *nameLabel1;
-@property (nonatomic, strong) UILabel *nameLabel2;
 @end
 
 @implementation QuartoView
@@ -56,7 +53,7 @@
         self.nameLabel2.textColor = [UIColor quartoBlue];
         self.nameLabel2.backgroundColor = [UIColor clearColor];
         self.nameLabel2.layer.borderWidth = 2.0f;
-        self.nameLabel2.layer.borderColor = [UIColor quartoBlue].CGColor;
+        self.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
         self.translatesAutoresizingMaskIntoConstraints = YES;
         
         // Initialize Board and pieces.
@@ -87,11 +84,12 @@
 
 #pragma mark - PickedPieceView Methods
 
-- (BOOL)putBoardPieceIntoPickedPieceView:(QuartoPiece *)imageView {
+- (BOOL)putBoardPieceIntoPickedPieceView:(QuartoPiece *)quartoPiece {
     if ([self hasAPieceInPickedPieceView]) {
         return NO;
     }
-    [self.pickedPieceView addSubview:imageView];
+    _pickedPieceViewIndex = quartoPiece.pieceIndex;
+    [self.pickedPieceView addSubview:quartoPiece];
     return YES;
 }
 

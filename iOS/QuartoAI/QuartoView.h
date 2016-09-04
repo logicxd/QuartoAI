@@ -11,8 +11,12 @@
 @class QuartoBoardView, QuartoPiecesView, QuartoPiece;
 
 @interface QuartoView : UIView
+
+@property (nonatomic, strong) UILabel *nameLabel1;
+@property (nonatomic, strong) UILabel *nameLabel2;
 @property (nonatomic, strong) QuartoBoardView *boardView;
 @property (nonatomic, strong) UIView *pickedPieceView;
+@property (nonatomic, strong) NSNumber *pickedPieceViewIndex;
 @property (nonatomic, strong) QuartoPiecesView *piecesView;
 
 - (BOOL)putBoardPieceIntoPickedPieceView:(QuartoPiece *)imageView;

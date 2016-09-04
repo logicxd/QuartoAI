@@ -46,13 +46,16 @@
     _quartoView = [[QuartoView alloc] init];
     _showGameGuides = YES;
     _shownGameGuidesCount = 0;
+    
+    self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+    self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
     self.view = self.quartoView;
 }
 
 - (void)viewDidLoad {
     _bot = [[QuartoAI alloc] init];
     
-    self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+    
 }
 
 - (void)resetGame {
@@ -121,6 +124,21 @@
                 
                 // Except for the piece that is in pickedPieceView
                 touch.view.userInteractionEnabled = YES;
+    
+                // If first player made the move, then now it's second player's turn.
+                if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
+                    NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard] pickedPiece:self.quartoView.pickedPieceViewIndex];
+                    
+                    // Change border highlight
+                    self.quartoView.nameLabel1.layer.borderColor = [UIColor clearColor].CGColor;
+                    self.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlue].CGColor;
+                } else {
+                    
+                    // Change border highlight
+                    self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
+                    self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
+                }
+                
             } else {
                 touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
             }
