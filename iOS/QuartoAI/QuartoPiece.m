@@ -18,10 +18,10 @@
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
         self.userInteractionEnabled = YES;
-        self.backgroundColor = [UIColor quartoGray];
-        self.layer.borderWidth = 2.0f;
-        self.layer.borderColor = [UIColor quartoBlack].CGColor;
-        self.layer.cornerRadius = self.frame.size.width / 6.f;
+//        self.backgroundColor = [UIColor quartoGray];
+//        self.layer.borderWidth = 2.0f;
+//        self.layer.borderColor = [UIColor quartoBlack].CGColor;
+//        self.layer.cornerRadius = self.frame.size.width / 6.f;
     }
     return self;
 }

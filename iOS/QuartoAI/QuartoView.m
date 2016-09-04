@@ -35,7 +35,7 @@
         _kBoardSize = @225;
         _kPieceViewWidth = @308;
         _kPieceViewHeight = @80;
-        _kPickedPieceSize = @60;
+        _kPickedPieceSize = @50;
         
         // Initialize name labels;
         _nameLabel1 = [[UILabel alloc] init];

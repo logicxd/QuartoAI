@@ -19,6 +19,7 @@
 
 // Class variables for drag and drop.
 @property (nonatomic, assign) CGPoint firstTouchPoint;      // Saves the location of the first touch.
+@property (nonatomic, assign) NSNumber *pieceIndex;         // The index of the touched piece.
 @property (nonatomic, assign) float xDistanceTouchPoint;    // X distance between img center and firstTouchPointer.center.
 @property (nonatomic, assign) float yDistanceTouchPoint;    // Y distance between img center and firstTouchPointer.center.
 
@@ -68,6 +69,7 @@
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
         // The location of where the object was touched.
         self.firstTouchPoint = [touch locationInView:self.view];
+        self.pieceIndex = [((QuartoPiece *) touch.view) pieceIndex];
         self.xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
         self.yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
         
@@ -93,9 +95,8 @@
             [self.quartoView bringSubviewToFront:self.quartoView.pickedPieceView];
             
         } else {
-            // The location where the object was moved.
-            cp = [touch locationInView:self.quartoView.piecesView];
-            [self.quartoView bringSubviewToFront:self.quartoView.piecesView];
+//            cp = [touch locationInView:self.quartoView.piecesView.pieces[self.pieceIndex]];
+//            [self.quartoView bringSubviewToFront:touchedView];
         }
         // Makes the center of the object that was touched to the moved place with the same displacement as where it was calculated earlier.
         touch.view.center = CGPointMake(cp.x, cp.y-touch.view.frame.size.height / 2.f);
@@ -106,8 +107,7 @@
     UITouch *touch = [touches anyObject];
     CGPoint touchReleasePoint = [touch locationInView:self.view];
     touchReleasePoint = CGPointMake(touchReleasePoint.x, touchReleasePoint.y - touch.view.frame.size.height / 2.f);
-    UIView *checkEndView = [self.quartoView hitTest:touchReleasePoint
-                                          withEvent:nil];
+    UIView *checkEndView = [self.quartoView hitTest:touchReleasePoint withEvent:nil];
     if ([touch.view isKindOfClass:[QuartoPiece class]])
     {
         // The released touch is on pickedPieceView
@@ -127,7 +127,7 @@
     
                 // If first player made the move, then now it's second player's turn.
                 if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
-                    NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard] pickedPiece:self.quartoView.pickedPieceViewIndex];
+//                    NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard] pickedPiece:self.quartoView.pickedPieceViewIndex];
                     
                     // Change border highlight
                     self.quartoView.nameLabel1.layer.borderColor = [UIColor clearColor].CGColor;

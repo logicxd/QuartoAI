@@ -33,7 +33,8 @@
     }
     _pieceIndex = boardPiece.pieceIndex;
     UIImageView *boardImage = [[UIImageView alloc] initWithImage:boardPiece.image];
-    boardImage.frame = CGRectMake(0, 0,self.frame.size.width, self.frame.size.height);
+    boardImage.frame = CGRectMake(0, 0,boardPiece.frame.size.width, boardPiece.frame.size.height);
+    boardImage.center = CGPointMake(self.frame.size.width / 2.f, self.frame.size.height / 2.f);
     [self addSubview:boardImage];
     return YES;
 }

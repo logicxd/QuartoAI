@@ -10,12 +10,19 @@
 		680135AF1D6E64AA00609348 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680135AE1D6E64AA00609348 /* MainMenuViewController.m */; };
 		680135B61D6E66FF00609348 /* MainMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680135B51D6E66FF00609348 /* MainMenuView.m */; };
 		6802C11C1D798F7A004C790C /* UIColor+QuartoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6802C11B1D798F7A004C790C /* UIColor+QuartoColor.m */; };
+		68194DE81D7C114000B25E03 /* 0-0-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE01D7C114000B25E03 /* 0-0-0.png */; };
+		68194DE91D7C114000B25E03 /* 0-0-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE11D7C114000B25E03 /* 0-0-1.png */; };
+		68194DEA1D7C114000B25E03 /* 0-1-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE21D7C114000B25E03 /* 0-1-0.png */; };
+		68194DEB1D7C114000B25E03 /* 0-1-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE31D7C114000B25E03 /* 0-1-1.png */; };
+		68194DEC1D7C114000B25E03 /* 1-0-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE41D7C114000B25E03 /* 1-0-0.png */; };
+		68194DED1D7C114000B25E03 /* 1-0-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE51D7C114000B25E03 /* 1-0-1.png */; };
+		68194DEE1D7C114000B25E03 /* 1-1-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE61D7C114000B25E03 /* 1-1-0.png */; };
+		68194DEF1D7C114000B25E03 /* 1-1-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE71D7C114000B25E03 /* 1-1-1.png */; };
 		68B4DFAA1D6C1C340024822D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B4DFA91D6C1C340024822D /* main.m */; };
 		68B4DFAD1D6C1C340024822D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B4DFAC1D6C1C340024822D /* AppDelegate.m */; };
 		68B4DFB51D6C1C340024822D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68B4DFB41D6C1C340024822D /* Assets.xcassets */; };
 		68F008751D6EEAD100455E79 /* QuartoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008741D6EEAD100455E79 /* QuartoViewController.m */; };
 		68F008791D6EF4B500455E79 /* QuartoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008781D6EF4B500455E79 /* QuartoView.m */; };
-		68F0087B1D6EFE3900455E79 /* Airplane.png in Resources */ = {isa = PBXBuildFile; fileRef = 68F0087A1D6EFE3900455E79 /* Airplane.png */; };
 		68F008811D6F9F1A00455E79 /* QuartoBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008801D6F9F1A00455E79 /* QuartoBoardView.m */; };
 		68F008841D6F9F2A00455E79 /* QuartoBoardViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008831D6F9F2A00455E79 /* QuartoBoardViewCell.m */; };
 		68F0088C1D7057F800455E79 /* QuartoAI.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F0088B1D7057F800455E79 /* QuartoAI.m */; };
@@ -32,6 +39,14 @@
 		680135B51D6E66FF00609348 /* MainMenuView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainMenuView.m; sourceTree = "<group>"; };
 		6802C11A1D798F7A004C790C /* UIColor+QuartoColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+QuartoColor.h"; sourceTree = "<group>"; };
 		6802C11B1D798F7A004C790C /* UIColor+QuartoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+QuartoColor.m"; sourceTree = "<group>"; };
+		68194DE01D7C114000B25E03 /* 0-0-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-0-0.png"; path = "../../Icons/0-0-0.png"; sourceTree = "<group>"; };
+		68194DE11D7C114000B25E03 /* 0-0-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-0-1.png"; path = "../../Icons/0-0-1.png"; sourceTree = "<group>"; };
+		68194DE21D7C114000B25E03 /* 0-1-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-1-0.png"; path = "../../Icons/0-1-0.png"; sourceTree = "<group>"; };
+		68194DE31D7C114000B25E03 /* 0-1-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-1-1.png"; path = "../../Icons/0-1-1.png"; sourceTree = "<group>"; };
+		68194DE41D7C114000B25E03 /* 1-0-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "1-0-0.png"; path = "../../Icons/1-0-0.png"; sourceTree = "<group>"; };
+		68194DE51D7C114000B25E03 /* 1-0-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "1-0-1.png"; path = "../../Icons/1-0-1.png"; sourceTree = "<group>"; };
+		68194DE61D7C114000B25E03 /* 1-1-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "1-1-0.png"; path = "../../Icons/1-1-0.png"; sourceTree = "<group>"; };
+		68194DE71D7C114000B25E03 /* 1-1-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "1-1-1.png"; path = "../../Icons/1-1-1.png"; sourceTree = "<group>"; };
 		68B4DFA51D6C1C340024822D /* QuartoAI.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = QuartoAI.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68B4DFA91D6C1C340024822D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		68B4DFAB1D6C1C340024822D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -42,7 +57,6 @@
 		68F008741D6EEAD100455E79 /* QuartoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoViewController.m; sourceTree = "<group>"; };
 		68F008771D6EF4B500455E79 /* QuartoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoView.h; sourceTree = "<group>"; };
 		68F008781D6EF4B500455E79 /* QuartoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoView.m; sourceTree = "<group>"; };
-		68F0087A1D6EFE3900455E79 /* Airplane.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Airplane.png; sourceTree = SOURCE_ROOT; };
 		68F0087F1D6F9F1A00455E79 /* QuartoBoardView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoBoardView.h; sourceTree = "<group>"; };
 		68F008801D6F9F1A00455E79 /* QuartoBoardView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoBoardView.m; sourceTree = "<group>"; };
 		68F008821D6F9F2A00455E79 /* QuartoBoardViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoBoardViewCell.h; sourceTree = "<group>"; };
@@ -90,6 +104,21 @@
 			name = MainMenu;
 			sourceTree = "<group>";
 		};
+		68194DAF1D7BF21B00B25E03 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				68194DE01D7C114000B25E03 /* 0-0-0.png */,
+				68194DE11D7C114000B25E03 /* 0-0-1.png */,
+				68194DE21D7C114000B25E03 /* 0-1-0.png */,
+				68194DE31D7C114000B25E03 /* 0-1-1.png */,
+				68194DE41D7C114000B25E03 /* 1-0-0.png */,
+				68194DE51D7C114000B25E03 /* 1-0-1.png */,
+				68194DE61D7C114000B25E03 /* 1-1-0.png */,
+				68194DE71D7C114000B25E03 /* 1-1-1.png */,
+			);
+			name = Model;
+			sourceTree = "<group>";
+		};
 		68B4DF9C1D6C1C340024822D = {
 			isa = PBXGroup;
 			children = (
@@ -112,6 +141,7 @@
 		68B4DFA71D6C1C340024822D /* QuartoAI */ = {
 			isa = PBXGroup;
 			children = (
+				68194DAF1D7BF21B00B25E03 /* Model */,
 				680135B01D6E64AF00609348 /* MainMenu */,
 				68F008761D6EEB7F00455E79 /* QuartoGame */,
 				68F008891D7057D500455E79 /* QuartoAI */,
@@ -139,7 +169,6 @@
 				68F008741D6EEAD100455E79 /* QuartoViewController.m */,
 				68F008771D6EF4B500455E79 /* QuartoView.h */,
 				68F008781D6EF4B500455E79 /* QuartoView.m */,
-				68F0087A1D6EFE3900455E79 /* Airplane.png */,
 				68F008881D6FE7A100455E79 /* Board */,
 				68F281111D7516DE00EC00B6 /* Pieces */,
 			);
@@ -254,8 +283,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				68F0087B1D6EFE3900455E79 /* Airplane.png in Resources */,
+				68194DEE1D7C114000B25E03 /* 1-1-0.png in Resources */,
+				68194DE91D7C114000B25E03 /* 0-0-1.png in Resources */,
+				68194DEC1D7C114000B25E03 /* 1-0-0.png in Resources */,
+				68194DE81D7C114000B25E03 /* 0-0-0.png in Resources */,
+				68194DEF1D7C114000B25E03 /* 1-1-1.png in Resources */,
+				68194DEB1D7C114000B25E03 /* 0-1-1.png in Resources */,
 				68B4DFB51D6C1C340024822D /* Assets.xcassets in Resources */,
+				68194DED1D7C114000B25E03 /* 1-0-1.png in Resources */,
+				68194DEA1D7C114000B25E03 /* 0-1-0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
