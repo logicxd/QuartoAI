@@ -292,7 +292,36 @@ static NSUInteger count = 0;
         return nil;
     }
     
-    if (board[@0]) {
+    if (board[@3] && board[@6] && board[@9] && board[@12]) {
+        /**
+         
+         - - - *
+         - - * -
+         - * - -
+         * - - -
+         
+         */
+        
+        NSArray<NSNumber *> *rowArray = @[board[@3], board[@6], board[@9], board[@12]];
+        if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+            return @[@3, @6, @9, @12];
+        }
+    } else if (board[@0] && board[@5] && board[@10] && board[@15]) {
+        /**
+         
+         * - - -
+         - * - -
+         - - * -
+         - - - *
+         
+         */
+        
+        
+        NSArray<NSNumber *> *rowArray = @[board[@0], board[@5], board[@10], board[@15]];
+        if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+            return @[@0, @5, @10, @15];
+        }
+    } else if (board[@0]) {
         /**
          
          * * * *

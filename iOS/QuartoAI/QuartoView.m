@@ -18,10 +18,11 @@
 @property (nonatomic, strong) NSNumber *kEdgeOffset;
 @property (nonatomic, strong) NSNumber *kNameLabelWidth;
 @property (nonatomic, strong) NSNumber *kNameLabelHeight;
+@property (nonatomic, strong) NSNumber *kSettingsSize;
 @property (nonatomic, strong) NSNumber *kBoardSize;
+@property (nonatomic, strong) NSNumber *kPickedPieceSize;
 @property (nonatomic, strong) NSNumber *kPieceViewWidth;
 @property (nonatomic, strong) NSNumber *kPieceViewHeight;
-@property (nonatomic, strong) NSNumber *kPickedPieceSize;
 @end
 
 @implementation QuartoView
@@ -33,12 +34,23 @@
         _kEdgeOffset = @5;
         _kNameLabelWidth = @70;
         _kNameLabelHeight = @30;
+        _kSettingsSize = @18;
         _kBoardSize = @225;
+        _kPickedPieceSize = @50;
         _kPieceViewWidth = @308;
         _kPieceViewHeight = @80;
-        _kPickedPieceSize = @50;
         
-        // Initialize name labels;
+        // Initialize settings button.
+        _settingsButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
+        self.settingsButton.tintColor = [UIColor quartoBlue];
+        self.settingsButton.layer.shadowOpacity = 1.f;
+        self.settingsButton.layer.shadowRadius = 2;
+        self.settingsButton.layer.shadowOffset = CGSizeMake(0, 6);
+        [self.settingsButton setTitle:@"Settings" forState:UIControlStateNormal];
+        [self.settingsButton setImage:[UIImage imageNamed:@"Settings-50.png"] forState:UIControlStateNormal];
+        [self.settingsButton addTarget:self action:@selector(settingsButtonHit:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // Initialize name labels.
         _nameLabel1 = [[UILabel alloc] init];
         self.nameLabel1.text = firstPlayerName;
         self.nameLabel1.textAlignment = NSTextAlignmentCenter;
@@ -57,7 +69,7 @@
         self.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
         self.nameLabel2.translatesAutoresizingMaskIntoConstraints = YES;
         
-        // Initialize Board and pieces.
+        // Initialize board view and pieces view.
         _boardView = [[QuartoBoardView alloc] initWithWidth:self.kBoardSize.floatValue height:self.kBoardSize.floatValue];
         _piecesView = [[QuartoPiecesView alloc] initWithWidth:self.kPieceViewWidth.floatValue height:self.kPieceViewHeight.floatValue];
         
@@ -72,8 +84,9 @@
         
         // Settings for this view.
         self.backgroundColor = [UIColor quartoBlack];
-
-        // Add to the subviews.
+        
+        // Add views as subviews.
+        [self addSubview:self.settingsButton];
         [self addSubview:self.nameLabel1];
         [self addSubview:self.nameLabel2];
         [self addSubview:self.boardView];
@@ -81,6 +94,14 @@
         [self addSubview:self.piecesView];
     }
     return self;
+}
+
+#pragma mark - Button Hit
+
+- (void)settingsButtonHit:(UIButton *)button {
+    NSLog(@"\"%@\" is pressed", button.titleLabel.text);
+    
+    
 }
 
 #pragma mark - PickedPieceView Methods
@@ -126,8 +147,14 @@
     [self.nameLabel2 mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.kNameLabelWidth);
         make.height.equalTo(self.kNameLabelHeight);
-        make.top.equalTo(self).offset(self.kEdgeOffset.floatValue + 20.f);
+        make.top.equalTo(self.nameLabel1);
         make.right.equalTo(self).offset(-self.kEdgeOffset.floatValue);
+    }];
+    
+    [self.settingsButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.width.height.equalTo(self.kSettingsSize);
+        make.centerY.equalTo(self.nameLabel1);
+        make.centerX.equalTo(self);
     }];
     
     [self.boardView mas_remakeConstraints:^(MASConstraintMaker *make) {
@@ -139,7 +166,7 @@
     [self.pickedPieceView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.kPickedPieceSize);
         make.height.equalTo(self.kPickedPieceSize);
-        make.top.equalTo(self.boardView.mas_bottom).offset(10);
+        make.top.equalTo(self.boardView.mas_bottom).offset(15);
         make.centerX.equalTo(self);
     }];
     

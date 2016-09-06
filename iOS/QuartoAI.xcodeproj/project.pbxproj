@@ -11,6 +11,7 @@
 		680135B61D6E66FF00609348 /* MainMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680135B51D6E66FF00609348 /* MainMenuView.m */; };
 		6802C11C1D798F7A004C790C /* UIColor+QuartoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6802C11B1D798F7A004C790C /* UIColor+QuartoColor.m */; };
 		680E78F21D7D4B290072A92C /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 680E78F11D7D4B290072A92C /* Default-568h@2x.png */; };
+		6812A9AB1D7EB92700AD2669 /* Settings-50.png in Resources */ = {isa = PBXBuildFile; fileRef = 6812A9AA1D7EB92700AD2669 /* Settings-50.png */; };
 		68194DE81D7C114000B25E03 /* 0-0-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE01D7C114000B25E03 /* 0-0-0.png */; };
 		68194DE91D7C114000B25E03 /* 0-0-1.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE11D7C114000B25E03 /* 0-0-1.png */; };
 		68194DEA1D7C114000B25E03 /* 0-1-0.png in Resources */ = {isa = PBXBuildFile; fileRef = 68194DE21D7C114000B25E03 /* 0-1-0.png */; };
@@ -41,6 +42,7 @@
 		6802C11A1D798F7A004C790C /* UIColor+QuartoColor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+QuartoColor.h"; sourceTree = "<group>"; };
 		6802C11B1D798F7A004C790C /* UIColor+QuartoColor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+QuartoColor.m"; sourceTree = "<group>"; };
 		680E78F11D7D4B290072A92C /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		6812A9AA1D7EB92700AD2669 /* Settings-50.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Settings-50.png"; path = "../../Icons/Settings-50.png"; sourceTree = "<group>"; };
 		68194DE01D7C114000B25E03 /* 0-0-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-0-0.png"; path = "../../Icons/0-0-0.png"; sourceTree = "<group>"; };
 		68194DE11D7C114000B25E03 /* 0-0-1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-0-1.png"; path = "../../Icons/0-0-1.png"; sourceTree = "<group>"; };
 		68194DE21D7C114000B25E03 /* 0-1-0.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "0-1-0.png"; path = "../../Icons/0-1-0.png"; sourceTree = "<group>"; };
@@ -110,6 +112,7 @@
 		68194DAF1D7BF21B00B25E03 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				6812A9AA1D7EB92700AD2669 /* Settings-50.png */,
 				68194DE01D7C114000B25E03 /* 0-0-0.png */,
 				68194DE11D7C114000B25E03 /* 0-0-1.png */,
 				68194DE21D7C114000B25E03 /* 0-1-0.png */,
@@ -260,7 +263,6 @@
 				TargetAttributes = {
 					68B4DFA41D6C1C340024822D = {
 						CreatedOnToolsVersion = 7.3.1;
-						DevelopmentTeam = CQ47S6V855;
 					};
 				};
 			};
@@ -296,6 +298,7 @@
 				68194DEB1D7C114000B25E03 /* 0-1-1.png in Resources */,
 				68B4DFB51D6C1C340024822D /* Assets.xcassets in Resources */,
 				68194DED1D7C114000B25E03 /* 1-0-1.png in Resources */,
+				6812A9AB1D7EB92700AD2669 /* Settings-50.png in Resources */,
 				68194DEA1D7C114000B25E03 /* 0-1-0.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -462,7 +465,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = QuartoAI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = QuartoAI;
+				PRODUCT_BUNDLE_IDENTIFIER = moe.QuartoAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -474,7 +477,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				INFOPLIST_FILE = QuartoAI/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = QuartoAI;
+				PRODUCT_BUNDLE_IDENTIFIER = moe.QuartoAI;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

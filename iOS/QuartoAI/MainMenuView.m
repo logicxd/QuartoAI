@@ -37,7 +37,7 @@
         self.shimmeringTitle.shimmeringPauseDuration = 3;
         self.shimmeringTitle.shimmering = YES;
         
-        self.playerVsPlayerButton = [[UIButton alloc] init];
+        self.playerVsPlayerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.playerVsPlayerButton.layer.cornerRadius = 10.f;
         self.playerVsPlayerButton.layer.shadowOpacity = .8f;
         self.playerVsPlayerButton.layer.shadowRadius = 4;
@@ -48,7 +48,7 @@
         [self.playerVsPlayerButton setBackgroundColor:[UIColor quartoWhite]];
         [self.playerVsPlayerButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
-        self.playerVsBotButton = [[UIButton alloc] init];
+        self.playerVsBotButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.playerVsBotButton.layer.cornerRadius = 10.f;
         self.playerVsBotButton.layer.shadowOpacity = .8f;
         self.playerVsBotButton.layer.shadowRadius = 4;
@@ -59,7 +59,7 @@
         [self.playerVsBotButton setBackgroundColor:[UIColor quartoWhite]];
         [self.playerVsBotButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
-        self.howToButton = [[UIButton alloc] init];
+        self.howToButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.howToButton.layer.cornerRadius = 10.f;
         self.howToButton.layer.shadowOpacity = .8f;
         self.howToButton.layer.shadowRadius = 4;

@@ -15,10 +15,6 @@ typedef NS_ENUM(NSInteger, MainMenuButtonType){
 };
 
 @interface MainMenuView : UIView
-
-//
 @property (nonatomic, copy) void (^buttonHit)(MainMenuButtonType button);
-
 - (instancetype)init;
-
 @end

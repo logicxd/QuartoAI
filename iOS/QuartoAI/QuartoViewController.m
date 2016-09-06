@@ -218,7 +218,7 @@
                     NSLog(@"Winner is: %@", nameOfTheWinner);
                     
                     // Highlight winning indicies.
-                    CGFloat timer = 0.4;
+                    __block CGFloat timer = 0.4;
                     for (NSNumber *eachIndex in winningIndicies) {
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (timer * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                             self.quartoView.boardView.boardCells[eachIndex.integerValue].layer.borderColor = [UIColor quartoWhite].CGColor;

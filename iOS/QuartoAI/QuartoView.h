@@ -17,6 +17,7 @@
 @property (nonatomic, strong) UILabel *nameLabel2;
 
 #pragma mark - Views and variables
+@property (nonatomic, strong) UIButton *settingsButton;
 @property (nonatomic, strong) QuartoBoardView *boardView;
 @property (nonatomic, strong) UIView *pickedPieceView;
 @property (nonatomic, strong) QuartoPiecesView *piecesView;
