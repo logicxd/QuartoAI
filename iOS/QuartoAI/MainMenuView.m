@@ -39,6 +39,9 @@
         
         self.playerVsPlayerButton = [[UIButton alloc] init];
         self.playerVsPlayerButton.layer.cornerRadius = 10.f;
+        self.playerVsPlayerButton.layer.shadowOpacity = .8f;
+        self.playerVsPlayerButton.layer.shadowRadius = 4;
+        self.playerVsPlayerButton.layer.shadowOffset = CGSizeMake(0, 6);
         [self.playerVsPlayerButton setTitle:@"Player vs Player" forState:UIControlStateNormal];
         [self.playerVsPlayerButton setTitleColor:[UIColor quartoBlack] forState:UIControlStateNormal];
         [self.playerVsPlayerButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
@@ -47,6 +50,9 @@
         
         self.playerVsBotButton = [[UIButton alloc] init];
         self.playerVsBotButton.layer.cornerRadius = 10.f;
+        self.playerVsBotButton.layer.shadowOpacity = .8f;
+        self.playerVsBotButton.layer.shadowRadius = 4;
+        self.playerVsBotButton.layer.shadowOffset = CGSizeMake(0, 6);
         [self.playerVsBotButton setTitle:@"Player vs Bot" forState:UIControlStateNormal];
         [self.playerVsBotButton setTitleColor:[UIColor quartoBlack] forState:UIControlStateNormal];
         [self.playerVsBotButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
@@ -55,6 +61,9 @@
         
         self.howToButton = [[UIButton alloc] init];
         self.howToButton.layer.cornerRadius = 10.f;
+        self.howToButton.layer.shadowOpacity = .8f;
+        self.howToButton.layer.shadowRadius = 4;
+        self.howToButton.layer.shadowOffset = CGSizeMake(0, 6);
         [self.howToButton setTitle:@"How to Play" forState:UIControlStateNormal];
         [self.howToButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
         [self.howToButton setTitleColor:[UIColor quartoBlack] forState:UIControlStateNormal];

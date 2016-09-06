@@ -21,7 +21,7 @@
 @property (nonatomic, strong, readonly) NSMutableArray<QuartoBoardViewCell *> *boardCells;
 
 - (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height;
-- (NSDictionary *)getBoard; // This is used for AI bot.
+- (NSDictionary *)getBoard;           // This is used for AI bot.
 - (void)resetBoard;
 
 @end

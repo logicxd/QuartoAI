@@ -30,4 +30,9 @@
     return [UIColor colorWithHue:209/359.f saturation:19/100.f brightness:56/100.f alpha:1];
 }
 
++ (UIColor *)quartoBoardColor {
+//    return [UIColor colorWithRed:90/255.f green:17/255.f blue:9/255.f alpha:1];
+    return [UIColor colorWithRed:92/255.f green:30/255.f blue:30/255.f alpha:1];
+}
+
 @end

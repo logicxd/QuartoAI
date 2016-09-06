@@ -15,6 +15,7 @@
 
 #pragma mark - Bot Interactions
 
++ (NSArray<NSNumber *> *)winningIndiciesWithBoard:(NSDictionary *)board;
 - (NSNumber *)botMovedAtIndexWithBoard:(NSDictionary *)board pickedPiece:(NSNumber *)pickedPiece;
 
 @end

@@ -15,6 +15,7 @@ static const NSInteger kTotalPieces = 16;
 @interface QuartoPiecesView ()
 
 // Constants
+@property (nonatomic, assign, readwrite) CGFloat kSlotSize;
 @property (nonatomic, assign, readwrite) CGFloat kBigPieceSize;
 @property (nonatomic, assign, readwrite) CGFloat kSmallPieceSize;
 @property (nonatomic, assign, readwrite) CGFloat kOffSet;
@@ -36,18 +37,22 @@ static const NSInteger kTotalPieces = 16;
         [self loadRandomizedPieces];
         [self addPiecestoView];
         
-        self.backgroundColor = [UIColor quartoBlack];
-        self.layer.borderColor = [UIColor quartoBlack].CGColor;
-        self.layer.borderWidth = 2.f;
+        self.backgroundColor = [UIColor quartoGray];
         self.layer.cornerRadius = 10;
-        self.layer.shadowOpacity = 1.f;
-        self.layer.shadowRadius = 5;
-        self.layer.shadowOffset = CGSizeMake(0, 1);
+        self.layer.shadowOpacity = .8f;
+        self.layer.shadowRadius = 10;
+        self.layer.shadowOffset = CGSizeMake(0, 6);
     }
     return self;
 }
 
-- (UIView *)getPieceSlotWithPieceIndex:(NSNumber *)pieceIndex {
+- (UIView *)getTheSlotThatThePieceIsInWithIndex:(NSNumber *)index {
+    for (UIView *eachView in self.pieceSlots) {
+        QuartoPiece *piece = [[eachView subviews] firstObject];
+        if ([piece.pieceIndex isEqualToNumber:index]) {
+            return eachView;
+        }
+    }
     
     return nil;
 }
@@ -59,16 +64,14 @@ static const NSInteger kTotalPieces = 16;
 #pragma mark - Private Methods
 
 - (void)loadInitialPiecesView {
-    // Precondition: self.pieces must be initialized.
-    
     // Remove all the subviews first.
     for (UIView *eachView in self.subviews) {
         [eachView removeFromSuperview];
     }
     
     // Constants
-    _kBigPieceSize = self.frame.size.width * (17.f/154.f);      //34.f
-    _kOffSet = self.frame.size.width * (1.f/77.f);              //4.f
+    _kSlotSize = self.frame.size.width * (17.f/154.f);          // 34.f
+    _kOffSet = self.frame.size.width * (1.f/77.f);              // 4.f
     
     // Position for each slot.
     CGFloat posX = self.kOffSet;
@@ -78,14 +81,14 @@ static const NSInteger kTotalPieces = 16;
     // Set up pieceSlots
     for (NSInteger index = 0; index < kTotalPieces; index++) {
         // Make cell.
-        [self.pieceSlots setObject:[[UIView alloc] initWithFrame:CGRectMake(posX, posY, self.kBigPieceSize, self.kBigPieceSize)]
+        [self.pieceSlots setObject:[[UIView alloc] initWithFrame:CGRectMake(posX, posY, self.kSlotSize, self.kSlotSize)]
                 atIndexedSubscript:index];
         
         // Add background color to the cells
-        self.pieceSlots[index].backgroundColor = [UIColor quartoGray];
-        self.pieceSlots[index].layer.borderWidth = 2.0f;
-        self.pieceSlots[index].layer.borderColor = [UIColor quartoBlack].CGColor;
-        self.pieceSlots[index].layer.cornerRadius = self.frame.size.width / 6.f;
+//        self.pieceSlots[index].backgroundColor = [UIColor clearColor];
+//        self.pieceSlots[index].layer.borderWidth = 2.0f;
+//        self.pieceSlots[index].layer.borderColor = [UIColor quartoBlack].CGColor;
+//        self.pieceSlots[index].layer.cornerRadius = 10.f;
         
         // Add cell as a subview.
         [self addSubview:self.pieceSlots[index]];
@@ -93,18 +96,30 @@ static const NSInteger kTotalPieces = 16;
         // Prepare for the next cell.
         if (index % 8 == 7) {
             posX = self.kOffSet;
-            posY += self.kBigPieceSize + self.kOffSet;
+            posY += self.kSlotSize + self.kOffSet;
         } else {
-            posX += self.kBigPieceSize + self.kOffSet;
+            posX += self.kSlotSize + self.kOffSet;
         }
     }
 }
 
 - (void)loadRandomizedPieces {
+    // Constants
+    _kBigPieceSize = 30.f;
+    _kSmallPieceSize = 18.f;
     
+    // Make a board piece.
     for (NSUInteger index = 0; index < kTotalPieces; index++) {
-        // Make a board piece
-        self.pieces[index] = [[QuartoPiece alloc] initWithFrame:CGRectMake(0, 0, self.kBigPieceSize, self.kBigPieceSize)];
+        // Even indices are big piece.
+        if (index % 2 == 0) {
+            self.pieces[index] = [[QuartoPiece alloc] initWithFrame:CGRectMake(0, 0, self.kBigPieceSize, self.kBigPieceSize)];
+        } else {
+            // Odd indices are small piece.
+            self.pieces[index] = [[QuartoPiece alloc] initWithFrame:CGRectMake(0, 0, self.kSmallPieceSize, self.kSmallPieceSize)];
+        }
+        
+        // Center the pieces.
+        self.pieces[index].center = CGPointMake(self.kSlotSize/2.f, self.kSlotSize/2.f);
     }
     
     // Manually added the pictures I want.

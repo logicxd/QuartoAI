@@ -27,12 +27,11 @@ static const NSInteger kTotalCells = 16;
         _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
         [self loadInitialBoardView];
         
-        self.backgroundColor = [UIColor quartoBlack];
-        self.layer.borderColor = [UIColor quartoBlack].CGColor;
-        self.layer.borderWidth = 2.f;
+        self.backgroundColor = [UIColor quartoGray];
         self.layer.cornerRadius = 10;
-        self.layer.shadowOpacity = 1.f;
+        self.layer.shadowOpacity = .8f;
         self.layer.shadowRadius = 10;
+        self.layer.shadowOffset = CGSizeMake(0, 6);
     }
     return self;
 }

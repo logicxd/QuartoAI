@@ -71,7 +71,7 @@ static NSUInteger count = 0;
     // If depthlevel is not the same as the stopping depth level. Depthlevel must be four or bigger AND there must have found a winner. OR depthlevel reached the end of the game.
     NSArray<NSNumber *> *winningIndicies;
     if ( (depthLevel.integerValue == depthLevel.integerValue + searchDepthLevel.integerValue) ||
-        ((depthLevel.integerValue >= 4 && (winningIndicies = [self winningIndiciesWithBoard:board])) ||
+        ((depthLevel.integerValue >= 4 && (winningIndicies = [QuartoAI winningIndiciesWithBoard:board])) ||
          depthLevel.integerValue == kMaxNumOfMoves)) {
             
             NSMutableDictionary *leafNode = [NSMutableDictionary dictionary];
@@ -204,7 +204,7 @@ static NSUInteger count = 0;
     NSMutableDictionary *pickPiece = [NSMutableDictionary dictionary];
 
     if ( (depthLevel.integerValue == depthLevel.integerValue + searchDepthLevel.integerValue) ||
-         (depthLevel.integerValue >= 4 && (winningIndicies = [self winningIndiciesWithBoard:board]) ) ||
+         (depthLevel.integerValue >= 4 && (winningIndicies = [QuartoAI winningIndiciesWithBoard:board]) ) ||
          (depthLevel.integerValue == kMaxNumOfMoves) ) {
             
             return @{
@@ -287,7 +287,11 @@ static NSUInteger count = 0;
     return availablePieces;
 }
 
-- (NSArray<NSNumber *> *)winningIndiciesWithBoard:(NSDictionary *)board {
++ (NSArray<NSNumber *> *)winningIndiciesWithBoard:(NSDictionary *)board {
+    if (board.count < 4) {
+        return nil;
+    }
+    
     if (board[@0]) {
         /**
          
@@ -299,15 +303,15 @@ static NSUInteger count = 0;
          */
         if (board[@3] && board[@2] && board[@1]) {
             NSArray<NSNumber *> *rowArray = @[board[@0], board[@3], board[@2], board[@1]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@0, @1, @2, @3];
             }
         }
         
         if (board[@12] && board[@8] && board[@4]) {
             NSArray<NSNumber *> *rowArray = @[board[@0], board[@12], board[@8], board[@4]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@0, @4, @8, @12];
             }
         }
     } else if (board[@5]) {
@@ -321,15 +325,15 @@ static NSUInteger count = 0;
          */
         if (board[@13] && board[@9] && board[@1]) {
             NSArray<NSNumber *> *rowArray = @[board[@5], board[@13], board[@9], board[@1]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@1, @5, @9, @13];
             }
         }
         
         if (board[@4] && board[@6] && board[@7]) {
             NSArray<NSNumber *> *rowArray = @[board[@5], board[@4], board[@6], board[@7]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@4, @5, @6, @7];
             }
         }
     } else if (board[@10]) {
@@ -343,15 +347,15 @@ static NSUInteger count = 0;
          */
         if (board[@8] && board[@9] && board[@11]) {
             NSArray<NSNumber *> *rowArray = @[board[@10], board[@8], board[@9], board[@11]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@8, @9, @10, @11];
             }
         }
         
         if (board[@2] && board[@6] && board[@14]) {
             NSArray<NSNumber *> *rowArray = @[board[@10], board[@2], board[@6], board[@14]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@2, @6, @10, @14];
             }
         }
     } else if (board[@15]) {
@@ -365,15 +369,15 @@ static NSUInteger count = 0;
          */
         if (board[@12] && board[@13] && board[@14]) {
             NSArray<NSNumber *> *rowArray = @[board[@15], board[@12], board[@13], board[@14]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@12, @13, @14, @15];
             }
         }
         
-        if (board[@3] && board[@7] && board[@15]) {
-            NSArray<NSNumber *> *rowArray = @[board[@15], board[@3], board[@7], board[@15]];
-            if ([self hasSameAttributeWithRow:rowArray]) {
-                return rowArray;
+        if (board[@3] && board[@7] && board[@11]) {
+            NSArray<NSNumber *> *rowArray = @[board[@15], board[@3], board[@7], board[@11]];
+            if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
+                return @[@3, @7, @11, @15];
             }
         }
     }
@@ -381,48 +385,47 @@ static NSUInteger count = 0;
     return nil;
 }
 
-- (BOOL)hasSameAttributeWithRow:(NSArray<NSNumber *> *)row {
++ (BOOL)hasSameAttributeWithRow:(NSArray<NSNumber *> *)row {
     if (row.count != 4) {
         return NO;
     }
     
-    NSMutableArray<NSNumber *> *attributesInRow = [NSMutableArray
-                                                   arrayWithCapacity:4];
-    for (NSNumber *eachPiece in row) {
-        NSInteger num = eachPiece.integerValue;
+    NSMutableArray<NSNumber *> *attributesInRow = [NSMutableArray arrayWithCapacity:4];
+    for (NSInteger index = 0; index < row.count; index++) {
+        NSInteger num = row[index].integerValue;
         
         if (num == 0) {
-            [attributesInRow addObject:@0000];
+            [attributesInRow addObject:@(0)];   //0000
         } else if (num == 1) {
-            [attributesInRow addObject:@0001];
+            [attributesInRow addObject:@(1)];   //0001
         } else if (num == 2) {
-            [attributesInRow addObject:@0010];
+            [attributesInRow addObject:@(10)];  //0010
         } else if (num == 3) {
-            [attributesInRow addObject:@0011];
+            [attributesInRow addObject:@(11)];  //0011
         } else if (num == 4) {
-            [attributesInRow addObject:@0100];
+            [attributesInRow addObject:@(100)]; //0100
         } else if (num == 5) {
-            [attributesInRow addObject:@0101];
+            [attributesInRow addObject:@(101)]; //0101
         } else if (num == 6) {
-            [attributesInRow addObject:@0110];
+            [attributesInRow addObject:@(110)]; //0110
         } else if (num == 7) {
-            [attributesInRow addObject:@0111];
+            [attributesInRow addObject:@(111)]; //0111
         } else if (num == 8) {
-            [attributesInRow addObject:@1000];
+            [attributesInRow addObject:@(1000)];
         } else if (num == 9) {
-            [attributesInRow addObject:@1001];
+            [attributesInRow addObject:@(1001)];
         } else if (num == 10) {
-            [attributesInRow addObject:@1010];
+            [attributesInRow addObject:@(1010)];
         } else if (num == 11) {
-            [attributesInRow addObject:@1011];
+            [attributesInRow addObject:@(1011)];
         } else if (num == 12) {
-            [attributesInRow addObject:@1100];
+            [attributesInRow addObject:@(1100)];
         } else if (num == 13) {
-            [attributesInRow addObject:@1101];
+            [attributesInRow addObject:@(1101)];
         } else if (num == 14) {
-            [attributesInRow addObject:@1110];
+            [attributesInRow addObject:@(1110)];
         } else if (num == 15) {
-            [attributesInRow addObject:@1111];
+            [attributesInRow addObject:@(1111)];
         }
     }
     

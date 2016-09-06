@@ -31,10 +31,10 @@
     self.playerVsBotViewController = [[QuartoViewController alloc] initWithIsPlayerVsPlayer:NO];
     
     // "How to Play" button pop up.
-    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"How to Play"
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"How to Play"
                                                                    message:@"Win by connecting four in a row of the same attribute: tall or short, round or circle, has a hole or no hole, white or black.\nPlace a piece on the board, and then pick a piece for the opponent to play."
                                                             preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Got it!"
+    UIAlertAction *defaultAction = [UIAlertAction actionWithTitle:@"Got it!"
                                                             style:UIAlertActionStyleDefault
                                                           handler:^(UIAlertAction * action) {
                                                               //This is called when the person presses "Got it!" button.

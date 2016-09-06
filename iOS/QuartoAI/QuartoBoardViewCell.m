@@ -19,8 +19,8 @@
 
 - (instancetype)initWithFrame:(CGRect)frame {
     if (self = [super initWithFrame:frame]) {
-        self.backgroundColor = [UIColor quartoGray];
-        self.layer.borderWidth = 2.0f;
+        self.backgroundColor = [UIColor clearColor];
+        self.layer.borderWidth = 1.0f;
         self.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.layer.cornerRadius = self.frame.size.width / 2.f;
     }

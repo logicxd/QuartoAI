@@ -15,5 +15,6 @@
 + (UIColor *)quartoBlack;
 + (UIColor *)quartoBlue;
 + (UIColor *)quartoGray;
++ (UIColor *)quartoBoardColor;
 
 @end

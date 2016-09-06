@@ -17,9 +17,10 @@
 
 @interface QuartoViewController ()
 
-// Class variables for drag and drop.
+// Variables for drag and drop.
 @property (nonatomic, assign) CGPoint firstTouchPoint;      // Saves the location of the first touch.
 @property (nonatomic, assign) NSNumber *pieceIndex;         // The index of the touched piece.
+@property (nonatomic, strong) UIView *dragFromPiecesView;             // The view that is being dragged.
 @property (nonatomic, assign) float xDistanceTouchPoint;    // X distance between img center and firstTouchPointer.center.
 @property (nonatomic, assign) float yDistanceTouchPoint;    // Y distance between img center and firstTouchPointer.center.
 
@@ -44,19 +45,24 @@
 }
 
 - (void)loadView {
-    _quartoView = [[QuartoView alloc] init];
+    if (self.isPlayerVsPlayer) {
+        _quartoView = [[QuartoView alloc] initWithFirstPlayerName:@"Player 1" secondPlayerName:@"Player 2"];
+    } else {
+        _quartoView = [[QuartoView alloc] initWithFirstPlayerName:@"Player" secondPlayerName:@"Bot"];
+    }
     _showGameGuides = YES;
     _shownGameGuidesCount = 0;
     
-    self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+    if (self.showGameGuides) {
+        self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
+    }
+    
     self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
     self.view = self.quartoView;
 }
 
 - (void)viewDidLoad {
     _bot = [[QuartoAI alloc] init];
-    
-    
 }
 
 - (void)resetGame {
@@ -67,15 +73,25 @@
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
-        // The location of where the object was touched.
-        self.firstTouchPoint = [touch locationInView:self.view];
-        self.pieceIndex = [((QuartoPiece *) touch.view) pieceIndex];
-        self.xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
-        self.yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
+        
+        // Initialize variables for drag and drop.
+        _firstTouchPoint = [touch locationInView:self.view];
+        _pieceIndex = [((QuartoPiece *) touch.view) pieceIndex];
+        _dragFromPiecesView = [self.quartoView.piecesView getTheSlotThatThePieceIsInWithIndex:self.pieceIndex];
+        _xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
+        _yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
         
         // Make the object on top of other views.
-        touch.view.layer.zPosition = 1;
+        if ([self.quartoView hasAPieceInPickedPieceView]) {
+            self.quartoView.pickedPieceView.layer.zPosition = MAXFLOAT;
+            self.quartoView.piecesView.layer.zPosition = 0;
+        } else {
+            self.quartoView.pickedPieceView.layer.zPosition = 0;
+            self.quartoView.piecesView.layer.zPosition = MAXFLOAT;
+            self.dragFromPiecesView.layer.zPosition = MAXFLOAT;
+        }
         
+        // Highlight shadow to show what to do next.
         if (self.showGameGuides && [self.quartoView hasAPieceInPickedPieceView]) {
             self.quartoView.pickedPieceView.layer.shadowColor = [UIColor blackColor].CGColor;
             self.quartoView.boardView.layer.shadowColor = [UIColor quartoBlue].CGColor;
@@ -89,73 +105,137 @@
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
-        CGPoint cp;
+        
+        // Get the location of the finger relative to the initial touch.
+        CGPoint centerPoint;
         if ([self.quartoView hasAPieceInPickedPieceView]) {
-            cp = [touch locationInView:self.quartoView.pickedPieceView];
-            [self.quartoView bringSubviewToFront:self.quartoView.pickedPieceView];
-            
+            centerPoint = [touch locationInView:self.quartoView.pickedPieceView];
         } else {
-//            cp = [touch locationInView:self.quartoView.piecesView.pieces[self.pieceIndex]];
-//            [self.quartoView bringSubviewToFront:touchedView];
+            centerPoint = [touch locationInView:self.dragFromPiecesView];
         }
-        // Makes the center of the object that was touched to the moved place with the same displacement as where it was calculated earlier.
-        touch.view.center = CGPointMake(cp.x, cp.y-touch.view.frame.size.height / 2.f);
+        
+        // Make the view centered on the finger and shifted up.
+        touch.view.center = CGPointMake(centerPoint.x, centerPoint.y-touch.view.frame.size.height / 2.f);
     }
 }
 
 - (void)touchesEnded:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
     UITouch *touch = [touches anyObject];
+    
+    // Get the location where the finger was lifted.
     CGPoint touchReleasePoint = [touch locationInView:self.view];
     touchReleasePoint = CGPointMake(touchReleasePoint.x, touchReleasePoint.y - touch.view.frame.size.height / 2.f);
+    
+    // The view underneath where the finger was lifted.
     UIView *checkEndView = [self.quartoView hitTest:touchReleasePoint withEvent:nil];
+    
     if ([touch.view isKindOfClass:[QuartoPiece class]])
     {
-        // The released touch is on pickedPieceView
+        
+        // Placing the piece into pickedPieceView.
         if ([checkEndView isEqual:self.quartoView.pickedPieceView])
         {
+            
             BOOL canPutBoardPiece = [self.quartoView putBoardPieceIntoPickedPieceView:(QuartoPiece *) touch.view];
             if (canPutBoardPiece) {
-                touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f, self.quartoView.pickedPieceView.frame.size.width/2.f);
                 
-                // Cancel all user interactions.
+                // Put the piece in the pickedPieceView.
+                touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f,
+                                                self.quartoView.pickedPieceView.frame.size.width/2.f);
+                
+                // Disable touch to the pieces in the piecesView.
                 for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
                     eachPiece.userInteractionEnabled = NO;
                 }
                 
-                // Except for the piece that is in pickedPieceView
+                // Enable the touch that is placed into pickedPieceView.
                 touch.view.userInteractionEnabled = YES;
     
-                // If first player made the move, then now it's second player's turn.
-                if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
-//                    NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard] pickedPiece:self.quartoView.pickedPieceViewIndex];
+                
+                /* 
+                 Finish up the game and switch to the next player.
+                 This checks for who's turn it is based on the color of name labels.
+                 */
+                // NameLabel1 made the move. NameLabel2's turn.
+                if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor))
+                {
+                    if (!self.isPlayerVsPlayer) {
+//                        NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard]
+//                                                                           pickedPiece:self.quartoView.pickedPieceViewIndex];
+                    }
                     
-                    // Change border highlight
+                    // Change border highlight.
                     self.quartoView.nameLabel1.layer.borderColor = [UIColor clearColor].CGColor;
                     self.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlue].CGColor;
-                } else {
+                }
+                
+                // NameLabel2 made the move. NameLabel1's turn.
+                else
+                {
                     
-                    // Change border highlight
+                    
+                    // Change border highlight.
                     self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
                     self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
                 }
                 
             } else {
+                
+                // Put the piece back where it was.
                 touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
             }
         }
         
-        // The release touch is on a QuartoBoardViewCell.
+        // Placing the piece on the board.
         else if ([checkEndView isKindOfClass:[QuartoBoardViewCell class]] && [self.quartoView hasAPieceInPickedPieceView])
         {
+            
+            // Get the slot on board where the piece was put.
             QuartoBoardViewCell *endView = (QuartoBoardViewCell *) checkEndView;
+            
             BOOL canPutBoardPiece = [endView putBoardPiece:(QuartoPiece *) touch.view];
-            if (canPutBoardPiece) {
-                touch.view.center = CGPointMake(endView.frame.size.width/2.f, endView.frame.size.width/2.f);
+            if (canPutBoardPiece) { 
+                
+                // Put the piece in the slot.
+                touch.view.center = CGPointMake(endView.frame.size.width/2.f,
+                                                endView.frame.size.width/2.f);
+                
+                // Remove the piece in pickedPieceView.
                 [self.quartoView removePieceFromPickedPieceView];
-                for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
-                    eachPiece.userInteractionEnabled = YES;
+                
+                // Check for winner.
+                NSArray<NSNumber *> *winningIndicies;
+                if ((winningIndicies = [QuartoAI winningIndiciesWithBoard:[self.quartoView.boardView getBoard]])){
+                    
+                    // Get winner's name.
+                    NSString *nameOfTheWinner;
+                    if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
+                        nameOfTheWinner = self.quartoView.nameLabel1.text;
+                    } else {
+                        nameOfTheWinner = self.quartoView.nameLabel2.text;
+                    }
+                    
+                    NSLog(@"Winner is: %@", nameOfTheWinner);
+                    
+                    // Highlight winning indicies.
+                    CGFloat timer = 0.4;
+                    for (NSNumber *eachIndex in winningIndicies) {
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (timer * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                            self.quartoView.boardView.boardCells[eachIndex.integerValue].layer.borderColor = [UIColor quartoWhite].CGColor;
+                        });
+                        timer += 0.4;
+                        NSLog(@"timer: %f", timer);
+                    }
+                    
+                } else {
+                    
+                    // Enable touch for all the pieces in piecesView.
+                    for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
+                        eachPiece.userInteractionEnabled = YES;
+                    }
                 }
                 
+                // Highlight to show what to do next.
                 if (self.showGameGuides) {
                     self.quartoView.boardView.layer.shadowColor = [UIColor blackColor].CGColor;
                     self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
@@ -166,6 +246,8 @@
                     }
                 }
             } else {
+                
+                // Put the piece back where it was.
                 touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
             }
         }
@@ -176,7 +258,7 @@
             touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
         }
         
-        touch.view.layer.zPosition = 0;
+        self.dragFromPiecesView.layer.zPosition = 0;
     }
 }
 

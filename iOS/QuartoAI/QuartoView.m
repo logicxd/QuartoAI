@@ -26,8 +26,9 @@
 
 @implementation QuartoView
 
-- (instancetype)init {
+- (instancetype)initWithFirstPlayerName:(NSString *)firstPlayerName secondPlayerName:(NSString *)secondPlayerName {
     if (self = [super init]) {
+        
         // Constants. Set this to dyanmic later.
         _kEdgeOffset = @5;
         _kNameLabelWidth = @70;
@@ -39,22 +40,22 @@
         
         // Initialize name labels;
         _nameLabel1 = [[UILabel alloc] init];
-        self.nameLabel1.text = @"Player 1";
+        self.nameLabel1.text = firstPlayerName;
         self.nameLabel1.textAlignment = NSTextAlignmentCenter;
         self.nameLabel1.textColor = [UIColor quartoBlue];
         self.nameLabel1.backgroundColor = [UIColor clearColor];
         self.nameLabel1.layer.borderWidth = 2.0f;
         self.nameLabel1.layer.borderColor = [UIColor clearColor].CGColor;
-        self.translatesAutoresizingMaskIntoConstraints = YES;
+        self.nameLabel1.translatesAutoresizingMaskIntoConstraints = YES;
         
         _nameLabel2 = [[UILabel alloc] init];
-        self.nameLabel2.text = @"Bot";
+        self.nameLabel2.text = secondPlayerName;
         self.nameLabel2.textAlignment = NSTextAlignmentCenter;
         self.nameLabel2.textColor = [UIColor quartoBlue];
         self.nameLabel2.backgroundColor = [UIColor clearColor];
         self.nameLabel2.layer.borderWidth = 2.0f;
         self.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
-        self.translatesAutoresizingMaskIntoConstraints = YES;
+        self.nameLabel2.translatesAutoresizingMaskIntoConstraints = YES;
         
         // Initialize Board and pieces.
         _boardView = [[QuartoBoardView alloc] initWithWidth:self.kBoardSize.floatValue height:self.kBoardSize.floatValue];
@@ -63,15 +64,15 @@
         // Initialize pickedPieceView.
         _pickedPieceView = [[UIView alloc] init];
         self.pickedPieceView.backgroundColor = [UIColor quartoGray];
-        self.pickedPieceView.layer.borderWidth = 2.0f;
-        self.pickedPieceView.layer.borderColor = [UIColor quartoBlack].CGColor;
         self.pickedPieceView.layer.cornerRadius = 10.f;
-        self.pickedPieceView.layer.shadowOpacity = 1.f;
-        self.pickedPieceView.layer.shadowRadius = 5;
-        self.pickedPieceView.layer.shadowOffset = CGSizeMake(0, 1);
+        self.pickedPieceView.layer.shadowOpacity = .8f;
+        self.pickedPieceView.layer.shadowRadius = 10;
+        self.pickedPieceView.layer.shadowOffset = CGSizeMake(0, 6);
         self.pickedPieceView.translatesAutoresizingMaskIntoConstraints = YES;
-        self.backgroundColor = [UIColor quartoBlack];
         
+        // Settings for this view.
+        self.backgroundColor = [UIColor quartoBlack];
+
         // Add to the subviews.
         [self addSubview:self.nameLabel1];
         [self addSubview:self.nameLabel2];
