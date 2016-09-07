@@ -6,6 +6,7 @@
 //  Copyright © 2016 Aung Moe. All rights reserved.
 //
 
+#import "MainMenuViewController.h"
 #import "QuartoViewController.h"
 #import "QuartoView.h"
 #import "QuartoBoardView.h"
@@ -13,6 +14,8 @@
 #import "QuartoPiecesView.h"
 #import "QuartoPiece.h"
 #import "QuartoAI.h"
+#import "QuartoSettingsView.h"
+#import "CustomIOSAlertView.h"
 #import "UIColor+QuartoColor.h"
 
 @interface QuartoViewController ()
@@ -50,6 +53,7 @@
     } else {
         _quartoView = [[QuartoView alloc] initWithFirstPlayerName:@"Player" secondPlayerName:@"Bot"];
     }
+    
     _showGameGuides = YES;
     _shownGameGuidesCount = 0;
     
@@ -63,6 +67,32 @@
 
 - (void)viewDidLoad {
     _bot = [[QuartoAI alloc] init];
+    
+    // Settings Button Hit.
+    __weak typeof(self) weakSelf = self;
+    self.quartoView.settingsView.buttonHit = ^(SettingsButton type) {
+        
+         if (type == SettingsButtonRestart) {
+             NSLog(@"\"Restart\" is pressed");
+             [weakSelf.quartoView.customIOSAlertView close];
+             
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 [weakSelf resetGame];
+                 weakSelf.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
+                 weakSelf.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlack].CGColor;
+             });
+         } else if (type == SettingsButtonQuit) {
+             NSLog(@"\"Quit\" is pressed");
+             [weakSelf.quartoView.customIOSAlertView close];
+             
+             __block MainMenuViewController *mainMenu = [[MainMenuViewController alloc] init];
+             mainMenu.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
+             mainMenu.modalPresentationStyle = UIModalPresentationFullScreen;
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                 [weakSelf presentViewController:mainMenu animated:YES completion:nil];
+             });
+         }
+    };
 }
 
 - (void)resetGame {

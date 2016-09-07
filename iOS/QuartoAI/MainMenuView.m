@@ -39,8 +39,8 @@
         
         self.playerVsPlayerButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.playerVsPlayerButton.layer.cornerRadius = 10.f;
-        self.playerVsPlayerButton.layer.shadowOpacity = .8f;
-        self.playerVsPlayerButton.layer.shadowRadius = 4;
+        self.playerVsPlayerButton.layer.shadowOpacity = .5f;
+        self.playerVsPlayerButton.layer.shadowRadius = 1;
         self.playerVsPlayerButton.layer.shadowOffset = CGSizeMake(0, 6);
         [self.playerVsPlayerButton setTitle:@"Player vs Player" forState:UIControlStateNormal];
         [self.playerVsPlayerButton setTitleColor:[UIColor quartoBlack] forState:UIControlStateNormal];
@@ -50,8 +50,8 @@
         
         self.playerVsBotButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.playerVsBotButton.layer.cornerRadius = 10.f;
-        self.playerVsBotButton.layer.shadowOpacity = .8f;
-        self.playerVsBotButton.layer.shadowRadius = 4;
+        self.playerVsBotButton.layer.shadowOpacity = .5f;
+        self.playerVsBotButton.layer.shadowRadius = 1;
         self.playerVsBotButton.layer.shadowOffset = CGSizeMake(0, 6);
         [self.playerVsBotButton setTitle:@"Player vs Bot" forState:UIControlStateNormal];
         [self.playerVsBotButton setTitleColor:[UIColor quartoBlack] forState:UIControlStateNormal];
@@ -61,8 +61,8 @@
         
         self.howToButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.howToButton.layer.cornerRadius = 10.f;
-        self.howToButton.layer.shadowOpacity = .8f;
-        self.howToButton.layer.shadowRadius = 4;
+        self.howToButton.layer.shadowOpacity = .5f;
+        self.howToButton.layer.shadowRadius = 1;
         self.howToButton.layer.shadowOffset = CGSizeMake(0, 6);
         [self.howToButton setTitle:@"How to Play" forState:UIControlStateNormal];
         [self.howToButton setTitleColor:[UIColor redColor] forState:UIControlStateHighlighted];
@@ -111,7 +111,6 @@
     CGFloat widthDimension = (self.bounds.size.width)*0.7;
     CGFloat heightDimension = (self.bounds.size.height)*0.4;
     CGFloat buttonHeightDimension = (heightDimension)/4;
-
     
     [self.shimmeringTitle mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(self.buttonContainer.mas_top).offset(-25.f);
@@ -152,6 +151,14 @@
     }];
     
     [super updateConstraints];
+}
+
+- (void)layoutSubviews {
+    [super layoutSubviews];
+    
+    self.playerVsPlayerButton.layer.cornerRadius = self.playerVsPlayerButton.bounds.size.height * 1/8.f;
+    self.playerVsBotButton.layer.cornerRadius = self.playerVsBotButton.bounds.size.height * 1/8.f;
+    self.howToButton.layer.cornerRadius = self.howToButton.bounds.size.height * 1/8.f;
 }
 
 @end

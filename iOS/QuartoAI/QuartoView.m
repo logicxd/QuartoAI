@@ -10,11 +10,13 @@
 #import "QuartoBoardView.h"
 #import "QuartoPiecesView.h"
 #import "QuartoPiece.h"
+#import "QuartoSettingsView.h"
 #import "Masonry.h"
 #import "UIColor+QuartoColor.h"
-
+#import "CustomIOSAlertView.h"
 
 @interface QuartoView ()
+@property (nonatomic, assign) CGSize kScreenSize;
 @property (nonatomic, strong) NSNumber *kEdgeOffset;
 @property (nonatomic, strong) NSNumber *kNameLabelWidth;
 @property (nonatomic, strong) NSNumber *kNameLabelHeight;
@@ -30,7 +32,7 @@
 - (instancetype)initWithFirstPlayerName:(NSString *)firstPlayerName secondPlayerName:(NSString *)secondPlayerName {
     if (self = [super init]) {
         
-        // Constants. Set this to dyanmic later.
+        // Constants. Set this to dyanmic later?
         _kEdgeOffset = @5;
         _kNameLabelWidth = @70;
         _kNameLabelHeight = @30;
@@ -40,15 +42,23 @@
         _kPieceViewWidth = @308;
         _kPieceViewHeight = @80;
         
-        // Initialize settings button.
+        // Add the settings button.
         _settingsButton = [UIButton buttonWithType:UIButtonTypeInfoLight];
         self.settingsButton.tintColor = [UIColor quartoBlue];
-        self.settingsButton.layer.shadowOpacity = 1.f;
-        self.settingsButton.layer.shadowRadius = 2;
+        self.settingsButton.layer.shadowOpacity = .5f;
+        self.settingsButton.layer.shadowRadius = 1;
         self.settingsButton.layer.shadowOffset = CGSizeMake(0, 6);
-        [self.settingsButton setTitle:@"Settings" forState:UIControlStateNormal];
         [self.settingsButton setImage:[UIImage imageNamed:@"Settings-50.png"] forState:UIControlStateNormal];
-        [self.settingsButton addTarget:self action:@selector(settingsButtonHit:) forControlEvents:UIControlEventTouchUpInside];
+        [self.settingsButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
+        
+        // Initialize SettingsView.
+        _settingsView = [[QuartoSettingsView alloc] init];
+        
+        // Initialize CustomIOSAlertView.
+        _customIOSAlertView = [[CustomIOSAlertView alloc] init];
+        [self.customIOSAlertView setButtonTitles:nil];
+        [self.customIOSAlertView setCloseOnTouchUpOutside:YES];
+        [self.customIOSAlertView setContainerView:self.settingsView];
         
         // Initialize name labels.
         _nameLabel1 = [[UILabel alloc] init];
@@ -76,9 +86,9 @@
         // Initialize pickedPieceView.
         _pickedPieceView = [[UIView alloc] init];
         self.pickedPieceView.backgroundColor = [UIColor quartoGray];
-        self.pickedPieceView.layer.cornerRadius = 10.f;
-        self.pickedPieceView.layer.shadowOpacity = .8f;
-        self.pickedPieceView.layer.shadowRadius = 10;
+        self.pickedPieceView.layer.cornerRadius = 5.f;
+        self.pickedPieceView.layer.shadowOpacity = .5f;
+        self.pickedPieceView.layer.shadowRadius = 1;
         self.pickedPieceView.layer.shadowOffset = CGSizeMake(0, 6);
         self.pickedPieceView.translatesAutoresizingMaskIntoConstraints = YES;
         
@@ -98,10 +108,12 @@
 
 #pragma mark - Button Hit
 
-- (void)settingsButtonHit:(UIButton *)button {
-    NSLog(@"\"%@\" is pressed", button.titleLabel.text);
+- (void)buttonHit:(UIButton *)button {
     
-    
+    if (button == self.settingsButton) {
+        NSLog(@"\"Settings\" is pressed");
+        [self.customIOSAlertView show];
+    }
 }
 
 #pragma mark - PickedPieceView Methods
@@ -136,7 +148,6 @@
 
 - (void)updateConstraints {
     // iPhone 4s Width: 320. Height: 480.
-    
     [self.nameLabel1 mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.width.equalTo(self.kNameLabelWidth);
         make.height.equalTo(self.kNameLabelHeight);

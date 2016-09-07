@@ -24,13 +24,12 @@ static const NSInteger kTotalCells = 16;
 
 - (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height {
     if (self = [super initWithFrame:CGRectMake(0, 0, width, height)]) {
-        _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
-        [self loadInitialBoardView];
-        
+        [self resetBoard];
+
         self.backgroundColor = [UIColor quartoGray];
         self.layer.cornerRadius = 10;
-        self.layer.shadowOpacity = .8f;
-        self.layer.shadowRadius = 10;
+        self.layer.shadowOpacity = .5f;
+        self.layer.shadowRadius = 1;
         self.layer.shadowOffset = CGSizeMake(0, 6);
     }
     return self;
@@ -48,6 +47,7 @@ static const NSInteger kTotalCells = 16;
 }
 
 - (void)resetBoard {
+    _boardCells = [NSMutableArray arrayWithCapacity:kTotalCells];
     [self loadInitialBoardView];
 }
 
@@ -61,7 +61,7 @@ static const NSInteger kTotalCells = 16;
         [eachView removeFromSuperview];
     }
     
-    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
+//    NSLog(@"Frame Width: %f Frame Height:%f", self.frame.size.width, self.frame.size.height);
     
     // Constants
     const CGFloat kBoardSize = self.frame.size.width;

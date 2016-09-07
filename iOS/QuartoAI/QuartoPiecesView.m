@@ -31,16 +31,12 @@ static const NSInteger kTotalPieces = 16;
 
 - (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height {
     if (self = [super initWithFrame:CGRectMake(0, 0, width, height)]) {
-        _pieces = [NSMutableArray arrayWithCapacity:kTotalPieces];
-        _pieceSlots = [NSMutableArray arrayWithCapacity:kTotalPieces];
-        [self loadInitialPiecesView];
-        [self loadRandomizedPieces];
-        [self addPiecestoView];
-        
+        [self resetBoard];
+     
         self.backgroundColor = [UIColor quartoGray];
-        self.layer.cornerRadius = 10;
-        self.layer.shadowOpacity = .8f;
-        self.layer.shadowRadius = 10;
+        self.layer.cornerRadius = 5.f;
+        self.layer.shadowOpacity = .5f;
+        self.layer.shadowRadius = 1;
         self.layer.shadowOffset = CGSizeMake(0, 6);
     }
     return self;
@@ -53,12 +49,15 @@ static const NSInteger kTotalPieces = 16;
             return eachView;
         }
     }
-    
     return nil;
 }
 
 - (void)resetBoard {
+    _pieces = [NSMutableArray arrayWithCapacity:kTotalPieces];
+    _pieceSlots = [NSMutableArray arrayWithCapacity:kTotalPieces];
     [self loadInitialPiecesView];
+    [self loadRandomizedPieces];
+    [self addPiecestoView];
 }
 
 #pragma mark - Private Methods

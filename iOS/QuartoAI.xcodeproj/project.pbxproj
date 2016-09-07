@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4053E8C28C5E22B17D37D1EC /* libPods-QuartoAI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FD86A4FBED946B1A4F3BD999 /* libPods-QuartoAI.a */; };
 		680135AF1D6E64AA00609348 /* MainMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 680135AE1D6E64AA00609348 /* MainMenuViewController.m */; };
 		680135B61D6E66FF00609348 /* MainMenuView.m in Sources */ = {isa = PBXBuildFile; fileRef = 680135B51D6E66FF00609348 /* MainMenuView.m */; };
 		6802C11C1D798F7A004C790C /* UIColor+QuartoColor.m in Sources */ = {isa = PBXBuildFile; fileRef = 6802C11B1D798F7A004C790C /* UIColor+QuartoColor.m */; };
@@ -23,6 +24,7 @@
 		68B4DFAA1D6C1C340024822D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B4DFA91D6C1C340024822D /* main.m */; };
 		68B4DFAD1D6C1C340024822D /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 68B4DFAC1D6C1C340024822D /* AppDelegate.m */; };
 		68B4DFB51D6C1C340024822D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 68B4DFB41D6C1C340024822D /* Assets.xcassets */; };
+		68BFB25A1D80180F00FD05B0 /* QuartoSettingsView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68BFB2591D80180F00FD05B0 /* QuartoSettingsView.m */; };
 		68F008751D6EEAD100455E79 /* QuartoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008741D6EEAD100455E79 /* QuartoViewController.m */; };
 		68F008791D6EF4B500455E79 /* QuartoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008781D6EF4B500455E79 /* QuartoView.m */; };
 		68F008811D6F9F1A00455E79 /* QuartoBoardView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F008801D6F9F1A00455E79 /* QuartoBoardView.m */; };
@@ -30,7 +32,6 @@
 		68F0088C1D7057F800455E79 /* QuartoAI.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F0088B1D7057F800455E79 /* QuartoAI.m */; };
 		68F281101D7516D500EC00B6 /* QuartoPiecesView.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F2810F1D7516D500EC00B6 /* QuartoPiecesView.m */; };
 		68F281171D75519A00EC00B6 /* QuartoPiece.m in Sources */ = {isa = PBXBuildFile; fileRef = 68F281161D75519A00EC00B6 /* QuartoPiece.m */; };
-		F7EED326A1F36FDDF11809F9 /* libPods-QuartoAI.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,6 +58,8 @@
 		68B4DFAC1D6C1C340024822D /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		68B4DFB41D6C1C340024822D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = QuartoAI/Assets.xcassets; sourceTree = "<group>"; };
 		68B4DFB91D6C1C340024822D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = QuartoAI/Info.plist; sourceTree = "<group>"; };
+		68BFB2581D80180F00FD05B0 /* QuartoSettingsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoSettingsView.h; sourceTree = "<group>"; };
+		68BFB2591D80180F00FD05B0 /* QuartoSettingsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoSettingsView.m; sourceTree = "<group>"; };
 		68F008731D6EEAD100455E79 /* QuartoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoViewController.h; sourceTree = "<group>"; };
 		68F008741D6EEAD100455E79 /* QuartoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoViewController.m; sourceTree = "<group>"; };
 		68F008771D6EF4B500455E79 /* QuartoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoView.h; sourceTree = "<group>"; };
@@ -71,8 +74,8 @@
 		68F2810F1D7516D500EC00B6 /* QuartoPiecesView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoPiecesView.m; sourceTree = "<group>"; };
 		68F281151D75519A00EC00B6 /* QuartoPiece.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = QuartoPiece.h; sourceTree = "<group>"; };
 		68F281161D75519A00EC00B6 /* QuartoPiece.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = QuartoPiece.m; sourceTree = "<group>"; };
-		6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QuartoAI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		7EDA07A6AA8E0100C5231D6C /* Pods-QuartoAI.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-QuartoAI.debug.xcconfig"; path = "Pods/Target Support Files/Pods-QuartoAI/Pods-QuartoAI.debug.xcconfig"; sourceTree = "<group>"; };
+		FD86A4FBED946B1A4F3BD999 /* libPods-QuartoAI.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-QuartoAI.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,7 +83,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F7EED326A1F36FDDF11809F9 /* libPods-QuartoAI.a in Frameworks */,
+				4053E8C28C5E22B17D37D1EC /* libPods-QuartoAI.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -175,6 +178,8 @@
 				68F008741D6EEAD100455E79 /* QuartoViewController.m */,
 				68F008771D6EF4B500455E79 /* QuartoView.h */,
 				68F008781D6EF4B500455E79 /* QuartoView.m */,
+				68BFB2581D80180F00FD05B0 /* QuartoSettingsView.h */,
+				68BFB2591D80180F00FD05B0 /* QuartoSettingsView.m */,
 				68F008881D6FE7A100455E79 /* Board */,
 				68F281111D7516DE00EC00B6 /* Pieces */,
 			);
@@ -215,7 +220,7 @@
 		C8617246178C1A57706D7722 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6F00CDC91B28BAB75C8D654C /* libPods-QuartoAI.a */,
+				FD86A4FBED946B1A4F3BD999 /* libPods-QuartoAI.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -361,6 +366,7 @@
 				68F008791D6EF4B500455E79 /* QuartoView.m in Sources */,
 				68F281101D7516D500EC00B6 /* QuartoPiecesView.m in Sources */,
 				680135B61D6E66FF00609348 /* MainMenuView.m in Sources */,
+				68BFB25A1D80180F00FD05B0 /* QuartoSettingsView.m in Sources */,
 				68F281171D75519A00EC00B6 /* QuartoPiece.m in Sources */,
 				680135AF1D6E64AA00609348 /* MainMenuViewController.m in Sources */,
 				6802C11C1D798F7A004C790C /* UIColor+QuartoColor.m in Sources */,

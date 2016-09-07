@@ -3,4 +3,5 @@ platform :ios, '8.2'
 target 'QuartoAI' do
         pod 'Masonry'
         pod 'Shimmer'
+        pod 'CustomIOSAlertView', '~> 0.9.4'
 end
