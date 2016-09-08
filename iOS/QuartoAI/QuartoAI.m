@@ -10,15 +10,18 @@
 
 static NSString *const kBoardKey = @"kBoardKey";
 static NSString *const kDepthKey = @"kDepthKey";
+static NSString *const kLastDepthKey = @"kLastDepthKey";
+static NSString *const kLeafNode = @"kLeafNode";
 static NSString *const kPlaceIndexKey = @"kPlaceIndexKey";
 static NSString *const kPieceIndexKey = @"kPieceIndexKey";
 static NSString *const kNextPossibleMovesKey = @"kNextPossibleMovesKey";
+static NSString *const kNextPossiblePiecesKey = @"kNextPossiblePiecesKey";
 static NSString *const kScoreKey = @"kScoreKey";
 static const NSInteger kMaxNumOfMoves = 16;
 static NSUInteger count = 0;
 
 @interface QuartoAI ()
-@property (nonatomic, strong, readwrite) NSSet<NSNumber *> *kBoardPieces; // Indicies 0 - 15
+@property (nonatomic, copy, readwrite) NSSet<NSNumber *> *kBoardPieces; // Indicies 0 - 15
 @end
 
 @implementation QuartoAI
@@ -42,18 +45,66 @@ static NSUInteger count = 0;
 }
 
 - (NSNumber *)botMovedAtIndexWithBoard:(NSDictionary *)board pickedPiece:(NSNumber *)pickedPiece {
-//    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard alpha:NSIntegerMin beta:NSIntegerMax depthLevel:@(0) searchDepthLevel:@(1) color:1];
+    //    NSDictionary *root = [self placePieceWithBoard:board
+    //                                             alpha:NSIntegerMin
+    //                                              beta:NSIntegerMax
+    //                                             color:1
+    //                                        depthLevel:@(board.count)
+    //                                  searchDepthLevel:@(3)
+    //                                        pickedPiece:pickedPiece
+    //                          ];
     
-    NSDictionary *root = [self placePieceWithBoard:board
-                                             alpha:NSIntegerMin
-                                              beta:NSIntegerMax
-                                             color:1
-                                        depthLevel:@(board.count)
-                                  searchDepthLevel:@(3)
-                                        pickedPiece:pickedPiece
-                          ];
-    NSNumber *botPickPlace = root[kPlaceIndexKey];
-    NSNumber *botPickPiece = root[kPieceIndexKey];
+    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard
+                                                    alpha:NSIntegerMin
+                                                     beta:NSIntegerMax
+                                                    color:1
+                                               depthLevel:@(board.count)
+                                         searchDepthLevel:@(2)
+                                              pickedPiece:pickedPiece];
+    
+    // Get the biggest score for the bot.
+    __block BOOL setScore = NO;
+    __block NSInteger biggestScore = NSIntegerMin;
+    [root enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull index, id  _Nonnull node, BOOL * _Nonnull stop) {
+        // Each move.
+        
+        // Can lead to multiple pieces.
+        NSDictionary *piecesDictionary = node[kNextPossiblePiecesKey];
+        [piecesDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull eachPiece, BOOL * _Nonnull stop) {
+            
+            NSInteger score = [eachPiece[kScoreKey] integerValue];
+            if (biggestScore < score || !setScore) {
+                biggestScore = score;
+                setScore = YES;
+            }
+        }];
+    }];
+    
+    // From all the biggest scores, pick a random one.
+    __block NSMutableArray *botPicks = [NSMutableArray array];
+    [root enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull index, id  _Nonnull node, BOOL * _Nonnull stop) {
+        // Each move.
+        
+        // Can lead to multiple pieces.
+        NSDictionary *piecesDictionary = node[kNextPossiblePiecesKey];
+        [piecesDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull eachPiece, BOOL * _Nonnull stop) {
+            
+            NSInteger score = [eachPiece[kScoreKey] integerValue];
+            if (score == biggestScore) {
+                NSNumber *placedIndex = (NSNumber *) node[kPlaceIndexKey];
+                NSNumber *pickedPiece = (NSNumber *) eachPiece[kPieceIndexKey];
+                
+                [botPicks addObject:@{
+                                      kPlaceIndexKey : placedIndex,
+                                      kPieceIndexKey : pickedPiece
+                                      }];
+            }
+        }];
+    }];
+    
+    NSInteger intKey = arc4random_uniform(botPicks.count);
+    NSNumber *botPickPlace = [botPicks[intKey] objectForKey:kPlaceIndexKey];
+    NSNumber *botPickPiece = [botPicks[intKey] objectForKey:kPieceIndexKey];
     
     NSLog(@"Count: %i", count);
     NSLog(@"Bot places index: %i   Picks piece index: %i", botPickPlace.integerValue, botPickPiece.integerValue);
@@ -61,69 +112,133 @@ static NSUInteger count = 0;
     return botPickPlace;
 }
 
-#pragma mark - Private Methods Below This Line
-
-
 #pragma mark - Negamax Alpha Beta Tree
 
-- (NSDictionary *)nextPossibleMovesWithBoard:(NSDictionary *)board alpha:(NSInteger)alpha beta:(NSInteger)beta depthLevel:(NSNumber *)depthLevel searchDepthLevel:(NSNumber *)searchDepthLevel color:(NSInteger)color {
-    // Someone just made a move.
+- (NSDictionary *)nextPossibleMovesWithBoard:(NSDictionary *)board alpha:(NSInteger)alpha beta:(NSInteger)beta color:(NSInteger)color depthLevel:(NSNumber *)depthLevel searchDepthLevel:(NSNumber *)searchDepthLevel pickedPiece:(NSNumber *)pickedPiece{
+    
     // If depthlevel is not the same as the stopping depth level. Depthlevel must be four or bigger AND there must have found a winner. OR depthlevel reached the end of the game.
     NSArray<NSNumber *> *winningIndicies;
     if ( (depthLevel.integerValue == depthLevel.integerValue + searchDepthLevel.integerValue) ||
-        ((depthLevel.integerValue >= 4 && (winningIndicies = [QuartoAI winningIndiciesWithBoard:board])) ||
-         depthLevel.integerValue == kMaxNumOfMoves)) {
+         (depthLevel.integerValue >= 4 && (winningIndicies = [QuartoAI winningIndiciesWithBoard:board]) ) ||
+         (depthLevel.integerValue == kMaxNumOfMoves) ) {
             
-            NSMutableDictionary *leafNode = [NSMutableDictionary dictionary];
-            leafNode[kBoardKey] = board;
-            leafNode[kDepthKey] = depthLevel;
-            leafNode[kPlaceIndexKey] = nil;
-            leafNode[kNextPossibleMovesKey] = nil;
-            leafNode[kScoreKey] = winningIndicies ? @(1 * color) : @(0);
-            return leafNode;
-        }
+        NSMutableDictionary *leafNode = [NSMutableDictionary dictionary];
+        leafNode[kBoardKey] = board;
+        leafNode[kDepthKey] = depthLevel;
+        leafNode[kLastDepthKey] = depthLevel;
+        leafNode[kLeafNode] = kLeafNode;
+        leafNode[kScoreKey] = winningIndicies ? @(-1 * color) : @(0);
+        return leafNode;
+    }
     
-    // Current board.
+    /*
+     
+     We have "node" which represents how the board looks on the screen right now.
+     We also have the "pickedPiece" which is for us to place on the board.
+     1) Put the pickedPiece down. 
+     2) If the game hasn't ended, look for the best next piece to put.
+     
+     */
+    
     NSMutableDictionary *node = [NSMutableDictionary dictionary];
-    // Pick board piece.
-    NSSet<NSNumber *> *availablePieces = [self availablePiecesWithBoard:board];
-    // Then place.
     NSSet<NSNumber *> *availableMoves = [self availableMovesWithBoard:board];
-    
-    for (NSNumber *eachPiece in availablePieces) {
-        for (NSNumber *eachMove in availableMoves) {
+    for (NSNumber *eachMove in availableMoves) {
+        
+        // Move dictionary.
+        NSMutableDictionary *moveDictionary = [NSMutableDictionary dictionary];
+        
+        // Place Move
+        NSDictionary *placedPickedPieceOnBoard = [self markBoard:board boardPiece:pickedPiece positionIndex:eachMove];
+        moveDictionary[kBoardKey] = placedPickedPieceOnBoard;
+        moveDictionary[kDepthKey] = depthLevel;
+        moveDictionary[kPlaceIndexKey] = eachMove;
+        
+        // Pick next piece with the placedPickedPieceOnBoard.
+        // If the board has a winner, then it won't choose any piece and terminates the game.
+        NSMutableDictionary *piecesDictionary = [NSMutableDictionary dictionary];
+        NSSet<NSNumber *> *availablePieces = [self availablePiecesWithBoard:placedPickedPieceOnBoard];
+        for (NSNumber *eachPiece in availablePieces) {
             
-            // Make Move
-            NSDictionary *newBoard = [self markBoard:board boardPiece:eachPiece positionIndex:eachMove];
-            node[kBoardKey] = newBoard;
-            node[kDepthKey] = depthLevel;
-            node[kPlaceIndexKey] = eachMove;
+            // Piece Dictionary.
+            NSMutableDictionary *pieceDictionary = [NSMutableDictionary dictionary];
             
-            // Next Move
-            node[kNextPossibleMovesKey] = [self nextPossibleMovesWithBoard:newBoard
-                                                                     alpha:alpha beta:beta
-                                                                depthLevel:@(depthLevel.integerValue + 1)
-                                                          searchDepthLevel:@(searchDepthLevel.integerValue - 1)
-                                                                     color:-color];
+            // PickPiece dictionary.
+            NSDictionary *nextNode = [self nextPossibleMovesWithBoard:placedPickedPieceOnBoard
+                                                                           alpha:alpha
+                                                                            beta:beta
+                                                                           color:-color
+                                                                      depthLevel:@(depthLevel.integerValue + 1)
+                                                                searchDepthLevel:@(searchDepthLevel.integerValue - 1)
+                                                                     pickedPiece:eachPiece];
             
-            // Score
-            NSInteger score = [node[kNextPossibleMovesKey][kScoreKey] integerValue];
+            /*
+             2 Possibilities.
+             1) Game ends: score from placing the piece and reaching end game.
+             2) Game continues: score for the next player in terms of the bot's perspective.
+             */
+            
+            NSInteger score;
+            // Case 1: Game ends
+            if (nextNode[kLeafNode]) {
+                score = [nextNode[kScoreKey] integerValue];
+            }
+            
+            // Case 2: Game continues
+            else {
+                
+                // Get the score with correct perspectives
+                if (color == 1) {
+                    
+                    __block NSInteger smallestScore;
+                    __block BOOL setScore = NO;
+                    [nextNode enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                        
+                        NSInteger blockScore = [obj[kScoreKey] integerValue];
+                        if (smallestScore < blockScore || !setScore) {
+                            smallestScore = blockScore;
+                            setScore = YES;
+                        }
+                    }];
+                    
+                    // The opponent's going to do their worst.
+                    score = smallestScore;
+                } else if (color == -1) {
+                    
+                    __block NSInteger biggestScore;
+                    __block BOOL setScore = NO;
+                    [nextNode enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                        
+                        NSInteger score = [obj[kScoreKey] integerValue];
+                        if (biggestScore < score || !setScore) {
+                            biggestScore = score;
+                            setScore = YES;
+                        }
+                    }];
+                    
+                    // The bot's going to do the best.
+                    score = biggestScore;
+                }
+            }
+            
             count++;
+            pieceDictionary[kScoreKey] = @(score);  // Score for both placing the pickedPiece and picking a piece.
+            pieceDictionary[kPieceIndexKey] = eachPiece;
+            piecesDictionary[eachPiece] = pieceDictionary;
             if (color == 1) {
+                
                 // Bot's move
                 if (score > alpha) {
                     alpha = score;
-                    node[kScoreKey] = @(alpha);
                 }
                 
                 if (alpha >= beta) {
                     break;
                 }
             } else if (color == -1) {
+                
                 // Player's move
                 if (score < beta) {
                     beta = score;
-                    node[kScoreKey] = @(beta);
                 }
                 
                 if (alpha >= beta) {
@@ -131,9 +246,12 @@ static NSUInteger count = 0;
                 }
             }
         }
+        
+        moveDictionary[kNextPossiblePiecesKey] = piecesDictionary;
+        node[eachMove] = moveDictionary;
     }
     
-    //    NSLog(@"It should never run here...");
+    // Return all the moves that can be made, along with the scores.
     return node;
 }
 
@@ -278,7 +396,7 @@ static NSUInteger count = 0;
     return availableMoves;
 }
 
-// Some of the characters are wonky. They become pointers????
+// Some of the characters are wonky. They become pointers???? Seems to work though.
 - (NSSet<NSNumber *> *)availablePiecesWithBoard:(NSDictionary *)board {
     NSMutableSet<NSNumber *> *availablePieces = [self.kBoardPieces mutableCopy];
     for (NSNumber *eachPiece in [board allValues]) {
@@ -306,7 +424,9 @@ static NSUInteger count = 0;
         if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
             return @[@3, @6, @9, @12];
         }
-    } else if (board[@0] && board[@5] && board[@10] && board[@15]) {
+    }
+    
+    if (board[@0] && board[@5] && board[@10] && board[@15]) {
         /**
          
          * - - -
@@ -321,7 +441,9 @@ static NSUInteger count = 0;
         if ([QuartoAI hasSameAttributeWithRow:rowArray]) {
             return @[@0, @5, @10, @15];
         }
-    } else if (board[@0]) {
+    }
+    
+    if (board[@0]) {
         /**
          
          * * * *
@@ -343,7 +465,9 @@ static NSUInteger count = 0;
                 return @[@0, @4, @8, @12];
             }
         }
-    } else if (board[@5]) {
+    }
+    
+    if (board[@5]) {
         /**
          
          - * - -
@@ -365,7 +489,9 @@ static NSUInteger count = 0;
                 return @[@4, @5, @6, @7];
             }
         }
-    } else if (board[@10]) {
+    }
+    
+    if (board[@10]) {
         /**
          
          - - * -
@@ -387,7 +513,9 @@ static NSUInteger count = 0;
                 return @[@2, @6, @10, @14];
             }
         }
-    } else if (board[@15]) {
+    }
+    
+    if (board[@15]) {
         /**
          
          - - - *

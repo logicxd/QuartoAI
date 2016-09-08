@@ -54,7 +54,7 @@
         _quartoView = [[QuartoView alloc] initWithFirstPlayerName:@"Player" secondPlayerName:@"Bot"];
     }
     
-    _showGameGuides = YES;
+    _showGameGuides = NO;
     _shownGameGuidesCount = 0;
     
     if (self.showGameGuides) {
@@ -190,8 +190,7 @@
                 if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor))
                 {
                     if (!self.isPlayerVsPlayer) {
-//                        NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard]
-//                                                                           pickedPiece:self.quartoView.pickedPieceViewIndex];
+                        [self playBot];
                     }
                     
                     // Change border highlight.
@@ -254,7 +253,6 @@
                             self.quartoView.boardView.boardCells[eachIndex.integerValue].layer.borderColor = [UIColor quartoWhite].CGColor;
                         });
                         timer += 0.4;
-                        NSLog(@"timer: %f", timer);
                     }
                     
                 } else {
@@ -290,6 +288,15 @@
         
         self.dragFromPiecesView.layer.zPosition = 0;
     }
+}
+
+- (void)playBot {
+    
+    NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard]
+                                                       pickedPiece:self.quartoView.pickedPieceViewIndex];
+    
+    
+    
 }
 
 @end
