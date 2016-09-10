@@ -54,7 +54,7 @@ static NSUInteger count = 0;
     //                                        pickedPiece:pickedPiece
     //                          ];
     
-    NSDictionary *root = [self nextPossibleMovesWithBoard:self.playingBoard
+    NSDictionary *root = [self nextPossibleMovesWithBoard:board
                                                     alpha:NSIntegerMin
                                                      beta:NSIntegerMax
                                                     color:1
@@ -94,6 +94,8 @@ static NSUInteger count = 0;
                 NSNumber *placedIndex = (NSNumber *) node[kPlaceIndexKey];
                 NSNumber *pickedPiece = (NSNumber *) eachPiece[kPieceIndexKey];
                 
+                
+                NSLog(@"Place index %i   Piece Index %i", placedIndex.integerValue, pickedPiece.integerValue);
                 [botPicks addObject:@{
                                       kPlaceIndexKey : placedIndex,
                                       kPieceIndexKey : pickedPiece
