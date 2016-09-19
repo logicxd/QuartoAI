@@ -292,11 +292,21 @@
 
 - (void)playBot {
     
-    NSNumber *moveIndexForBot = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard]
+    NSDictionary *botDecision = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard]
                                                        pickedPiece:self.quartoView.pickedPieceViewIndex];
     
+    NSInteger botPicksPlace = [botDecision[@"place"] integerValue];
+    NSInteger botPicksPiece = [botDecision[@"piece"] integerValue];
     
+    // IMPORTANT: 'Piece' and 'Piece slots' are DIFFERENT. Piece slots are the visible slots that you see on the screen.
+    // Each piece slots can hold a piece that are randomized.
     
+//    self.quartoView.boardView.bo
+    
+    NSLog(@"Bot places index: %ld   Picks piece index: %ld",
+          (long) botPicksPlace,
+          [[self.quartoView.piecesView getSlotPositionOfPieceIndex:@(botPicksPiece)] longValue]
+          );
 }
 
 @end

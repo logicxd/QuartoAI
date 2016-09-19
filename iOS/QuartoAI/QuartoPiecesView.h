@@ -27,6 +27,7 @@
 #pragma mark - Methods
 - (instancetype)initWithWidth:(CGFloat)width height:(CGFloat)height; // Use this to init.
 - (UIView *)getTheSlotThatThePieceIsInWithIndex:(NSNumber *)index;
+- (NSNumber *)getSlotPositionOfPieceIndex:(NSNumber *)index;
 - (void)resetBoard;
 
 @end

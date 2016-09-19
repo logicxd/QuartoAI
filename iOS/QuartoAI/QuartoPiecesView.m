@@ -52,6 +52,18 @@ static const NSInteger kTotalPieces = 16;
     return nil;
 }
 
+- (NSNumber *)getSlotPositionOfPieceIndex:(NSNumber *)index {
+    for (NSInteger i = 0; i < self.pieceSlots.count; i++) {
+        UIView *eachView = self.pieceSlots[i];
+        QuartoPiece *piece = [[eachView subviews] firstObject];
+        
+        if ([piece.pieceIndex isEqualToNumber:index]) {
+            return @(i);
+        }
+    }
+    return nil;
+}
+
 - (void)resetBoard {
     _pieces = [NSMutableArray arrayWithCapacity:kTotalPieces];
     _pieceSlots = [NSMutableArray arrayWithCapacity:kTotalPieces];
