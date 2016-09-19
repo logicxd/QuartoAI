@@ -64,6 +64,17 @@ static const NSInteger kTotalPieces = 16;
     return nil;
 }
 
+- (QuartoPiece *)removePieceAtSlot:(NSInteger)index {
+    UIView *pieceView = [[self.pieceSlots[index] subviews] firstObject];
+    if (!pieceView) {
+        return nil;
+    }
+    
+    [pieceView removeFromSuperview];
+    pieceView.userInteractionEnabled = YES;
+    return (QuartoPiece *)pieceView;
+}
+
 - (void)resetBoard {
     _pieces = [NSMutableArray arrayWithCapacity:kTotalPieces];
     _pieceSlots = [NSMutableArray arrayWithCapacity:kTotalPieces];

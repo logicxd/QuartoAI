@@ -97,6 +97,7 @@
 
 - (void)resetGame {
     [self.quartoView.boardView resetBoard];
+    [self.quartoView removePieceFromPickedPieceView];
     [self.quartoView.piecesView resetBoard];
 }
 
@@ -169,19 +170,15 @@
             BOOL canPutBoardPiece = [self.quartoView putBoardPieceIntoPickedPieceView:(QuartoPiece *) touch.view];
             if (canPutBoardPiece) {
                 
-                // Put the piece in the pickedPieceView.
-                touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f,
-                                                self.quartoView.pickedPieceView.frame.size.width/2.f);
+//                // Put the piece in the pickedPieceView.
+//                touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f,
+//                                                self.quartoView.pickedPieceView.frame.size.width/2.f);
                 
                 // Disable touch to the pieces in the piecesView.
                 for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
                     eachPiece.userInteractionEnabled = NO;
                 }
-                
-                // Enable the touch that is placed into pickedPieceView.
-                touch.view.userInteractionEnabled = YES;
     
-                
                 /* 
                  Finish up the game and switch to the next player.
                  This checks for who's turn it is based on the color of name labels.
@@ -190,7 +187,21 @@
                 if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor))
                 {
                     if (!self.isPlayerVsPlayer) {
-                        [self playBot];
+                        
+                       [self playBot];
+                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (1.4 * NSEC_PER_SEC)), dispatch_get_main_queue(),
+                                       ^{
+                                           if (![self canHighlightWinningIndicies]) {
+                                               
+                                               // Change border highlight.
+                                               self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
+                                               self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
+                                           }
+                                       });
+                    } else {
+                        
+                        // Enable the touch that is placed into pickedPieceView.
+                        touch.view.userInteractionEnabled = YES;
                     }
                     
                     // Change border highlight.
@@ -202,6 +213,8 @@
                 else
                 {
                     
+                    // Enable the touch that is placed into pickedPieceView.
+                    touch.view.userInteractionEnabled = YES;
                     
                     // Change border highlight.
                     self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
@@ -223,7 +236,7 @@
             QuartoBoardViewCell *endView = (QuartoBoardViewCell *) checkEndView;
             
             BOOL canPutBoardPiece = [endView putBoardPiece:(QuartoPiece *) touch.view];
-            if (canPutBoardPiece) { 
+            if (canPutBoardPiece) {
                 
                 // Put the piece in the slot.
                 touch.view.center = CGPointMake(endView.frame.size.width/2.f,
@@ -232,30 +245,8 @@
                 // Remove the piece in pickedPieceView.
                 [self.quartoView removePieceFromPickedPieceView];
                 
-                // Check for winner.
-                NSArray<NSNumber *> *winningIndicies;
-                if ((winningIndicies = [QuartoAI winningIndiciesWithBoard:[self.quartoView.boardView getBoard]])){
-                    
-                    // Get winner's name.
-                    NSString *nameOfTheWinner;
-                    if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
-                        nameOfTheWinner = self.quartoView.nameLabel1.text;
-                    } else {
-                        nameOfTheWinner = self.quartoView.nameLabel2.text;
-                    }
-                    
-                    NSLog(@"Winner is: %@", nameOfTheWinner);
-                    
-                    // Highlight winning indicies.
-                    __block CGFloat timer = 0.4;
-                    for (NSNumber *eachIndex in winningIndicies) {
-                        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (timer * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                            self.quartoView.boardView.boardCells[eachIndex.integerValue].layer.borderColor = [UIColor quartoWhite].CGColor;
-                        });
-                        timer += 0.4;
-                    }
-                    
-                } else {
+                // Check for winner and highligh
+                if (![self canHighlightWinningIndicies]) {
                     
                     // Enable touch for all the pieces in piecesView.
                     for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
@@ -297,16 +288,58 @@
     
     NSInteger botPicksPlace = [botDecision[@"place"] integerValue];
     NSInteger botPicksPiece = [botDecision[@"piece"] integerValue];
+    NSInteger botPicksPieceSlot = [[self.quartoView.piecesView getSlotPositionOfPieceIndex:@(botPicksPiece)] integerValue];
     
     // IMPORTANT: 'Piece' and 'Piece slots' are DIFFERENT. Piece slots are the visible slots that you see on the screen.
     // Each piece slots can hold a piece that are randomized.
     
-//    self.quartoView.boardView.bo
+    // Instead of drag-and-drop animation, you can try changing opacity.
+    
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        [self.quartoView.boardView.boardCells[botPicksPlace] putBoardPiece:[[self.quartoView.pickedPieceView subviews] firstObject]];
+        [self.quartoView removePieceFromPickedPieceView];
+    });
+    
+    __block QuartoPiece *piece;
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (1.4 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        piece = [self.quartoView.piecesView removePieceAtSlot:botPicksPieceSlot];
+        [self.quartoView putBoardPieceIntoPickedPieceView:piece];
+    });
     
     NSLog(@"Bot places index: %ld   Picks piece index: %ld",
           (long) botPicksPlace,
-          [[self.quartoView.piecesView getSlotPositionOfPieceIndex:@(botPicksPiece)] longValue]
+          (long) botPicksPieceSlot
           );
+}
+
+- (BOOL)canHighlightWinningIndicies {
+    
+    // Check for winner.
+    NSArray<NSNumber *> *winningIndicies;
+    if ((winningIndicies = [QuartoAI winningIndiciesWithBoard:[self.quartoView.boardView getBoard]])){
+        
+        // Get winner's name.
+        NSString *nameOfTheWinner;
+        if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
+            nameOfTheWinner = self.quartoView.nameLabel1.text;
+        } else {
+            nameOfTheWinner = self.quartoView.nameLabel2.text;
+        }
+        
+        NSLog(@"Winner is: %@", nameOfTheWinner);
+        
+        // Highlight winning indicies.
+        __block CGFloat timer = 0.4;
+        for (NSNumber *eachIndex in winningIndicies) {
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (timer * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                self.quartoView.boardView.boardCells[eachIndex.integerValue].layer.borderColor = [UIColor quartoWhite].CGColor;
+            });
+            timer += 0.4;
+        }
+        
+    }
+    
+    return winningIndicies ? YES : NO;
 }
 
 @end
