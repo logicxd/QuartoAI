@@ -122,11 +122,6 @@
     if ([self hasAPieceInPickedPieceView]) {
         return NO;
     }
-    /*
-    // Put the piece in the pickedPieceView.
-    touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f,
-                                    self.quartoView.pickedPieceView.frame.size.width/2.f);
-    */
     
     _pickedPieceViewIndex = quartoPiece.pieceIndex;
     quartoPiece.center = CGPointMake(self.pickedPieceView.frame.size.width/2.f,

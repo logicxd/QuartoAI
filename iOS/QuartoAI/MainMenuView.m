@@ -24,21 +24,19 @@
 
 - (instancetype)init {
     if (self = [super init]) {
-        
         UILabel *title = [[UILabel alloc] init];
         title.text = @"QuartoAI";
         title.textAlignment = NSTextAlignmentCenter;
         title.font = [UIFont systemFontOfSize:40.f];
         title.textColor = [UIColor quartoWhite];
-       
+        
         self.shimmeringTitle = [[FBShimmeringView alloc] initWithFrame:CGRectZero];
         self.shimmeringTitle.contentView = title;
         self.shimmeringTitle.shimmeringSpeed = 80;
-        self.shimmeringTitle.shimmeringPauseDuration = 3;
+        self.shimmeringTitle.shimmeringPauseDuration = 1.5;
         self.shimmeringTitle.shimmering = YES;
         
         self.playerVsPlayerButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.playerVsPlayerButton.layer.cornerRadius = 10.f;
         self.playerVsPlayerButton.layer.shadowOpacity = .5f;
         self.playerVsPlayerButton.layer.shadowRadius = 1;
         self.playerVsPlayerButton.layer.shadowOffset = CGSizeMake(0, 6);
@@ -49,7 +47,6 @@
         [self.playerVsPlayerButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.playerVsBotButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.playerVsBotButton.layer.cornerRadius = 10.f;
         self.playerVsBotButton.layer.shadowOpacity = .5f;
         self.playerVsBotButton.layer.shadowRadius = 1;
         self.playerVsBotButton.layer.shadowOffset = CGSizeMake(0, 6);
@@ -60,7 +57,6 @@
         [self.playerVsBotButton addTarget:self action:@selector(buttonHit:) forControlEvents:UIControlEventTouchUpInside];
         
         self.howToButton = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.howToButton.layer.cornerRadius = 10.f;
         self.howToButton.layer.shadowOpacity = .5f;
         self.howToButton.layer.shadowRadius = 1;
         self.howToButton.layer.shadowOffset = CGSizeMake(0, 6);
@@ -107,47 +103,53 @@
 }
 
 - (void)updateConstraints {
-    NSNumber *buttonHeight = @45;
-    CGFloat widthDimension = (self.bounds.size.width)*0.7;
-    CGFloat heightDimension = (self.bounds.size.height)*0.4;
-    CGFloat buttonHeightDimension = (heightDimension)/4;
+    // Constraints based on iPhone 4s
+    CGFloat kTitleHeight = (self.bounds.size.width)*(9.f/64.f);          // 45
+    CGFloat kButtonContainerWidth = (self.bounds.size.width)*0.7f;       // 224
+    CGFloat kButtonContainerHeight = (self.bounds.size.height)*0.4f;     // 192
+    CGFloat kButtonHeight = (kButtonContainerHeight)/4.f;                // 56
+    CGFloat kCreditHeight =  (self.bounds.size.width)*(1.f/20.f);        // 16
     
     [self.shimmeringTitle mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self.buttonContainer.mas_top).offset(-25.f);
         make.centerX.equalTo(self);
+        make.bottom.equalTo(self.buttonContainer.mas_top).offset(-25.f);    // Fixed, one-time constant.
         make.width.equalTo(self.buttonContainer);
-        make.height.equalTo(buttonHeight);
+        make.height.equalTo(@(kTitleHeight));
     }];
     
     [self.buttonContainer mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.centerY.equalTo(self);
-        make.width.equalTo(@(widthDimension));
-        make.height.equalTo(@(heightDimension));
+        make.centerX.equalTo(self);
+        make.centerY.equalTo(self);
+        make.width.equalTo(@(kButtonContainerWidth));
+        make.height.equalTo(@(kButtonContainerHeight));
         
         [self.playerVsPlayerButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.left.right.top.equalTo(self.buttonContainer);
-            make.height.equalTo(@(buttonHeightDimension));
+            make.left.equalTo(self.buttonContainer);
+            make.right.equalTo(self.buttonContainer);
+            make.top.equalTo(self.buttonContainer);
+            make.height.equalTo(@(kButtonHeight));
         }];
         
         [self.playerVsBotButton mas_remakeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.playerVsPlayerButton.mas_bottom).offset(10.f);
-            make.left.right.equalTo(self.buttonContainer);
-            make.height.equalTo(@(buttonHeightDimension));
-
+            make.left.equalTo(self.buttonContainer);
+            make.right.equalTo(self.buttonContainer);
+            make.top.equalTo(self.playerVsPlayerButton.mas_bottom).offset(10.f);    // Fixed constant for all.
+            make.height.equalTo(@(kButtonHeight));
         }];
         
         [self.howToButton mas_remakeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.buttonContainer);
+            make.right.equalTo(self.buttonContainer);
             make.top.equalTo(self.playerVsBotButton.mas_bottom).offset(10.f);
-            make.left.right.equalTo(self.buttonContainer);
-            make.height.equalTo(@(buttonHeightDimension));
+            make.height.equalTo(@(kButtonHeight));
         }];
     }];
 
     [self.creditLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(self);
         make.centerX.equalTo(self);
+        make.bottom.equalTo(self);
         make.width.equalTo(self);
-        make.height.equalTo(@16);
+        make.height.equalTo(@(kCreditHeight));
     }];
     
     [super updateConstraints];

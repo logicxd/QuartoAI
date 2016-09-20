@@ -9,7 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface QuartoViewController : UIViewController
-
-- (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer;
-
+- (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer;    // Use this to init.
 @end

@@ -19,26 +19,26 @@
 #import "UIColor+QuartoColor.h"
 
 @interface QuartoViewController ()
-
 // Variables for drag and drop.
 @property (nonatomic, assign) CGPoint firstTouchPoint;      // Saves the location of the first touch.
 @property (nonatomic, assign) NSNumber *pieceIndex;         // The index of the touched piece.
-@property (nonatomic, strong) UIView *dragFromPiecesView;             // The view that is being dragged.
+@property (nonatomic, strong) UIView *dragFromPiecesView;   // The view that is being dragged.
 @property (nonatomic, assign) float xDistanceTouchPoint;    // X distance between img center and firstTouchPointer.center.
 @property (nonatomic, assign) float yDistanceTouchPoint;    // Y distance between img center and firstTouchPointer.center.
 
-// Handling Views
+// Game View
 @property (nonatomic, strong) QuartoView *quartoView;
-@property (nonatomic, assign) BOOL showGameGuides;
-@property (nonatomic, assign) NSInteger shownGameGuidesCount;
+@property (nonatomic, assign) BOOL showGameGuides;                  // Highlights the shadows to indicate what to do.
+@property (nonatomic, assign) NSInteger shownGameGuidesCount;       // Stops highlighting after two rounds.
 
 // Bot Interactions
 @property (nonatomic, assign) BOOL isPlayerVsPlayer;
 @property (nonatomic, strong) QuartoAI *bot;
-
 @end
 
 @implementation QuartoViewController
+
+#pragma mark - Init
 
 - (instancetype)initWithIsPlayerVsPlayer:(BOOL)isPlayerVsPlayer {
     if (self = [super init]) {
@@ -47,28 +47,30 @@
     return self;
 }
 
+#pragma mark - Loading Views
+
 - (void)loadView {
-    if (self.isPlayerVsPlayer) {
-        _quartoView = [[QuartoView alloc] initWithFirstPlayerName:@"Player 1" secondPlayerName:@"Player 2"];
-    } else {
-        _quartoView = [[QuartoView alloc] initWithFirstPlayerName:@"Player" secondPlayerName:@"Bot"];
-    }
     
-    _showGameGuides = NO;
+    // Initialize Game View properties.
+    _quartoView = self.isPlayerVsPlayer ? [[QuartoView alloc] initWithFirstPlayerName:@"Player 1" secondPlayerName:@"Player 2"] :
+                                          [[QuartoView alloc] initWithFirstPlayerName:@"Player" secondPlayerName:@"Bot"];
+    _showGameGuides = NO;           // Set to YES to show hints
     _shownGameGuidesCount = 0;
     
+    // Set some initial view settings.
     if (self.showGameGuides) {
         self.quartoView.piecesView.layer.shadowColor = [UIColor quartoBlue].CGColor;
     }
-    
     self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
     self.view = self.quartoView;
 }
 
 - (void)viewDidLoad {
+    
+    // After the view loads, start setting the bot.
     _bot = [[QuartoAI alloc] init];
     
-    // Settings Button Hit.
+    // Button hit for "Settings"
     __weak typeof(self) weakSelf = self;
     self.quartoView.settingsView.buttonHit = ^(SettingsButton type) {
         
@@ -78,10 +80,10 @@
              
              dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [weakSelf resetGame];
-                 weakSelf.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
-                 weakSelf.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlack].CGColor;
              });
-         } else if (type == SettingsButtonQuit) {
+         }
+        
+         else if (type == SettingsButtonQuit) {
              NSLog(@"\"Quit\" is pressed");
              [weakSelf.quartoView.customIOSAlertView close];
              
@@ -93,12 +95,6 @@
              });
          }
     };
-}
-
-- (void)resetGame {
-    [self.quartoView.boardView resetBoard];
-    [self.quartoView removePieceFromPickedPieceView];
-    [self.quartoView.piecesView resetBoard];
 }
 
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
@@ -170,10 +166,6 @@
             BOOL canPutBoardPiece = [self.quartoView putBoardPieceIntoPickedPieceView:(QuartoPiece *) touch.view];
             if (canPutBoardPiece) {
                 
-//                // Put the piece in the pickedPieceView.
-//                touch.view.center = CGPointMake(self.quartoView.pickedPieceView.frame.size.width/2.f,
-//                                                self.quartoView.pickedPieceView.frame.size.width/2.f);
-                
                 // Disable touch to the pieces in the piecesView.
                 for (QuartoPiece *eachPiece in self.quartoView.piecesView.pieces) {
                     eachPiece.userInteractionEnabled = NO;
@@ -196,6 +188,9 @@
                                                // Change border highlight.
                                                self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
                                                self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
+                                           } else {
+                                               
+                                               self.quartoView.pickedPieceView.userInteractionEnabled = NO;
                                            }
                                        });
                     } else {
@@ -281,6 +276,8 @@
     }
 }
 
+#pragma mark - Bot Interactions
+
 - (void)playBot {
     
     NSDictionary *botDecision = [self.bot botMovedAtIndexWithBoard:[self.quartoView.boardView getBoard]
@@ -336,10 +333,19 @@
             });
             timer += 0.4;
         }
-        
     }
     
     return winningIndicies ? YES : NO;
+}
+
+- (void)resetGame {
+    [self.quartoView.boardView resetBoard];
+    [self.quartoView removePieceFromPickedPieceView];
+    [self.quartoView.piecesView resetBoard];
+    
+    // Make a method for this.
+    self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
+    self.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlack].CGColor;
 }
 
 @end

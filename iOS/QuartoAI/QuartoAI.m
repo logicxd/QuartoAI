@@ -77,7 +77,7 @@ static NSUInteger count = 0;
             [bestPlaces addObject:key];
         }
     }];
-    NSNumber *botPickPlace = bestPlaces[arc4random_uniform(bestPlaces.count)];
+    NSNumber *botPickPlace = bestPlaces[arc4random_uniform((unsigned int)bestPlaces.count)];
     
     // Get the best score from picking the pieces.
     NSDictionary *rootPieces = ((root[botPickPlace]) [kNextPossiblePiecesKey]);
@@ -102,7 +102,7 @@ static NSUInteger count = 0;
             [bestPieces addObject:key];
         }
     }];
-    NSNumber *botPickPiece = bestPieces[arc4random_uniform(bestPieces.count)];
+    NSNumber *botPickPiece = bestPieces[arc4random_uniform((unsigned int)bestPieces.count)];
     
 //    NSInteger intKey = arc4random_uniform(botPicks.count);
 //    NSNumber *botPickPlace = [botPicks[intKey] objectForKey:kPlaceIndexKey];
