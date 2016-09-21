@@ -78,7 +78,7 @@
              NSLog(@"\"Restart\" is pressed");
              [weakSelf.quartoView.customIOSAlertView close];
              
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [weakSelf resetGame];
              });
          }
@@ -90,7 +90,7 @@
              __block MainMenuViewController *mainMenu = [[MainMenuViewController alloc] init];
              mainMenu.modalTransitionStyle = UIModalTransitionStyleFlipHorizontal;
              mainMenu.modalPresentationStyle = UIModalPresentationFullScreen;
-             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
                  [weakSelf presentViewController:mainMenu animated:YES completion:nil];
              });
          }
@@ -175,6 +175,7 @@
                  Finish up the game and switch to the next player.
                  This checks for who's turn it is based on the color of name labels.
                  */
+                
                 // NameLabel1 made the move. NameLabel2's turn.
                 if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor))
                 {
@@ -291,7 +292,6 @@
     // Each piece slots can hold a piece that are randomized.
     
     // Instead of drag-and-drop animation, you can try changing opacity.
-    
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (0.7 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [self.quartoView.boardView.boardCells[botPicksPlace] putBoardPiece:[[self.quartoView.pickedPieceView subviews] firstObject]];
         [self.quartoView removePieceFromPickedPieceView];
@@ -342,10 +342,26 @@
     [self.quartoView.boardView resetBoard];
     [self.quartoView removePieceFromPickedPieceView];
     [self.quartoView.piecesView resetBoard];
-    
-    // Make a method for this.
+    self.quartoView.pickedPieceView.userInteractionEnabled = YES;
+    [self setNameLabel1sTurn];
+}
+
+- (void)setNameLabel1sTurn {
     self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
-    self.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlack].CGColor;
+    self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
+}
+
+- (BOOL)isNameLabel1sTurn {
+    return CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor);
+}
+
+- (void)setNameLabel2sTurn {
+    self.quartoView.nameLabel1.layer.borderColor = [UIColor clearColor].CGColor;
+    self.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlue].CGColor;
+}
+
+- (BOOL)isNameLabel2sTurn {
+    return CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel2.layer.borderColor);
 }
 
 @end

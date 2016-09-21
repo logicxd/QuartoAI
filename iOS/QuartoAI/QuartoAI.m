@@ -45,72 +45,88 @@ static NSUInteger count = 0;
 }
 
 - (NSDictionary *)botMovedAtIndexWithBoard:(NSDictionary *)board pickedPiece:(NSNumber *)pickedPiece {
+    // If you want first move to not matter.
+    if (board.count == 0) {
+        NSNumber *placeIndex = @(arc4random_uniform((uint32_t) kMaxNumOfMoves));
+        NSDictionary *newBoard = [self markBoard:board boardPiece:pickedPiece positionIndex:placeIndex];
+        NSSet *availablePieces = [self availablePiecesWithBoard:newBoard];
+        NSNumber *pieceIndex = [availablePieces.allObjects objectAtIndex:(arc4random_uniform((uint32_t) availablePieces.count))];
+        
+        return @{
+                 @"place" : placeIndex,
+                 @"piece" : pieceIndex
+                 };
+    }
+    
+    // Set search depth level.
+    NSNumber *searchDepthLevel;
+    switch (board.count) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            searchDepthLevel = @4;
+            break;
+        case 7:
+        case 8:
+        case 9:
+        case 10:
+            searchDepthLevel = @6;
+            break;
+        case 11:
+        case 12:
+        case 13:
+        case 14:
+        case 15:
+        default:
+            searchDepthLevel = @3;
+            break;
+    }
+    
     NSDictionary *root = [self nextPossibleMovesWithBoard:board
                                                     alpha:NSIntegerMin
                                                      beta:NSIntegerMax
                                                     color:1
                                                depthLevel:@(board.count)
-                                         searchDepthLevel:@(3)
+                                         searchDepthLevel:searchDepthLevel
                                               pickedPiece:pickedPiece];
     
-    NSMutableString *listOfAllTheMoves = [NSMutableString stringWithCapacity:16];
-    NSMutableString *listOfAllThePieces = [NSMutableString stringWithCapacity:16];
-    
-    // Get the best score for placing the piece.
-    __block NSNumber *bestScoreForPlacingThePiece;
+    // Get best score.
+    __block NSNumber *bestScore;
     [root enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [listOfAllTheMoves appendString:[NSString stringWithFormat:@"%@ ", (NSString *)key]];
         
         NSNumber *blockScore = obj[kScoreKey];
-        if (!bestScoreForPlacingThePiece || blockScore.integerValue > bestScoreForPlacingThePiece.integerValue) {
-            bestScoreForPlacingThePiece = blockScore;
+        if (!bestScore || blockScore.integerValue > bestScore.integerValue) {
+            bestScore = blockScore;
         }
     }];
-//    NSLog(@"%@", listOfAllTheMoves);
     
-    // Pick a random move from the best scores of placing the piece.
+    // Pick a random move.
     __block NSMutableArray *bestPlaces = [NSMutableArray arrayWithCapacity:16];
     [root enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        
-        NSNumber *blockScore = obj[kScoreKey];
-        if (blockScore.integerValue == bestScoreForPlacingThePiece.integerValue) {
+        if ([bestScore isEqualToNumber:obj[kScoreKey]]) {
             [bestPlaces addObject:key];
         }
     }];
     NSNumber *botPickPlace = bestPlaces[arc4random_uniform((unsigned int)bestPlaces.count)];
-    
-    // Get the best score from picking the pieces.
-    NSDictionary *rootPieces = ((root[botPickPlace]) [kNextPossiblePiecesKey]);
-    __block NSNumber *bestScoreForPickingAPiece;
-    [rootPieces enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        [listOfAllThePieces appendString:[NSString stringWithFormat:@"%@ ", (NSString *)key]];
-        
-        NSNumber *blockScore = obj[kScoreKey];
-        if (!bestScoreForPickingAPiece || blockScore.integerValue > bestScoreForPickingAPiece.integerValue) {
-            bestScoreForPickingAPiece = blockScore;
-        }
-    }];
-//    NSLog(@"%@", listOfAllThePieces);
 
-    
-    // Pick a random piece from the best scores of the pieces.
+    // Pick a random piece.
+    NSDictionary *rootPieces = ((root[botPickPlace]) [kNextPossiblePiecesKey]);
     __block NSMutableArray *bestPieces = [NSMutableArray arrayWithCapacity:16];
     [rootPieces enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        
-        NSNumber *blockScore = obj[kScoreKey];
-        if (blockScore.integerValue == bestScoreForPickingAPiece.integerValue) {
+        if ([bestScore isEqualToNumber:obj[kScoreKey]]) {
             [bestPieces addObject:key];
         }
     }];
     NSNumber *botPickPiece = bestPieces[arc4random_uniform((unsigned int)bestPieces.count)];
     
-//    NSInteger intKey = arc4random_uniform(botPicks.count);
-//    NSNumber *botPickPlace = [botPicks[intKey] objectForKey:kPlaceIndexKey];
-//    NSNumber *botPickPiece = [botPicks[intKey] objectForKey:kPieceIndexKey];
     NSLog(@"Count: %ld", (long)count);
-//    NSLog(@"Bot places index: %ld   Picks piece index: %ld", (long)botPickPlace.integerValue, (long)botPickPiece.integerValue);
+    NSLog(@"Count of best moves: %i", bestPlaces.count);
+    NSLog(@"Count of best pieces: %i", bestPieces.count);
     count = 0;
-//    return botPickPlace;
     return @{
              @"place" : botPickPlace,
              @"piece" : botPickPiece,
@@ -272,6 +288,10 @@ static NSUInteger count = 0;
             }];
             
             moveDictionary[kScoreKey] = worstScoreFromPieces;
+        }
+        
+        if (moveDictionary.count == 4) {
+            NSLog(@"kNextPossiblePiecesKey is missing one");
         }
         
         node[eachMove] = moveDictionary;
