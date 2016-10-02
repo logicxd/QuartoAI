@@ -55,10 +55,62 @@ UIView *viewInCurrentTouchLocation = [self.yourView hitTest:currentTouchLocation
 
 ###### Update touched UIView to follow your finger
 
+The position of your finger is relative to the top-left corner of the initial position of the view. So you can do this inside `touchesMoved`:
+```Objective-C
+// Get the location of the finger relative to the initial touch.
+CGPoint fingerPoint = [touch locationInView:self.yourView];
 
+// Make the view centered on the finger and shifted up.
+touch.view.center = CGPointMake(fingerPoint.x, fingerPoint.y-touch.view.frame.size.height / 2.f);
+```
+###### Make UIView stay on top of everything
+
+While dragging the UIView, you might notice that it is behind some other UIViews. To fix this, you can add something like this in `touchesBegan`:
+```Objective-C
+self.quartoView.pickedPieceView.layer.zPosition = MAXFLOAT;
+self.quartoView.piecesView.layer.zPosition = 0;
+```
+
+###### Move UIView back to it's initial spot
+
+```Objective-C
+// Add a property
+@property (nonatomic, assign) CGPoint firstTouchPointCenter;      // Saves the location of the first touch.
+
+// Inside touchesMoved        
+_firstTouchPointCenter = touch.view.center;
+
+// Call this in touchesMoved or touchesEnded to make it go back to original spot.
+touch.view.center = CGPointMake(self.firstTouchPointCenter.x, self.firstTouchPointCenter.y);
+```
+
+### Aesthetics: Shadow and corner radius.
+
+This is my settings that I like to use:
+```Objective-C
+self.playerVsPlayerButton.layer.shadowOpacity = .5f;
+self.playerVsPlayerButton.layer.shadowRadius = 1;
+self.playerVsPlayerButton.layer.shadowOffset = CGSizeMake(0, 6);
+self.playerVsPlayerButton.layer.cornerRadius = self.playerVsPlayerButton.bounds.size.height * 1/8.f;
+```
 
 ### Pop-up View
 
+![AlertView](https://cloud.githubusercontent.com/assets/12219300/19024537/7fb65882-88ba-11e6-94ad-8545a1420367.gif)
+
+Uses a [custom alert view](https://github.com/wimagguc/ios-custom-alertview) instead of the one provided by UIKit. It's so that I can add whatever I want in there for customization.
+
+```Objective-C
+// Initialize CustomIOSAlertView.
+_customIOSAlertView = [[CustomIOSAlertView alloc] init];
+[self.customIOSAlertView setButtonTitles:nil];
+[self.customIOSAlertView setCloseOnTouchUpOutside:YES];
+[self.customIOSAlertView setContainerView:self.settingsView]; // This is your custom view you want to use inside the AlertView.
+
+// Use these to open and close.
+[self.customIOSAlertView show];
+[self.customIOSAlertView close];
+```
 ---
 
 ### Acknowledgements

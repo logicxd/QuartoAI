@@ -20,11 +20,9 @@
 
 @interface QuartoViewController ()
 // Variables for drag and drop.
-@property (nonatomic, assign) CGPoint firstTouchPoint;      // Saves the location of the first touch.
+@property (nonatomic, assign) CGPoint firstTouchPointCenter;      // Saves the location of the first touch.
 @property (nonatomic, assign) NSNumber *pieceIndex;         // The index of the touched piece.
 @property (nonatomic, strong) UIView *dragFromPiecesView;   // The view that is being dragged.
-@property (nonatomic, assign) float xDistanceTouchPoint;    // X distance between img center and firstTouchPointer.center.
-@property (nonatomic, assign) float yDistanceTouchPoint;    // Y distance between img center and firstTouchPointer.center.
 
 // Game View
 @property (nonatomic, strong) QuartoView *quartoView;
@@ -102,11 +100,9 @@
     if ([touch.view isKindOfClass:[QuartoPiece class]]) {
         
         // Initialize variables for drag and drop.
-        _firstTouchPoint = [touch locationInView:self.view];
+        _firstTouchPointCenter = touch.view.center;
         _pieceIndex = [((QuartoPiece *) touch.view) pieceIndex];
         _dragFromPiecesView = [self.quartoView.piecesView getTheSlotThatThePieceIsInWithIndex:self.pieceIndex];
-        _xDistanceTouchPoint = self.firstTouchPoint.x - touch.view.center.x;
-        _yDistanceTouchPoint = self.firstTouchPoint.y - touch.view.center.y;
         
         // Make the object on top of other views.
         if ([self.quartoView hasAPieceInPickedPieceView]) {
@@ -214,7 +210,7 @@
             } else {
                 
                 // Put the piece back where it was.
-                touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+                touch.view.center = CGPointMake(self.firstTouchPointCenter.x, self.firstTouchPointCenter.y);
             }
         }
         
@@ -257,14 +253,14 @@
             } else {
                 
                 // Put the piece back where it was.
-                touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+                touch.view.center = CGPointMake(self.firstTouchPointCenter.x, self.firstTouchPointCenter.y);
             }
         }
         
         // The release touch is invalid.
         else
         {
-            touch.view.center = CGPointMake(self.firstTouchPoint.x-self.xDistanceTouchPoint, self.firstTouchPoint.y-self.yDistanceTouchPoint);
+            touch.view.center = CGPointMake(self.firstTouchPointCenter.x, self.firstTouchPointCenter.y);
         }
         
         self.dragFromPiecesView.layer.zPosition = 0;
