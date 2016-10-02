@@ -179,30 +179,25 @@
                 // NameLabel1 made the move. NameLabel2's turn.
                 if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor))
                 {
+                    // Player vs Bot
                     if (!self.isPlayerVsPlayer) {
-                        
                        [self playBot];
                         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t) (1.4 * NSEC_PER_SEC)), dispatch_get_main_queue(),
                                        ^{
                                            if (![self canHighlightWinningIndicies]) {
-                                               
-                                               // Change border highlight.
-                                               self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
-                                               self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
+                                               [self setNameLabel1sTurn];
                                            } else {
-                                               
                                                self.quartoView.pickedPieceView.userInteractionEnabled = NO;
                                            }
                                        });
-                    } else {
+                    } else {  // Player vs Player
                         
                         // Enable the touch that is placed into pickedPieceView.
                         touch.view.userInteractionEnabled = YES;
                     }
                     
                     // Change border highlight.
-                    self.quartoView.nameLabel1.layer.borderColor = [UIColor clearColor].CGColor;
-                    self.quartoView.nameLabel2.layer.borderColor = [UIColor quartoBlue].CGColor;
+                    [self setNameLabel1sTurn];
                 }
                 
                 // NameLabel2 made the move. NameLabel1's turn.
@@ -213,8 +208,7 @@
                     touch.view.userInteractionEnabled = YES;
                     
                     // Change border highlight.
-                    self.quartoView.nameLabel1.layer.borderColor = [UIColor quartoBlue].CGColor;
-                    self.quartoView.nameLabel2.layer.borderColor = [UIColor clearColor].CGColor;
+                    [self setNameLabel2sTurn];
                 }
                 
             } else {
@@ -241,7 +235,7 @@
                 // Remove the piece in pickedPieceView.
                 [self.quartoView removePieceFromPickedPieceView];
                 
-                // Check for winner and highligh
+                // Check for winner and highlight
                 if (![self canHighlightWinningIndicies]) {
                     
                     // Enable touch for all the pieces in piecesView.
@@ -317,7 +311,7 @@
         
         // Get winner's name.
         NSString *nameOfTheWinner;
-        if (CGColorEqualToColor([UIColor quartoBlue].CGColor, self.quartoView.nameLabel1.layer.borderColor)) {
+        if ([self isNameLabel1sTurn]) {
             nameOfTheWinner = self.quartoView.nameLabel1.text;
         } else {
             nameOfTheWinner = self.quartoView.nameLabel2.text;
