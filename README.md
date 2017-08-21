@@ -1,6 +1,6 @@
 # QuartoAI
 
-A Quarto board game mimic that you can play against your friend or play against an advanced bot that will never lose!
+A Quarto board game mimic that you can play against your friend or play against an advanced bot that will never lose! (Currently, there's a bug that occurs near the end of the game where the bot will not work properly)
 
 ![MainMenu](https://cloud.githubusercontent.com/assets/12219300/19020274/4048cef2-8859-11e6-9ae5-223f17347e6f.gif)
 
